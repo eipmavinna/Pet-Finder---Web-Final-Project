@@ -19,4 +19,4 @@ class Config:
         SQLALCHEMY_DATABASE_URI = f"sqlite:///{os.path.abspath(os.environ['DATABASE_PATH'])}"
     else:
         SQLALCHEMY_DATABASE_URI = f"sqlite:///{default_db_path}"
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_TRACK_MODIFICATIONS = False #ellaa
