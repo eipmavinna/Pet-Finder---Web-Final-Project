@@ -1,0 +1,30 @@
+#login-wrapper {
+    width: 50vw;
+    min-width: 300px;
+    max-width: 600px;
+    background-color: var(--color-theme-light);
+    margin: auto;
+    margin-top: 3rem;
+    padding: 2rem;
+    border-color: var(--color-theme-dark);
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 1rem;
+}
+
+#submit {
+    display: block;
+    margin: auto;
+    margin-top: 2rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+#error-messages {
+    width: 50vw;
+    min-width: 300px;
+    max-width: 600px;
+    margin: auto;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}

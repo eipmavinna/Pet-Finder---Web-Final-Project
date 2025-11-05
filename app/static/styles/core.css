@@ -1,0 +1,54 @@
+:root {
+    --color-theme-main: rgb(190, 10, 10);
+    --color-theme-dark: rgb(120, 5, 5);
+    --color-theme-light: rgb(255, 235, 235);
+
+    --title-bar-x-padding: 2rem;
+    --title-bar-height: 3rem;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, Helvetica, sans-serif;
+    color: var(--color-theme-dark);
+    background-color: var(--color-theme-light);
+}
+
+#title-bar {
+    height: var(--title-bar-height);
+    width: 100vw;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: var(--title-bar-x-padding);
+    padding-right: var(--title-bar-x-padding);
+
+    font-size: x-large;
+    font-weight: bolder;
+    line-height: var(--title-bar-height);
+    vertical-align: middle;
+
+    background-color: var(--color-theme-main);
+    color: var(--color-theme-light);
+}
+
+.gcc-btn-primary {
+    color: var(--color-theme-light);
+    background-color: var(--color-theme-main);
+    border-color: var(--color-theme-dark);
+}
+
+.gcc-btn-primary:hover {
+    background-color: var(--color-theme-dark);
+    border-color: var(--color-theme-main);
+    color: var(--color-theme-light);
+}
+
+.page-heading {
+    width: 100vw;
+    text-align: center;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.form-label {
+    padding-top: 1.5rem;
+}

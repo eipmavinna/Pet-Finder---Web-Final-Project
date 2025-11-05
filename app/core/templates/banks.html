@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GCC-CS Instructor</title>
+  <link rel="shortcut icon" href="{{ url_for('static', filename='icons/placeholder_favicon.png') }}" type="image/x-icon">
+
+  {# Link Bootstrap 5.3.5 Core Resources #}
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css"
+    integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7"
+    rel="stylesheet" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
+    crossorigin="anonymous"></script>
+  {# Link Bootstrap5-Toggle Project #}
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap5-toggle@5.1.1/css/bootstrap5-toggle.min.css"
+    integrity="sha384-EdwaX1fkkk/Dw1rn9Nrzq52YHhZ4eOoLfPQJ2/2jsr7kaJeI1gnefa9O+Y/m9jZs"
+    rel="stylesheet" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap5-toggle@5.1.1/js/bootstrap5-toggle.ecmas.min.js"
+    integrity="sha384-wbZvWMbuXvzd7EVP1yMwm4qxMAc+PhnWjjEznmVvwkQswdyRmy5l2zxErTDu65mT"
+    crossorigin="anonymous"></script>
+  {# Link Project CSS and JS #}
+  <link rel="stylesheet" href="{{url_for('static', filename='styles/core.css')}}">
+</head>
+<body>
+  <div id="title-bar">GCC-CS</div>
+  <h1 class="page-heading">Example Banks</h1>
+  <table class="w-50 mx-auto table table-dark">
+    <thead>
+      <tr>
+        <th scope="col">Bank Code</th>
+        <th scope="col">Bank Name</th>
+        <th scope="col">Bank Address</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for bank in banks %}  <!-- banks sent in, a list of banks -->
+      <tr>
+        <td class="text-center">{{bank.code}}</td>
+        <td class="text-center">{{bank.name}}</td>
+        <td class="text-center">{{bank.address}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <a class="btn gcc-btn-primary d-block w-25 mx-auto" href="{{url_for('auth.route_logout')}}">
+    Log Out
+  </a>
+</body>
+</html>

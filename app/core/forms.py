@@ -1,0 +1,46 @@
+from enum import Enum
+
+from flask_wtf import FlaskForm
+from wtforms import Form, Field, ValidationError
+
+################################################################################
+# Custom Form Validators
+################################################################################
+
+# custom validator to check if the hidden field is a number in a reasonable range
+class StringIntegerRange():
+    def __init__(self, min:int|None=None, max:int|None=None) -> None:
+        self.min = min
+        self.max = max
+    def __call__(self, form: Form, field: Field) -> None:
+        # get the value out of the field as a string if it is present
+        value: str|None = None if field.data is None else str(field.data)
+        # if the value is not present this is an error
+        if value is None:
+            raise ValidationError("This field is required")
+        # if the value is not an integer, this is an error
+        try:
+            num: int = int(value)
+        except ValueError:
+            raise ValidationError("Must be an integer")
+        # if there is a lower bound and this number is less than it . . .
+        if self.min is not None and num < self.min:
+            raise ValidationError(f"Must be at least {self.min}")
+        # if there is an upper bound and this number is greater than it . . .
+        if self.max is not None and num > self.max:
+            raise ValidationError(f"Must be less than {self.max}")
+
+# custom validator to ensure the value selected is valid for the chosen enum
+class CheckEnum():
+    def __init__(self, e: type[Enum]) -> None:
+        self.enum = e
+    def __call__(self, form: Form, field: Field) -> None:
+        if not hasattr(self.enum, field.data):
+            names: list[str] = [member.name for member in self.enum]
+            raise ValidationError(f"Must be one of ({'|'.join(names)})")
+
+################################################################################
+# Forms
+################################################################################
+
+# TODO: create any forms needed for the core application here

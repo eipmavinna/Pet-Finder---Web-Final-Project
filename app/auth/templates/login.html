@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Example Login</title>
+  <link rel="shortcut icon" href="{{ url_for('static', filename='icons/placeholder_favicon.png') }}" type="image/x-icon">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css"
+    integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7"
+    rel="stylesheet" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
+      crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="/static/styles/core.css">
+  <link rel="stylesheet" href="/static/styles/login.css">
+</head>
+<body>
+  <div id="title-bar">GCC-CS</div>
+  <h1 class="page-heading">Example Login</h1>
+  <div class="toast-container position-static">
+  </div>
+  <div id="login-wrapper">
+    <form action="" method="post">
+      {{ form.hidden_tag() }}
+      <label for="{{form.email.id}}" class="form-label">{{form.email.label.text}}</label>
+      {{form.email(class="form-control")}}
+      <label for="{{form.password.id}}" class="form-label">{{form.password.label.text}}</label>
+      {{form.password(class="form-control")}}
+      {{form.submit(class="btn gcc-btn-primary")}}
+    </form>
+  </div>
+  <div id="error-messages">
+  {% for msg in get_flashed_messages() %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      {{ msg }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  {% endfor %}
+  </div>
+</body>
+</html>
