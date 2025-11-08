@@ -36,6 +36,8 @@ def get_custs():
 
 
 
+
+
 def get_all_accounts() -> list[Account]:
     query: Select[Tuple[Account]] = db.select(Account)
     rows:  Sequence[Row[Tuple[Account]]] = db.session.execute(query).all()
