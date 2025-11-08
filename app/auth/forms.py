@@ -18,9 +18,9 @@ class SignupFormUser(FlaskForm):
 
     email: EmailField = EmailField('Email',
         validators=[InputRequired(), Email()])
-    password: PasswordField = PasswordField('Password',
+    password: StringField = StringField('Password',
         validators=[InputRequired(), Length(min=MIN_PASSWORD_LENGTH)])
-    zipcode: IntegerField = IntegerField(validators=[InputRequired(), Length(min=5,max=5)])
+    zipcode: StringField = StringField(validators=[InputRequired(), Length(min=5,max=5)])
     submit: SubmitField = SubmitField("Sign Up")
 
 
@@ -31,12 +31,12 @@ class SignupFormShelter(FlaskForm):
     
 
     email: EmailField = EmailField("Email", validators=[InputRequired(), Email()])
-    password: PasswordField = PasswordField('Password',
+    password: StringField = StringField('Password',
         validators=[InputRequired(), Length(min=MIN_PASSWORD_LENGTH)])
     street_address: StringField = StringField("Street Address",validators=[InputRequired()])
     city: StringField = StringField("City",validators=[InputRequired()])
     state: StringField = StringField("State", validators=[InputRequired()])
-    zipcode: IntegerField = IntegerField(validators=[InputRequired(), Length(min=5,max=5)])
+    zipcode: StringField = StringField(validators=[InputRequired(), Length(min=5,max=5)])
     submit: SubmitField = SubmitField('Verify')
     
     
