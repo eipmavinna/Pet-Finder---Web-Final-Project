@@ -6,7 +6,7 @@ from cryptography.fernet import Fernet
 from passlib.hash import argon2
 from app import db, ma
 
-class User(UserMixin, db.Model):
+class User(UserMixin, db.Model):   #TODO: alter this to hold all the things user needs to hold
     __tablename__ = "Users"
     id:    Mapped[int] = mapped_column(primary_key=True)
     email: Mapped[str] = mapped_column(nullable=False)
@@ -47,3 +47,6 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = User
         exclude = ('password_hash',)
+
+#TODO: add a Shelter table and schema
+

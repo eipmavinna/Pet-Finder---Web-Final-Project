@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import EmailField, PasswordField, SubmitField, IntegerField
+from wtforms import EmailField, PasswordField, SubmitField, IntegerField, StringField
 from wtforms.validators import InputRequired, Email, Length
 
 MIN_PASSWORD_LENGTH: int = 8
@@ -23,4 +23,20 @@ class SignupFormUser(FlaskForm):
     zipcode: IntegerField = IntegerField(validators=[InputRequired(), Length(min=5,max=5)])
     submit: SubmitField = SubmitField("Sign Up")
 
-#TODO: shelter sign up
+
+#right now there's no verification, but I think that's fine for now
+class SignupFormShelter(FlaskForm):
+
+    #TODO make it so that the email field checks the current users and shelters to make sure there isn't another acct made with the same email
+    
+
+    email: EmailField = EmailField("Email", validators=[InputRequired(), Email()])
+    password: PasswordField = PasswordField('Password',
+        validators=[InputRequired(), Length(min=MIN_PASSWORD_LENGTH)])
+    street_address: StringField = StringField("Street Address",validators=[InputRequired()])
+    city: StringField = StringField("City",validators=[InputRequired()])
+    state: StringField = StringField("State", validators=[InputRequired()])
+    zipcode: IntegerField = IntegerField(validators=[InputRequired(), Length(min=5,max=5)])
+    submit: SubmitField = SubmitField('Verify')
+    
+    

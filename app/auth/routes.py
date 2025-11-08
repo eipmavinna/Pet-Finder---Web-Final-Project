@@ -6,7 +6,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 from app import db
 from app.auth import bp
 from app.auth.models import User
-from app.auth.forms import LoginForm, SignupFormUser
+from app.auth.forms import LoginForm, SignupFormUser, SignupFormShelter
 
 @bp.get('/login/')
 def get_login():
@@ -70,6 +70,9 @@ def post_login():
             flash(f"{field}: {error_msg}")
         return redirect(url_for('auth.get_login'))
 
+
+
+#Anna's added code:
 @bp.get('/signup/user/')   #this needs to make sure that the username isn't taken by anything in either the users or the shelters table
 def get_signup_user():
     form: SignupFormUser = SignupFormUser()
@@ -102,8 +105,28 @@ def post_signup_user():
 
 
 
-#@bp.get('/signup/shelter/')
-#def get_signup_shelter():
+@bp.get('/signup/shelter/')
+def get_signup_shelter():
+    form: SignupFormShelter = SignupFormShelter()
+    #TODO query the database and send in a list of the current usernames from both the users and the shelters
+    return render_template("shelter_registration.html", form=form)
+
+@bp.post('/signup/shelter/')
+def post_signup_shelter():
+    form: SignupFormShelter = SignupFormShelter()
+    if form.validate():
+        email: str = form.email.data #type:ignore
+        password: str = form.password.data #type:ignore
+        addr: str = str(form.street_address.data) + str(form.city.data) + str(form.state.data)
+        zipcode: int = form.zipcode.data #type:ignore
+
+        return redirect('/')  #TODO change this to next
+
+    else:
+        for field,error_msg in form.errors.items():
+            flash(f"{field}: {error_msg}")
+        return redirect(url_for('auth.get_signup_shelter'))
+
 
 
 

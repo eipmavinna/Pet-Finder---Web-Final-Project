@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Example Login</title>
+  <title>User Registration</title>
   <link rel="shortcut icon" href="{{ url_for('static', filename='icons/placeholder_favicon.png') }}" type="image/x-icon">
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css"
@@ -18,7 +18,7 @@
 </head>
 <body>
   <div id="title-bar">GCC-CS</div>
-  <h1 class="page-heading">Example Login</h1>
+  <h1 class="page-heading">User Registration</h1>
   <div class="toast-container position-static">
   </div>
   <div id="login-wrapper">
@@ -28,8 +28,8 @@
       {{form.email(class="form-control")}}
       <label for="{{form.password.id}}" class="form-label">{{form.password.label.text}}</label>
       {{form.password(class="form-control")}}
-      <label for="{{form.zip.id}}" class="form-label">{{form.zip.label.text}}</label>
-      {{form.zip(class="form-control")}}
+      <label for="{{form.zipcode.id}}" class="form-label">{{form.zipcode.label.text}}</label>
+      {{form.zipcode(class="form-control")}}
       {{form.submit(class="btn gcc-btn-primary")}}
     </form>
   </div>
@@ -41,8 +41,10 @@
     </div>
   {% endfor %}
   </div>
-  <p>[Link for if you need to sign up]</p>
+  
+  <a href="/auth/login/">Login</a>
   <br>
-  <p>[Link for if you are a shelter]</p>
+  <a href="/auth/signup/shelter/">Sign up as a shelter</a>
+  <br>
 </body>
 </html>
