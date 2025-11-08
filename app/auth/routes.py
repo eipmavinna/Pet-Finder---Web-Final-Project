@@ -87,17 +87,15 @@ def post_signup_user():
 
         email: str = form.email.data #type:ignore
         password: str = form.password.data #type:ignore
-        zipcode: int = form.zipcode.data #type:ignore
+        zipcode: int = int(form.zipcode.data) #type:ignore
 
         #TODO add to database
 
-        return redirect('/')  #TODO change this to next
-
-    #TODO: check the email to see if it's in the database already, route to get_signup_user if already there
-    # OR: 
-    # if already exists:
-    #   return redirect(url_for('auth.get_signup_user'))   #with some sort of message that the username is already taken
-
+        return redirect('/auth/signup/user/')  #TODO change this to next
+        #TODO: check the email to see if it's in the database already, route to get_signup_user if already there
+        # OR: 
+        # if already exists:
+        #   return redirect(url_for('auth.get_signup_user'))   #with some sort of message that the username is already taken
     else:
         for field,error_msg in form.errors.items():
             flash(f"{field}: {error_msg}")
@@ -118,7 +116,7 @@ def post_signup_shelter():
         email: str = form.email.data #type:ignore
         password: str = form.password.data #type:ignore
         addr: str = str(form.street_address.data) + str(form.city.data) + str(form.state.data)
-        zipcode: int = form.zipcode.data #type:ignore
+        zipcode: int = int(form.zipcode.data) #type:ignore
 
         return redirect('/')  #TODO change this to next
 
