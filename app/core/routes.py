@@ -1,6 +1,6 @@
 from typing import Sequence, Tuple
 from sqlalchemy import Row, Select
-from flask import  render_template, redirect, url_for, current_app
+from flask import  render_template, redirect, url_for, current_app, session
 from flask_login import login_required, current_user
 
 from app import db
@@ -34,6 +34,25 @@ def get_custs():
     custs: list[Customer] = get_all_customers()
     return render_template('custs.html',custs=custs)
 
+
+
+#Simple routes to each page
+
+#Home page will have a link to this, will require login
+@bp.get('/profile/')
+@login_required
+def profile():
+    if session.get("isShelter"):
+        return render_template("shelter_profile.html")
+    return render_template("user_profile.html")
+
+@bp.get('/search/')
+def search():
+    return render_template("search.html")
+
+@bp.get('/home/')
+def home():
+    return render_template("home.html")
 
 
 
