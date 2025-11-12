@@ -1,16 +1,26 @@
 import base64
+from typing import Sequence, Tuple
 from flask import current_app
 from flask_login import UserMixin
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import Row, Select
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from cryptography.fernet import Fernet
 from passlib.hash import argon2
 from app import db, ma
 
 class User(UserMixin, db.Model):   #TODO: alter this to hold all the things user needs to hold
     __tablename__ = "Users"
-    id:    Mapped[int] = mapped_column(primary_key=True)
+    id:    Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     email: Mapped[str] = mapped_column(nullable=False)
     password_hash: Mapped[bytes] = mapped_column(nullable=False)
+    zipcode: Mapped[int] = mapped_column(nullable=False)
+
+    @property
+    def favorites(self) -> list[int]:
+        query: Select[Tuple[int]] = db.select(FavPet.id).filter(FavPet.user_email == self.email)
+        rowsAccts: Sequence[Row[Tuple[int]]] = db.session.execute(query).all()
+        favPets: list[int] = [row[0] for row in rowsAccts]
+        return favPets
 
     @property
     def pepper(self) -> Fernet:
@@ -42,6 +52,13 @@ class User(UserMixin, db.Model):   #TODO: alter this to hold all the things user
         pwd_hash: str = pwd_hash_bytes.decode('utf-8')
         # have passlib check if the entered password matches this hash
         return argon2.verify(given_password, pwd_hash)
+
+class FavPet(UserMixin, db.Model):          #when hit favorites, add a FavPet. When remove a favpet, remove from db.
+    _tablename_ = "FavPets"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    user_email: Mapped[str] = mapped_column()
+    #user: Mapped['User'] = relationship()
+
 
 class UserSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
