@@ -6,12 +6,18 @@ from flask_login import login_required, current_user
 from app import db
 from app.core import bp
 from app.auth.models import User
-from app.core.models import Bank, Account, Customer
+from app.core.models import Bank, Account, Customer, FavPet
 
-@bp.get('/')  # attach a bunch of routes to the blueprint    //what are blueprints again?
-@login_required
-def index():
-    return redirect(url_for('core.get_accounts'))
+@bp.get('/favpet_tester/')
+#@login_required
+def get_favs():
+    # query: Select[Tuple[str]] = db.select(User.email)
+    # rowsAccts: Sequence[Row[Tuple[str]]] = db.session.execute(query).all()
+    # favorites: list[str] = [row[0] for row in rowsAccts]
+    query: Select[Tuple[User]] = db.select(User)
+    rowsAccts: Sequence[Row[Tuple[User]]] = db.session.execute(query).all()
+    users: list[User] = [row[0] for row in rowsAccts]
+    return render_template("shelter_profile.html",users=users)
 
 @bp.get('/accounts/')
 @login_required
@@ -50,6 +56,7 @@ def profile():
 def search():
     return render_template("search.html")
 
+@bp.get('/')
 @bp.get('/home/')
 def home():
     return render_template("home.html")

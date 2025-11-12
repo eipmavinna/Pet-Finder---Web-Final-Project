@@ -6,7 +6,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from marshmallow_sqlalchemy.fields import Nested
 
 from app import db, ma
-from app.auth.models import User, UserSchema
+from app.auth.models import User, UserSchema, FavPet
 
 ################################################################################
 # Core Database Model Classes
@@ -54,6 +54,9 @@ class Account(db.Model):
     def __repr__(self):
         return f"Account({self.account_no})"
 
+
+
+
 ################################################################################
 # JSON Schemas for Core Database Models
 ################################################################################
@@ -67,11 +70,18 @@ class Account(db.Model):
 def init_app_db():
     """Initialize database tables and add any default entries"""
     # completely drop all tables and re-create them from schemas
-    db.drop_all()                   #!! remove this when not under development !!
+    db.drop_all()                   #!! remove this when not under development !!  TODO
     db.create_all()
     # create a testing account at app launch
-    admin = User(email='test@gcc.edu', password='reallygoodpassword') # type: ignore
+    admin = User(email='test@gcc.edu', password='reallygoodpassword', zipcode = 12345) # type: ignore
     db.session.add(admin)
+    
+    
+    pet1 = FavPet(id=1234,user_email='test@gcc.edu') #type:ignore
+    pet2 = FavPet(id=5678, user_email='test@gcc.edu') #type:ignore
+    db.session.add_all((pet1,pet2))
+    
+    
     # create some initial example data
     # Create bank records to be inserted
     bank1 = Bank(code="GB1", name="Grove City Bank1",                      # type: ignore[call-arg]
@@ -108,7 +118,7 @@ def init_app_db():
                 startdate=date(2011, 11, 11), balance=50)                  # type: ignore[call-arg]
 
     # Add all of these records to the session and commit changes
-    db.session.add_all((bank1, bank2, bank3, cust1, cust2, cust3, cust4, 
-        acct1, acct2, acct3, acct4, acct5))
+    #db.session.add_all((bank1, bank2, bank3, cust1, cust2, cust3, cust4, 
+    #    acct1, acct2, acct3, acct4, acct5))
     db.session.commit()
 
