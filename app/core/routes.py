@@ -19,26 +19,27 @@ def get_favs():
     users: list[User] = [row[0] for row in rowsAccts]
     return render_template("shelter_profile.html",users=users)
 
-@bp.get('/accounts/')
-@login_required
-def get_accounts():
-    accounts: list[Account] = get_all_accounts()
-    return render_template('index.html', accounts=accounts)
+# These are all from the example code so I'm commenting them out so we still have them for reference
+# @bp.get('/accounts/')
+# @login_required
+# def get_accounts():
+#     accounts: list[Account] = get_all_accounts()
+#     return render_template('index.html', accounts=accounts)
 
-# TODO: define routes for listing Banks and Customers
+# # TODO: define routes for listing Banks and Customers
 
-@bp.get('/banks/')
-@login_required
-def get_banks():
-    banks: list[Bank] = get_all_banks()
-    return render_template('banks.html',banks=banks)
+# @bp.get('/banks/')
+# @login_required
+# def get_banks():
+#     banks: list[Bank] = get_all_banks()
+#     return render_template('banks.html',banks=banks)
 
 
-@bp.get('/customers/')
-@login_required
-def get_custs():
-    custs: list[Customer] = get_all_customers()
-    return render_template('custs.html',custs=custs)
+# @bp.get('/customers/')
+# @login_required
+# def get_custs():
+#     custs: list[Customer] = get_all_customers()
+#     return render_template('custs.html',custs=custs)
 
 
 
