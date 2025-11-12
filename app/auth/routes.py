@@ -28,7 +28,6 @@ def post_login():
         password: str = str(form.password.data)
         # look up the user with this email address (if any)    INSIDE BOTH THE USERS AND THE SHELTERS TABLES
         
-        #TODO: check through both the user and the shelter table for the current username,
         
         query = select(User).filter(User.email == str(email))
         user_row = db.session.execute(query).first()
@@ -40,8 +39,7 @@ def post_login():
 
         # if there is such a user and the password is correct, log them in
         if user is not None and user.verify_password(password):
-
-            login_user(user,False)  #is not a shelter
+            login_user(user)
             # update the next url where the user should be redirected
             if 'next' in request.args and request.args['next'].startswith('/'):
                 next = str(request.args['next'])
@@ -50,17 +48,6 @@ def post_login():
             else:
                 next = '/'
             return redirect(next)
-        #else if shelter is not None and shelter.verify_password(password):    #TODO implement
-        #    login_user(shelter,True)  #is not a shelter
-        #    # update the next url where the user should be redirected
-        #    if 'next' in request.args and request.args['next'].startswith('/'):
-        #        next = str(request.args['next'])
-        #    elif 'HOME_PAGE' in current_app.config:
-        #        next = str(current_app.config['HOME_PAGE'])
-        #    else:
-        #        next = '/'
-        #    return redirect(next)
-        # if the email or password is incorrect, flash a message and redirect to get the form again
         else:
             flash("Invalid Credentials")
             return redirect(url_for('auth.get_login'))
@@ -89,9 +76,33 @@ def post_signup_user():
         password: str = form.password.data #type:ignore
         zipcode: int = int(form.zipcode.data) #type:ignore
 
-        #TODO add to database
+        query = select(User).filter(User.email == str(email))
+        user_row = db.session.execute(query).first()
+        user: User|None = user_row[0] if user_row is not None else None
 
-        return redirect('/auth/signup/user/')  #TODO change this to next
+        if(user is None):
+            #add to db
+
+            new_user: User = User() #add an empty list
+            new_user.password = password
+            new_user.email = email
+            new_user.zipcode = zipcode
+
+            db.session.add(new_user)
+            db.session.commit()
+
+            login_user(new_user)
+
+            if 'next' in request.args and request.args['next'].startswith('/'):
+                next = str(request.args['next'])
+            elif 'HOME_PAGE' in current_app.config:
+                next = str(current_app.config['HOME_PAGE'])
+            else:
+                next = '/'
+            return redirect(next)
+        else:
+            flash("Email already attached to an account")
+            return redirect('/auth/signup/user/')  #TODO change this to next
         #TODO: check the email to see if it's in the database already, route to get_signup_user if already there
         # OR: 
         # if already exists:
@@ -100,30 +111,6 @@ def post_signup_user():
         for field,error_msg in form.errors.items():
             flash(f"{field}: {error_msg}")
         return redirect(url_for('auth.get_signup_user'))
-
-
-
-@bp.get('/signup/shelter/')
-def get_signup_shelter():
-    form: SignupFormShelter = SignupFormShelter()
-    #TODO query the database and send in a list of the current usernames from both the users and the shelters
-    return render_template("shelter_registration.html", form=form)
-
-@bp.post('/signup/shelter/')
-def post_signup_shelter():
-    form: SignupFormShelter = SignupFormShelter()
-    if form.validate():
-        email: str = form.email.data #type:ignore
-        password: str = form.password.data #type:ignore
-        addr: str = str(form.street_address.data) + str(form.city.data) + str(form.state.data)
-        zipcode: int = int(form.zipcode.data) #type:ignore
-
-        return redirect('/')  #TODO change this to next
-
-    else:
-        for field,error_msg in form.errors.items():
-            flash(f"{field}: {error_msg}")
-        return redirect(url_for('auth.get_signup_shelter'))
 
 
 
