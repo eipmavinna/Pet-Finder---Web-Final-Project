@@ -49,8 +49,13 @@ def get_favs():
 @bp.get('/profile/')
 @login_required
 def profile():
-    if session.get("is_logged_in"):
-        return render_template("user_profile.html")
+    #session.get("_user_id")
+    query: Select[Tuple[User]] = db.select(User).filter(User.email == session.get("user_email"))
+    rows: Sequence[Row[Tuple[User]]] = db.session.execute(query).all()
+    users: list[User] = [row[0] for row in rows]
+    favPets: list[int] = users[0].favorites
+    return render_template("user_profile.html", favPets=favPets)
+    return f"{session.get("user_email")}"
     
 
 @bp.get('/search/')
