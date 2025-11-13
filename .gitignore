@@ -1,0 +1,10 @@
+# If files have already been tracked, you will need to clear the cache.
+# After fixing the .gitingore, run the following from the root of the repo:
+#
+# git rm -r --cached .
+# git add .
+
+
+# Pycache
+*__pycache__/
+*.pyc
