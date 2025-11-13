@@ -30,6 +30,12 @@ body {
     color: var(--color-theme-light);
 }
 
+#title-bar img {
+    width: auto; 
+    height: var(--title-bar-height);
+    padding-top: 0px;
+}
+
 .gcc-btn-primary {
     color: var(--color-theme-light);
     background-color: var(--color-theme-main);
