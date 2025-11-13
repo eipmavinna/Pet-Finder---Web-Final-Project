@@ -39,7 +39,7 @@ def post_login():
 
         # if there is such a user and the password is correct, log them in
         if user is not None and user.verify_password(password):
-            login_user(user)
+            login_user(user, email)
             # update the next url where the user should be redirected
             if 'next' in request.args and request.args['next'].startswith('/'):
                 next = str(request.args['next'])
@@ -91,7 +91,7 @@ def post_signup_user():
             db.session.add(new_user)
             db.session.commit()
 
-            login_user(new_user)
+            login_user(new_user,email)
 
             if 'next' in request.args and request.args['next'].startswith('/'):
                 next = str(request.args['next'])
