@@ -49,9 +49,9 @@ def get_favs():
 @bp.get('/profile/')
 @login_required
 def profile():
-    if session.get("isShelter"):
-        return render_template("shelter_profile.html")
-    return render_template("user_profile.html")
+    if session.get("is_logged_in"):
+        return render_template("user_profile.html")
+    
 
 @bp.get('/search/')
 def search():

@@ -24,7 +24,11 @@
   <link rel="stylesheet" href="{{url_for('static', filename='styles/core.css')}}">
 </head>
 <body>
-  <div id="title-bar">GCC-CS</div>
+  <div id="title-bar">
+    <a href="/">
+      <img id="logo" src="{{ url_for('static', filename='icons/logo.png') }}" alt="logo/menu button to return home" />
+    </a>
+  </div>
   <h1 class="page-heading">Example Accounts</h1>
   <table class="w-50 mx-auto table table-dark">
     <thead>
