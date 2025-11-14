@@ -1,13 +1,12 @@
 document.addEventListener("DOMContentLoaded", async () => {
     loadPets();
 });
-const lists = document.getElementsByClassName("petButton");
-let IDS = ["1000004", "100001", "10000154"];
-let counter = 0;
-async function loadPets() {
-    for (const item of lists) {
-        const btn = item;
-        let thisID = btn.dataset.petId;
+const homeLists = document.getElementsByClassName("petButton");
+let StubIDS = ["1000004", "100001", "10000154"];
+let homeCounter = 0;
+async function loadHomePets() {
+    for (const item of homeLists) {
+        let thisID = StubIDS[counter];
         const baseURL = "https://api.rescuegroups.org/v5/";
         const animalsURL = `${baseURL}public/animals/${thisID}`;
         const response = await fetch(animalsURL, {
@@ -32,14 +31,6 @@ async function loadPets() {
         const organizations = await validateJSON(response2);
         const orgLocationCity = organizations.data[0].attributes.citystate;
         item.innerHTML = `<img src="${imageURL}" alt="ImageOfAnimal"><p>${name}</p><p>${orgLocationCity}</p>`;
-        counter += 1;
-    }
-}
-async function validateJSON(response) {
-    if (response.ok) {
-        return response.json();
-    }
-    else {
-        return Promise.reject(response);
+        homeCounter += 1;
     }
 }

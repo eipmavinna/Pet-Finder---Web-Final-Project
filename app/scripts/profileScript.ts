@@ -1,5 +1,12 @@
 
+
 document.addEventListener("DOMContentLoaded", async () => {
+    //while there are things in the id list from pet favs, 
+    //add a button for the modal
+    //if == 0, delete the button?
+    //else, while there is an id duplicate the first and add the id
+    
+
     loadPets();
 });
 
@@ -15,7 +22,9 @@ let counter: number = 0;
 async function loadPets(){
 
     for (const item of lists) {
-        let thisID: string = IDS[counter];
+        //let thisID: string = IDS[counter];
+        const btn = item as HTMLButtonElement;
+        let thisID: string = btn.dataset.petId;
 
         const baseURL = "https://api.rescuegroups.org/v5/";
         const animalsURL = `${baseURL}public/animals/${thisID}`
