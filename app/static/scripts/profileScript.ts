@@ -1,4 +1,8 @@
 
+// get all of the buttons
+const lists =  document.getElementsByClassName("petButton");
+let counter: number = 0;
+
 
 document.addEventListener("DOMContentLoaded", async () => {
     //while there are things in the id list from pet favs, 
@@ -8,27 +12,59 @@ document.addEventListener("DOMContentLoaded", async () => {
     loadPets();
     //const closeButton = document.getElementById("modal_close")
     //closeButton.addEventListener("click",loadPets)
-    const favButton = document.getElementById("favorite-button")
-    favButton.addEventListener("click", () => addToFavorites("6"))
+    for(const button of lists){
+        const btn = button as HTMLButtonElement;
+        let thisID: string = btn.dataset.petId;
+        //change the favbutton data to be the pet id
+        btn.addEventListener("click",() => changeData(thisID));
+    }
+
+
+    const favButton = document.getElementById("favorite-button");
+    favButton.addEventListener("click", () => addToFavorites(favButton.dataset.petID));
+
 });
 
-// get all of the buttons
-const lists =  document.getElementsByClassName("petButton");
+
+async function changeData(pid: string){
+    //set fav button petID so it can add or remove the pet id from the db
+    const favButton = document.getElementById("favorite-button");
+    favButton.dataset.petID = pid;
+    console.log("favButton id: "+ favButton.dataset.petID)
+    //if isfavorite, "Delete from favs", else "Add to favs"
+    if(isFavorite(pid)){
+        favButton.innerText = "Delete from favorites"
+    }else{
+        favButton.innerText = "Add to favorites"
+    }
+
+    //TODO add the more detailed information here
+}
 
 
-//Buck, Shiloh, Bella
-//let IDS: string[] = ["1000004", "100001", "10000154"]; 
-let counter: number = 0;
+async function isFavorite(petID: string): Promise<boolean> {
+    const response = await fetch(`/api/favoritePet/check/${petID}`);
+    const data = await response.json();
+    return data.exists;
+}
+
 
 
 async function addToFavorites(petID: string){
+    //TODO if "Delete from favorites" change to "Add to favorites", etc
+    const favButton = document.getElementById("favorite-button");
+    if(isFavorite(petID)){
+        favButton.innerText = "Add to favorites"
+    }else{
+        favButton.innerText = "Delete from favorites"
+    }
     //want to access the FavPet table and add something with the user's id and the pet id
     await fetch("/api/favoritePet/", {
         method: "POST",
         headers: {"Content-Type":"application/json"},
         body: JSON.stringify({pid: petID})
     })
-    console.log("added?")
+    console.log("added " + petID)
 }
 
 
