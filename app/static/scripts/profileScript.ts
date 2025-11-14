@@ -5,9 +5,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     //add a button for the modal
     //if == 0, delete the button?
     //else, while there is an id duplicate the first and add the id
-    
-
     loadPets();
+    //const closeButton = document.getElementById("modal_close")
+    //closeButton.addEventListener("click",loadPets)
+    const favButton = document.getElementById("favorite-button")
+    favButton.addEventListener("click", () => addToFavorites("6"))
 });
 
 // get all of the buttons
@@ -15,8 +17,19 @@ const lists =  document.getElementsByClassName("petButton");
 
 
 //Buck, Shiloh, Bella
-let IDS: string[] = ["1000004", "100001", "10000154"]; 
+//let IDS: string[] = ["1000004", "100001", "10000154"]; 
 let counter: number = 0;
+
+
+async function addToFavorites(petID: string){
+    //want to access the FavPet table and add something with the user's id and the pet id
+    await fetch("/api/favoritePet/", {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({pid: petID})
+    })
+    console.log("added?")
+}
 
 
 async function loadPets(){

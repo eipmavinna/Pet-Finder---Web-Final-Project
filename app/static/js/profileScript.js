@@ -1,9 +1,20 @@
 document.addEventListener("DOMContentLoaded", async () => {
     loadPets();
+    const closeButton = document.getElementById("modal_close");
+    closeButton.addEventListener("click", loadPets);
+    const favButton = document.getElementById("favorite-button");
+    addToFavorites("222");
+    favButton.addEventListener("click", () => addToFavorites("6"));
 });
 const lists = document.getElementsByClassName("petButton");
-let IDS = ["1000004", "100001", "10000154"];
 let counter = 0;
+async function addToFavorites(petID) {
+    await fetch("/favoritePet/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: petID })
+    });
+}
 async function loadPets() {
     for (const item of lists) {
         const btn = item;

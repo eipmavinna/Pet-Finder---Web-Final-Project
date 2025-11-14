@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Profile</title>
   <link rel="shortcut icon" href="{{ url_for('static', filename='icons/placeholder_favicon.png') }}" type="image/x-icon">
-  <script src="/app/scripts/profileScript.js"></script>
 
 
   {# Link Bootstrap 5.3.5 Core Resources #}
@@ -24,6 +23,7 @@
     crossorigin="anonymous"></script>
   {# Link Project CSS and JS #}
   <link rel="stylesheet" href="{{url_for('static', filename='styles/core.css')}}">
+  <script src="/static/scripts/profileScript.js"></script>
 </head>
 <body>
 <!-- Title bar, logo (which doubles as a clickable link home), search button, and profile button -->
@@ -57,7 +57,7 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                  <p>Favorite your pet</p>
+                  <button id = "favorite-button">Favorite your pet</button>
                   <button type="button" class="add-to-favorites" data-bs-dismiss="modal" aria-label="Add To Favorites"></button>
               </div>
               <div class="modal-footer">
