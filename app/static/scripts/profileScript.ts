@@ -10,8 +10,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     //if == 0, delete the button?
     //else, while there is an id duplicate the first and add the id
     loadPets();
-    //const closeButton = document.getElementById("modal_close") 
-    //closeButton.addEventListener("click",loadPets)
+    const closeButton = document.getElementById("modal_close") as HTMLButtonElement | null;
+    if (closeButton) {
+        closeButton.addEventListener("click", reloadPage);
+    }
     for(const button of lists){
         const btn = button as HTMLButtonElement;
         let thisID: string = btn.dataset.petId;
@@ -24,6 +26,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     favButton.addEventListener("click", () => addToFavorites(favButton.dataset.petID));
 
 });
+
+async function reloadPage(){
+    window.location.reload();
+}
 
 
 async function changeData(pid: string){

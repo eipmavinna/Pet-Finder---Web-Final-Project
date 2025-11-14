@@ -2,6 +2,10 @@ const lists = document.getElementsByClassName("petButton");
 let counter = 0;
 document.addEventListener("DOMContentLoaded", async () => {
     loadPets();
+    const closeButton = document.getElementById("modal_close");
+    if (closeButton) {
+        closeButton.addEventListener("click", reloadPage);
+    }
     for (const button of lists) {
         const btn = button;
         let thisID = btn.dataset.petId;
@@ -10,6 +14,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     const favButton = document.getElementById("favorite-button");
     favButton.addEventListener("click", () => addToFavorites(favButton.dataset.petID));
 });
+async function reloadPage() {
+    window.location.reload();
+}
 async function changeData(pid) {
     const favButton = document.getElementById("favorite-button");
     favButton.dataset.petID = pid;
