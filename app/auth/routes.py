@@ -1,4 +1,4 @@
-from flask import current_app, render_template, redirect, url_for, flash, request
+from flask import current_app, render_template, redirect, url_for, flash, request, session
 from flask import request
 from sqlalchemy.sql.expression import select
 from flask_login import login_user, logout_user, login_required, current_user
@@ -39,7 +39,8 @@ def post_login():
 
         # if there is such a user and the password is correct, log them in
         if user is not None and user.verify_password(password):
-            login_user(user, email)
+            login_user(user)
+            session["user_email"] = email
             # update the next url where the user should be redirected
             if 'next' in request.args and request.args['next'].startswith('/'):
                 next = str(request.args['next'])
