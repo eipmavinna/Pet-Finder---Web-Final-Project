@@ -1,17 +1,45 @@
-document.addEventListener("DOMContentLoaded", async () => {
-    loadPets();
-    const favButton = document.getElementById("favorite-button");
-    favButton.addEventListener("click", () => addToFavorites("6"));
-});
 const lists = document.getElementsByClassName("petButton");
 let counter = 0;
+document.addEventListener("DOMContentLoaded", async () => {
+    loadPets();
+    for (const button of lists) {
+        const btn = button;
+        let thisID = btn.dataset.petId;
+        btn.addEventListener("click", () => changeData(thisID));
+    }
+    const favButton = document.getElementById("favorite-button");
+    favButton.addEventListener("click", () => addToFavorites(favButton.dataset.petID));
+});
+async function changeData(pid) {
+    const favButton = document.getElementById("favorite-button");
+    favButton.dataset.petID = pid;
+    console.log("favButton id: " + favButton.dataset.petID);
+    if (isFavorite(pid)) {
+        favButton.innerText = "Delete from favorites";
+    }
+    else {
+        favButton.innerText = "Add to favorites";
+    }
+}
+async function isFavorite(petID) {
+    const response = await fetch(`/api/favoritePet/check/${petID}`);
+    const data = await response.json();
+    return data.exists;
+}
 async function addToFavorites(petID) {
+    const favButton = document.getElementById("favorite-button");
+    if (isFavorite(petID)) {
+        favButton.innerText = "Add to favorites";
+    }
+    else {
+        favButton.innerText = "Delete from favorites";
+    }
     await fetch("/api/favoritePet/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ pid: petID })
     });
-    console.log("added?");
+    console.log("added " + petID);
 }
 async function loadPets() {
     for (const item of lists) {
