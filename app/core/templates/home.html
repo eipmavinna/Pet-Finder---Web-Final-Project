@@ -25,11 +25,18 @@
   {# Link Project CSS and JS #}
   <link rel="stylesheet" href="{{url_for('static', filename='styles/core.css')}}">
 </head>
-<!-- Title bar and logo, which doubles as a clickable link home -->
+<!-- Title bar, logo (which doubles as a clickable link home), search button, and profile button -->
+<!-- Logged in logic should be handled in the routes/HTML -->
   <div id="title-bar">
     <a href="/">
       <img id="logo" src="{{ url_for('static', filename='icons/logo.png') }}" alt="logo/menu button to return home" />
     </a>
+    <a href="/profile/">
+      <img id="profile" src="{{ url_for('static', filename='icons/profile.png') }}" alt="profile button" />
+    </a>
+    <a href="/search/">
+      <img id="search" src="{{ url_for('static', filename='icons/search.png') }}" alt="search button" />
+    </a>  
   </div>
   <h1 class="page-heading">Home page stub</h1>
 

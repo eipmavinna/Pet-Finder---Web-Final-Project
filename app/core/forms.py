@@ -1,7 +1,9 @@
 from enum import Enum
 
 from flask_wtf import FlaskForm
-from wtforms import Form, Field, ValidationError
+from wtforms import Form, Field, ValidationError, SubmitField, IntegerField, StringField
+from wtforms.validators import InputRequired, Optional
+
 
 ################################################################################
 # Custom Form Validators
@@ -44,3 +46,8 @@ class CheckEnum():
 ################################################################################
 
 # TODO: create any forms needed for the core application here
+
+class SearchForm(FlaskForm):
+    stubvariable: StringField = StringField('Stub',
+        validators=[Optional()])
+    submit: SubmitField = SubmitField("Search")

@@ -30,10 +30,27 @@ body {
     color: var(--color-theme-light);
 }
 
-#title-bar img {
+#logo {
     width: auto; 
     height: var(--title-bar-height);
     padding-top: 0px;
+    margin-left: 5px;
+}
+
+#profile {
+    width: auto; 
+    height: var(--title-bar-height);
+    padding-top: 0px;
+    margin-right: 10px;
+    float: right;
+}
+
+#search {
+    width: auto; 
+    height: var(--title-bar-height);
+    padding-top: 0px;
+    margin-right: 10px;
+    float: right;
 }
 
 .gcc-btn-primary {

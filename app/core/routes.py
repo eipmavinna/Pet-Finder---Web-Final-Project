@@ -7,6 +7,7 @@ from app import db
 from app.core import bp
 from app.auth.models import User
 from app.core.models import Bank, Account, Customer, FavPet
+from app.core.forms import SearchForm
 
 @bp.get('/favpet_tester/')
 #@login_required
@@ -60,7 +61,8 @@ def profile():
 
 @bp.get('/search/')
 def search():
-    return render_template("search.html")
+    form: SearchForm = SearchForm()
+    return render_template("search.html", form=form)
 
 @bp.get('/')
 @bp.get('/home/')
