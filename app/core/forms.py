@@ -1,8 +1,8 @@
 from enum import Enum
 
 from flask_wtf import FlaskForm
-from wtforms import Form, Field, ValidationError, SubmitField, IntegerField, StringField
-from wtforms.validators import InputRequired, Optional
+from wtforms import Form, Field, ValidationError, SubmitField, IntegerField, StringField, SelectField
+from wtforms.validators import InputRequired, length, Regexp, Optional
 
 
 ################################################################################
@@ -48,6 +48,30 @@ class CheckEnum():
 # TODO: create any forms needed for the core application here
 
 class SearchForm(FlaskForm):
-    stubvariable: StringField = StringField('Stub',
-        validators=[Optional()])
+    zipcode: StringField = StringField(
+        "Zipcode",
+        validators=[
+            Optional(),
+            length(min=5, max=5, message="Zipcode must be 5 digits"),
+            Regexp(r"^\d{5}$", message="Zipcode can only contain numbers")  # ensures only five digits and no letters
+        ]
+    )
+
+    animal_type: SelectField = SelectField(
+        "Animal Type",
+        validators=[
+            Optional()
+        ],
+        choices=[("", "Select Animal Type"), ("cat", "Cat"), ("dog", "Dog")]
+    )
+
+    age_group: SelectField = SelectField(
+        "Age Group",
+        validators=[
+            Optional()
+        ],
+        choices=[("", "Select Age Group"), ("baby", "Baby"), ("young_adult", "Young Adult"), ("senior", "Senior")]   # blank option
+        # fill when i know age groups
+    )
+
     submit: SubmitField = SubmitField("Search")
