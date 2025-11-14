@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Home</title>
   <link rel="shortcut icon" href="{{ url_for('static', filename='icons/placeholder_favicon.png') }}" type="image/x-icon">
-  <script src="/app/scripts/homeScript.js"></script>
+  
 
 
   {# Link Bootstrap 5.3.5 Core Resources #}
@@ -24,6 +24,7 @@
     crossorigin="anonymous"></script>
   {# Link Project CSS and JS #}
   <link rel="stylesheet" href="{{url_for('static', filename='styles/core.css')}}">
+  <script src="/static/scripts/homeScript.js"></script>
 </head>
 <!-- Title bar, logo (which doubles as a clickable link home), search button, and profile button -->
 <!-- Logged in logic should be handled in the routes/HTML -->
@@ -42,10 +43,35 @@
 
   <h3>For you</h3>
   <br>
-  <p>[Example table of pets based on user zip (do this the same way we do the pet search)]</p>
+ 
+   {% for i in range(20) %}
+  <button type="button" class="petButton" data-pet-id="" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  </button>
+  <br>
+  {% endfor %}
 
-  <a class="btn gcc-btn-primary d-block w-25 mx-auto" href="{{url_for('auth.route_logout')}}">
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">Pet</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                  <button id = "favorite-button">Favorite your pet</button>
+                  <button type="button" class="add-to-favorites" data-bs-dismiss="modal" aria-label="Add To Favorites"></button>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              </div>
+          </div>
+      </div>
+  </div>
+
+ <a class="btn gcc-btn-primary d-block w-25 mx-auto" href="{{url_for('auth.route_logout')}}">
     Log Out
+
   </a>
 </body>
 </html>
