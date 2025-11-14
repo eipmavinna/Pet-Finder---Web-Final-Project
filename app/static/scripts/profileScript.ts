@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     //if == 0, delete the button?
     //else, while there is an id duplicate the first and add the id
     loadPets();
-    //const closeButton = document.getElementById("modal_close")
+    //const closeButton = document.getElementById("modal_close") 
     //closeButton.addEventListener("click",loadPets)
     for(const button of lists){
         const btn = button as HTMLButtonElement;
