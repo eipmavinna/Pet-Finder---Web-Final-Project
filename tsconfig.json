@@ -9,6 +9,6 @@
     },
     "compileOnSave": true,
     "include": [
-      "app/scripts/*.ts"
-    ]
+      "app/static/scripts/*.ts"
+, "app/static/ts/homeScript.ts", "app/static/ts/profileScript.ts"    ]
 }

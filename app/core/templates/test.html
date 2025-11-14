@@ -8,6 +8,9 @@
 <body>
     {%for user in users%}
     <p>{{user.email}}</p>
+    {%for fav in user.favorites%}
+    <p>{{fav}}</p>
+    {%endfor%}
     {%endfor%}
 </body>
 </html>

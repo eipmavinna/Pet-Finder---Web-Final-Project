@@ -92,7 +92,7 @@ def post_signup_user():
             db.session.add(new_user)
             db.session.commit()
 
-            login_user(new_user,email)
+            login_user(new_user)
 
             if 'next' in request.args and request.args['next'].startswith('/'):
                 next = str(request.args['next'])

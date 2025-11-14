@@ -77,8 +77,8 @@ def init_app_db():
     db.session.add(admin)
     
     
-    pet1 = FavPet(id=1234,user_email='test@gcc.edu') #type:ignore
-    pet2 = FavPet(id=5678, user_email='test@gcc.edu') #type:ignore
+    pet1 = FavPet(id=1000004,user_email='test@gcc.edu') #type:ignore
+    pet2 = FavPet(id=10000154, user_email='test@gcc.edu') #type:ignore
     db.session.add_all((pet1,pet2))
     
     
