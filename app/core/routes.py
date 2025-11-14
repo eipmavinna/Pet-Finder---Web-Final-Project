@@ -9,7 +9,7 @@ from app.auth.models import User
 from app.core.models import Bank, Account, Customer, FavPet
 from app.core.forms import SearchForm
 
-@bp.get('/favpet_tester/')
+@bp.get('/tester/')
 #@login_required
 def get_favs():
     # query: Select[Tuple[str]] = db.select(User.email)
@@ -18,7 +18,9 @@ def get_favs():
     query: Select[Tuple[User]] = db.select(User)
     rowsAccts: Sequence[Row[Tuple[User]]] = db.session.execute(query).all()
     users: list[User] = [row[0] for row in rowsAccts]
-    return render_template("shelter_profile.html",users=users)
+    #return render_template("test.html",users=users)
+    return f"{session.get("_id")} {session.get("_user_id")} {session.get("_fresh")} {session.get("sdjdjs")}"
+
 
 # These are all from the example code so I'm commenting them out so we still have them for reference
 # @bp.get('/accounts/')
@@ -51,12 +53,15 @@ def get_favs():
 @login_required
 def profile():
     #session.get("_user_id")
+    #query: Select[Tuple[User]] = db.select(User)
+    #rowsAccts: Sequence[Row[Tuple[User]]] = db.session.execute(query).all()
+    #users: list[User] = [row[0] for row in rowsAccts]
     query: Select[Tuple[User]] = db.select(User).filter(User.email == session.get("user_email"))
     rows: Sequence[Row[Tuple[User]]] = db.session.execute(query).all()
     users: list[User] = [row[0] for row in rows]
     favPets: list[int] = users[0].favorites
     return render_template("user_profile.html", favPets=favPets)
-    return f"{session.get("user_email")}"
+    
     
 
 @bp.get('/search/')
