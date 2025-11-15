@@ -24,7 +24,7 @@
     crossorigin="anonymous"></script>
   {# Link Project CSS and JS #}
   <link rel="stylesheet" href="{{url_for('static', filename='styles/core.css')}}">
-  <script src="/static/scripts/homeScript.js"></script>
+  <script type="module" src="/static/scripts/homeScript.js"></script>
 </head>
 <!-- Title bar, logo (which doubles as a clickable link home), search button, and profile button -->
 <!-- Logged in logic should be handled in the routes/HTML -->
@@ -44,8 +44,8 @@
   <h3>For you</h3>
   <br>
  
-   {% for i in range(20) %}
-  <button type="button" class="petButton" data-pet-id="" data-bs-toggle="modal" data-bs-target="#exampleModal">
+   {% for stub in stubs %}
+  <button type="button" class="petButton" data-pet-id="{{stub}}" data-bs-toggle="modal" data-bs-target="#exampleModal">
   </button>
   <br>
   {% endfor %}
@@ -59,7 +59,7 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                  <button id = "favorite-button">Favorite your pet</button>
+                  <button id="favorite-button" data-pet-id="">Favorite your pet</button>
                   <button type="button" class="add-to-favorites" data-bs-dismiss="modal" aria-label="Add To Favorites"></button>
               </div>
               <div class="modal-footer">

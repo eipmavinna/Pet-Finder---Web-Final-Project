@@ -18,8 +18,8 @@ def get_favs():
     query: Select[Tuple[User]] = db.select(User)
     rowsAccts: Sequence[Row[Tuple[User]]] = db.session.execute(query).all()
     users: list[User] = [row[0] for row in rowsAccts]
-    return render_template("test.html",users=users)
-    #return f"{session.get("_id")} {session.get("_user_id")} {session.get("_fresh")} {session.get("sdjdjs")}"
+    #return render_template("test.html",users=users)
+    return f"{session.get("user_email")} {session.get("_user_id")} {session.get("_fresh")} {session.get("sdjdjs")}"
 
 
 # These are all from the example code so I'm commenting them out so we still have them for reference
@@ -72,7 +72,8 @@ def search():
 @bp.get('/')
 @bp.get('/home/')
 def home():
-    return render_template("home.html")
+    StubIDS: list[str] = ["1000004", "10000156", "100001", "10000154", "10000158"]; 
+    return render_template("home.html", stubs=StubIDS)
 
 
 
