@@ -72,7 +72,8 @@ def search():
 @bp.get('/')
 @bp.get('/home/')
 def home():
-    return render_template("home.html")
+    StubIDS: list[str] = ["1000004", "10000156", "100001", "10000154", "10000158"]; 
+    return render_template("home.html", stubs=StubIDS)
 
 
 

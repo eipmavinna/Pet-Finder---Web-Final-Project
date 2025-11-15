@@ -9,125 +9,133 @@ document.addEventListener("DOMContentLoaded", async () => {
     //add a button for the modal
     //if == 0, delete the button?
     //else, while there is an id duplicate the first and add the id
-    loadPets();
+    modalChanging.loadPets();
     const closeButton = document.getElementById("modal_close") as HTMLButtonElement | null;
-    if (closeButton) {
-        closeButton.addEventListener("click", reloadPage);
-    }
+    //if (closeButton) {
+    //    closeButton.addEventListener("click", reloadPage);
+    //}
     for(const button of lists){
         const btn = button as HTMLButtonElement;
         let thisID: string = btn.dataset.petId;
         //change the favbutton data to be the pet id
-        btn.addEventListener("click",() => changeData(thisID));
+        btn.addEventListener("click",() => modalChanging.changeData(thisID));
     }
 
 
     const favButton = document.getElementById("favorite-button");
-    favButton.addEventListener("click", () => addToFavorites(favButton.dataset.petID));
+    favButton.addEventListener("click", () => modalChanging.addToFavorites(favButton.dataset.petId));
 
 });
 
-async function reloadPage(){
-    window.location.reload();
-}
+//async function reloadPage(){
+//    window.location.reload();
+//}
+export namespace modalChanging{
 
+    export async function changeData(pid: string){
+        //set fav button petID so it can add or remove the pet id from the db
+        const favButton = document.getElementById("favorite-button");
+        favButton.dataset.petId = pid;
+        console.log("favButton id: "+ favButton.dataset.petId)
+        //if isfavorite, "Delete from favs", else "Add to favs"
+        if(await isFavorite(pid)){
+            favButton.innerText = "Delete from favorites"
+        }else{
+            favButton.innerText = "Add to favorites"
+        }
 
-async function changeData(pid: string){
-    //set fav button petID so it can add or remove the pet id from the db
-    const favButton = document.getElementById("favorite-button");
-    favButton.dataset.petID = pid;
-    console.log("favButton id: "+ favButton.dataset.petID)
-    //if isfavorite, "Delete from favs", else "Add to favs"
-    if(isFavorite(pid)){
-        favButton.innerText = "Delete from favorites"
-    }else{
-        favButton.innerText = "Add to favorites"
+        //TODO add the more detailed information here
     }
 
-    //TODO add the more detailed information here
-}
 
-
-async function isFavorite(petID: string): Promise<boolean> {
-    const response = await fetch(`/api/favoritePet/check/${petID}`);
-    const data = await response.json();
-    return data.exists;
-}
-
-
-
-async function addToFavorites(petID: string){
-    //TODO if "Delete from favorites" change to "Add to favorites", etc
-    const favButton = document.getElementById("favorite-button");
-    if(isFavorite(petID)){
-        favButton.innerText = "Add to favorites"
-    }else{
-        favButton.innerText = "Delete from favorites"
-    }
-    //want to access the FavPet table and add something with the user's id and the pet id
-    await fetch("/api/favoritePet/", {
-        method: "POST",
-        headers: {"Content-Type":"application/json"},
-        body: JSON.stringify({pid: petID})
-    })
-    console.log("added " + petID)
-}
-
-
-async function loadPets(){
-
-    for (const item of lists) {
-        //let thisID: string = IDS[counter];
-        const btn = item as HTMLButtonElement;
-        let thisID: string = btn.dataset.petId;
-
-        const baseURL = "https://api.rescuegroups.org/v5/";
-        const animalsURL = `${baseURL}public/animals/${thisID}`
-
-        const response = await fetch(animalsURL, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/vnd.api+json",
-                    "Authorization": "7mZmJj1Y", 
-                },
+    export async function isFavorite(petId: string): Promise<boolean> {
+        const response = await fetch(`/api/favoritePet/check/${encodeURIComponent(petId)}`, {
+            method: "GET",
+            //credentials: "same-origin", // send session cookie
+            headers: {
+                "Accept": "application/json"
+            }
         });
+        const data = await response.json();
+        return data.exists;
+    }
 
 
-        const pet = await validateJSON(response);
 
-        const name = pet.data[0].attributes.name;
-        const orgsID = pet.data[0].relationships.orgs.data[0].id;
-        const imageURL = pet.data[0].attributes.pictureThumbnailUrl;
+    export async function addToFavorites(petId: string){
+        //TODO if "Delete from favorites" change to "Add to favorites", etc
+        const favButton = document.getElementById("favorite-button");
+        if(await isFavorite(petId)){
+            favButton.innerText = "Add to favorites"
+        }else{
+            favButton.innerText = "Delete from favorites"
+        }
+        //want to access the FavPet table and add something with the user's id and the pet id
+        await fetch("/api/favoritePet/", {
+            method: "POST",
+            credentials: "same-origin", // send session cookie
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify({pid: petId})
+        })
+        console.log("added " + petId)
+    }
 
-            
-        const orgsURL= `${baseURL}public/orgs/${orgsID}`;
-        const response2 = await fetch(orgsURL, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/vnd.api+json",
-                    "Authorization": "7mZmJj1Y", 
-                },
+
+    export async function loadPets(){
+
+        for (const item of lists) {
+            //let thisID: string = IDS[counter];
+            const btn = item as HTMLButtonElement;
+            let thisID: string = btn.dataset.petId;
+
+            const baseURL = "https://api.rescuegroups.org/v5/";
+            const animalsURL = `${baseURL}public/animals/${thisID}`
+
+            const response = await fetch(animalsURL, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/vnd.api+json",
+                        "Authorization": "7mZmJj1Y", 
+                    },
             });
 
-            
-        const organizations = await validateJSON(response2);
 
-        const orgLocationCity = organizations.data[0].attributes.citystate;
+            const pet = await validateJSON(response);
 
-       
-        item.innerHTML = `<img src="${imageURL}" alt="ImageOfAnimal"><p>${name}</p><p>${orgLocationCity}</p>`;
+            const name = pet.data[0].attributes.name;
+            const orgsID = pet.data[0].relationships.orgs.data[0].id;
+            const imageURL = pet.data[0].attributes.pictureThumbnailUrl;
 
-         counter+= 1;
+                
+            const orgsURL= `${baseURL}public/orgs/${orgsID}`;
+            const response2 = await fetch(orgsURL, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/vnd.api+json",
+                        "Authorization": "7mZmJj1Y", 
+                    },
+                });
+
+                
+            const organizations = await validateJSON(response2);
+
+            const orgLocationCity = organizations.data[0].attributes.citystate;
+
         
+            item.innerHTML = `<img src="${imageURL}" alt="ImageOfAnimal"><p>${name}</p><p>${orgLocationCity}</p>`;
+
+            counter+= 1;
+            
+        }
     }
-}
 
 
-async function validateJSON(response: Response): Promise<any> {
-    if (response.ok) {
-        return response.json();
-    } else {
-        return Promise.reject(response);
+    export async function validateJSON(response: Response): Promise<any> {
+        if (response.ok) {
+            return response.json();
+        } else {
+            return Promise.reject(response);
+        }
     }
 }
 
