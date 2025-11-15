@@ -1,6 +1,21 @@
+import {modalChanging} from "./profileScript.js"
+
 
 document.addEventListener("DOMContentLoaded", async () => {
     loadHomePets();
+    //const closeButton = document.getElementById("modal_close") as HTMLButtonElement | null;
+    //if (closeButton) {
+    //    closeButton.addEventListener("click", reloadPage);
+    //}
+    const lists =  document.getElementsByClassName("petButton");
+    for(const button of lists){
+        const btn = button as HTMLButtonElement;
+        let thisID: string = btn.dataset.petId;
+        //change the favbutton data to be the pet id
+        btn.addEventListener("click",() => changeData(thisID));
+    }
+    const favButton = document.getElementById("favorite-button");
+    favButton.addEventListener("click", () => addToFavorites(favButton.dataset.petId));
 });
 
 // get all of the buttons
@@ -12,13 +27,15 @@ let StubIDS: string[] = ["1000004", "10000156", "100001", "10000154", "10000158"
     "10000201", "10000202", "10000205", "10000155", "10000153", "10000152", "10000149", 
     "1000001", "100000", "10000193", "10000190", "10000178", "10000176", "10000174"]; 
 
-let homeCounter: number = 0;
+
 
 
 async function loadHomePets(){
-
+    let homeCounter: number = 0;
     for (const item of homeLists) {
-        let thisID: string = StubIDS[homeCounter];
+        //let thisID: string = StubIDS[homeCounter];
+        const btn = item as HTMLButtonElement;
+        let thisID: string = btn.dataset.petId;
 
         const baseURL = "https://api.rescuegroups.org/v5/";
         const animalsURL = `${baseURL}public/animals/${thisID}`
@@ -68,6 +85,66 @@ async function validateHomeJSON(response: Response): Promise<any> {
         return Promise.reject(response);
     }
 }
+
+
+    async function changeData(pid: string){
+        //set fav button petID so it can add or remove the pet id from the db
+        const favButton = document.getElementById("favorite-button");
+        favButton.dataset.petId = pid;
+        console.log("favButton id: "+ favButton.dataset.petId)
+        //if isfavorite, "Delete from favs", else "Add to favs"
+        if(await isFavorite(pid)){
+            favButton.innerText = "Delete from favorites"
+        }else{
+            favButton.innerText = "Add to favorites"
+        }
+        console.log("is favorite: " + await isFavorite(pid))
+
+        //TODO add the more detailed information here
+    }
+
+
+    async function isFavorite(petId: string): Promise<boolean> {
+        const response = await fetch(`/api/favoritePet/check/${encodeURIComponent(petId)}`, {
+            method: "GET",
+            //credentials: "same-origin", // send session cookie
+            headers: {
+                "Accept": "application/json"
+            }
+        });
+        const data = await response.json();
+        return data.exists;
+    }
+
+
+
+    async function addToFavorites(petId: string){
+        //TODO if "Delete from favorites" change to "Add to favorites", etc
+        const favButton = document.getElementById("favorite-button");
+        if(await isFavorite(petId)){
+            favButton.innerText = "Add to favorites"
+        }else{
+            favButton.innerText = "Delete from favorites"
+        }
+        //want to access the FavPet table and add something with the user's id and the pet id
+        await fetch("/api/favoritePet/", {
+            method: "POST",
+            credentials: "same-origin", // send session cookie
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify({pid: petId})
+        })
+        console.log("added " + petId)
+    }
+
+
+
+    async function validateJSON(response: Response): Promise<any> {
+        if (response.ok) {
+            return response.json();
+        } else {
+            return Promise.reject(response);
+        }
+    }
 
 
 
