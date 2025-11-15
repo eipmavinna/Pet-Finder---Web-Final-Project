@@ -75,3 +75,17 @@ body {
 .form-label {
     padding-top: 1.5rem;
 }
+
+#search-wrapper {
+    width: 30vw;
+    min-width: 300px;
+    max-width: 900px;
+    background-color: var(--color-theme-light);
+    margin: auto;
+    margin-top: 3rem;
+    padding: 2rem;
+    border-color: var(--color-theme-dark);
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 1rem;
+}

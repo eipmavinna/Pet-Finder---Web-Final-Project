@@ -38,10 +38,18 @@
     </a>  
   </div>
   <h1 class="page-heading">Search page stub</h1>
-  <p>[search form fields will need to be updated but here's some]</p>
-  <div>
+  <div id="search-wrapper">
     {{ form.hidden_tag() }}
-      
+    
+    <label for="{{form.zipcode.id}}" class="form-label">{{form.zipcode.label.text}}</label>
+    {{form.zipcode(class="form-control")}}
+
+    <label for="{{form.animal_type.id}}" class="form-label">{{form.animal_type.label.text}}</label>
+    {{form.animal_type(class="form-control")}}
+
+    <label for="{{form.age_group.id}}" class="form-label">{{form.age_group.label.text}}</label>
+    {{form.age_group(class="form-control")}}
+
     {{form.submit(class="btn gcc-btn-primary")}}
   </div>
   <br>
