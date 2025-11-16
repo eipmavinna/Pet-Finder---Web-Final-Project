@@ -5,12 +5,8 @@ let counter: number = 0;
 
 
 document.addEventListener("DOMContentLoaded", async () => {
-    //while there are things in the id list from pet favs, 
-    //add a button for the modal
-    //if == 0, delete the button?
-    //else, while there is an id duplicate the first and add the id
     modalChanging.loadPets();
-    const closeButton = document.getElementById("modal_close") as HTMLButtonElement | null;
+    //const closeButton = document.getElementById("modal_close") as HTMLButtonElement | null;
     //if (closeButton) {
     //    closeButton.addEventListener("click", reloadPage);
     //}
@@ -27,9 +23,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 });
 
-//async function reloadPage(){
-//    window.location.reload();
-//}
+
 export namespace modalChanging{
 
     export async function changeData(pid: string){
@@ -51,7 +45,6 @@ export namespace modalChanging{
     export async function isFavorite(petId: string): Promise<boolean> {
         const response = await fetch(`/api/favoritePet/check/${encodeURIComponent(petId)}`, {
             method: "GET",
-            //credentials: "same-origin", // send session cookie
             headers: {
                 "Accept": "application/json"
             }

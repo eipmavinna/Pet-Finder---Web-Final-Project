@@ -2,7 +2,6 @@ const lists = document.getElementsByClassName("petButton");
 let counter = 0;
 document.addEventListener("DOMContentLoaded", async () => {
     modalChanging.loadPets();
-    const closeButton = document.getElementById("modal_close");
     for (const button of lists) {
         const btn = button;
         let thisID = btn.dataset.petId;
