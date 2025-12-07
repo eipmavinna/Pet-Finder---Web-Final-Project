@@ -120,5 +120,6 @@ def post_signup_user():
 @bp.route('/logout/')
 @login_required
 def route_logout():
+    session.pop("user_email")
     logout_user()
     return redirect(url_for('auth.get_login'))
