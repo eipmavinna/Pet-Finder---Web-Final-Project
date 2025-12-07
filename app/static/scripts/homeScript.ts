@@ -117,9 +117,11 @@ async function validateHomeJSON(response: Response): Promise<any> {
             console.log("favButton id: "+ favButton.dataset.petId)
             //if isfavorite, "Delete from favs", else "Add to favs"
             if(await isFavorite(pid)){
-                favButton.innerText = "Delete from favorites"
+                //favButton.innerText = "Delete from favorites"
+                favButton.innerHTML = `<img src="/static/icons/unfavorite.png" alt="Unfavorite" width="24" height="24">`;
             }else{
-                favButton.innerText = "Add to favorites"
+                //favButton.innerText = "Add to favorites"
+                favButton.innerHTML = `<img src="/static/icons/favorite.png" alt="Favorite" width="24" height="24">`;
             }
             console.log("is favorite: " + await isFavorite(pid))
         }
@@ -147,9 +149,11 @@ async function validateHomeJSON(response: Response): Promise<any> {
         //if "Delete from favorites" change to "Add to favorites", etc
         const favButton = document.getElementById("favorite-button");
         if(await isFavorite(petId)){
-            favButton.innerText = "Add to favorites"
+            favButton.innerHTML = `<img src="/static/icons/favorite.png" alt="Favorite" width="24" height="24">`;
+
         }else{
-            favButton.innerText = "Delete from favorites"
+            favButton.innerHTML = `<img src="/static/icons/unfavorite.png" alt="Unfavorite" width="24" height="24">`;
+
         }
         //want to access the FavPet table and add something with the user's id and the pet id
         await fetch("/api/favoritePet/", {
