@@ -56,7 +56,7 @@ class User(UserMixin, db.Model):   #TODO: alter this to hold all the things user
 class FavPet(UserMixin, db.Model):          #when hit favorites, add a FavPet. When remove a favpet, remove from db.
     _tablename_ = "FavPets"
     id: Mapped[int] = mapped_column(primary_key=True)
-    user_email: Mapped[str] = mapped_column()
+    user_email: Mapped[str] = mapped_column(primary_key=True)
     #user: Mapped['User'] = relationship()
 
 
@@ -65,5 +65,4 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
         model = User
         exclude = ('password_hash',)
 
-#TODO: add a Shelter table and schema
 

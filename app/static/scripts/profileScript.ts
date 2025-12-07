@@ -16,8 +16,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         //change the favbutton data to be the pet id
         btn.addEventListener("click",() => modalChanging.changeData(thisID));
     }
-
-
+    //TODO: if logged in:
     const favButton = document.getElementById("favorite-button");
     favButton.addEventListener("click", () => modalChanging.addToFavorites(favButton.dataset.petId));
 
@@ -27,6 +26,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 export namespace modalChanging{
 
     export async function changeData(pid: string){
+
         //set fav button petID so it can add or remove the pet id from the db
         const favButton = document.getElementById("favorite-button");
         favButton.dataset.petId = pid;
@@ -49,10 +49,11 @@ export namespace modalChanging{
                 "Accept": "application/json"
             }
         });
-        const data = await response.json();
+        const data = await validateJSON(response);  // <— pass Response, NOT parsed JSON
         return data.exists;
     }
 
+    
 
 
     export async function addToFavorites(petId: string){
