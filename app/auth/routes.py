@@ -113,7 +113,19 @@ def post_signup_user():
         for field,error_msg in form.errors.items():
             flash(f"{field}: {error_msg}")
         return redirect(url_for('auth.get_signup_user'))
+    
 
+@bp.get('/edit/user/')
+def get_edit_user():
+    # Placeholder for now but we think the edit info is going to be pretty similar to the login/sign up process
+    print("Got to edit, redirecting")
+    return redirect(url_for('auth.get_login'))
+
+@bp.get('/edit/user/')
+def post_edit_user():
+    # Placeholder for now but we think the edit info is going to be pretty similar to the login/sign up process
+    return redirect(url_for('auth.get_login'))
+    
 
 
 

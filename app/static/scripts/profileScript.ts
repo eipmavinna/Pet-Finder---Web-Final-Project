@@ -5,6 +5,7 @@ let counter: number = 0;
 
 
 document.addEventListener("DOMContentLoaded", async () => {
+    //loadUserInfo();
     modalChanging.loadPets();
     //const closeButton = document.getElementById("modal_close") as HTMLButtonElement | null;
     //if (closeButton) {
@@ -22,6 +23,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     favButton.addEventListener("click", () => modalChanging.addToFavorites(favButton.dataset.petId));
 
 });
+
+// Pivoting and hardcoding the info for now - editing will now be a separate page
+// async function loadUserInfo() {
+//     const container = document.getElementById("user-info");
+//     const emailField = document.createElement('input');
+//     emailField.innerText = "Email";
+// }
 
 
 export namespace modalChanging{

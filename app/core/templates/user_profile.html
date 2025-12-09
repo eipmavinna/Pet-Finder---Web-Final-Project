@@ -40,7 +40,18 @@
     </a>  
   </div>
   <h1 class="page-heading">User profile stub</h1>
-  <p>[User info here]</p>
+  <div id="user-info">
+    <h3>Email</h3>
+    <p>{{email}}</p>
+    <br>
+    <h3>Zip Code</h3>
+    <p>{{zip}}</p>
+    <a href="/edit/user/">Edit profile information</a>
+  </div>
+  <br>
+  <div>
+    <h3>Favorited Pets</h3>
+  </div>
   {% for id in favPets %}
   <button type="button" class="petButton" data-pet-id="{{ id }}" data-bs-toggle="modal" data-bs-target="#exampleModal">
   </button>
