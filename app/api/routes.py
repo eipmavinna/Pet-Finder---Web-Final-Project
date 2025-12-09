@@ -59,3 +59,11 @@ def check_favorite(pid):
 
     return jsonify({"exists": exists})
 
+
+@bp.get("/isLoggedIn/")
+def check_logged_in():
+    #emailFound: bool = "user_email" in session
+    auth: bool = current_user.is_authenticated
+    print(auth)
+    return jsonify({"signedIn": auth})
+

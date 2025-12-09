@@ -19,7 +19,7 @@ def get_favs():
     query: Select[Tuple[User]] = db.select(User)
     rowsAccts: Sequence[Row[Tuple[User]]] = db.session.execute(query).all()
     users: list[User] = [row[0] for row in rowsAccts]
-    #return render_template("test.html",users=users)
+    return render_template("test.html",users=users)
     return f"{session.get("user_email")} {session.get("_user_id")} {session.get("_fresh")} {session.get("sdjdjs")}"
 
 

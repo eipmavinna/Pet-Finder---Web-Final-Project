@@ -7,8 +7,27 @@ document.addEventListener("DOMContentLoaded", async () => {
         btn.addEventListener("click", () => changeData(thisID));
     }
     const favButton = document.getElementById("favorite-button");
-    favButton.addEventListener("click", () => addToFavorites(favButton.dataset.petId));
+    const loginButton = document.getElementById("login_btn");
+    if (await IsLoggedIn()) {
+        loginButton.innerText = "Log Out";
+        console.log("logged in");
+        favButton.addEventListener("click", () => addToFavorites(favButton.dataset.petId));
+    }
+    else {
+        loginButton.innerText = "Log In";
+        favButton.remove();
+    }
 });
+async function IsLoggedIn() {
+    const response = await fetch(`/api/isLoggedIn/`, {
+        method: "GET",
+        headers: {
+            "Accept": "application/json"
+        }
+    });
+    const data = await validateJSON(response);
+    return data.signedIn;
+}
 const homeLists = document.getElementsByClassName("petButton");
 let StubIDS = ["1000004", "10000156", "100001", "10000154", "10000158", "10000196",
     "10000201", "10000202", "10000205", "10000155", "10000153", "10000152", "10000149",
@@ -54,16 +73,18 @@ async function validateHomeJSON(response) {
     }
 }
 async function changeData(pid) {
-    const favButton = document.getElementById("favorite-button");
-    favButton.dataset.petId = pid;
-    console.log("favButton id: " + favButton.dataset.petId);
-    if (await isFavorite(pid)) {
-        favButton.innerText = "Delete from favorites";
+    if (await IsLoggedIn()) {
+        const favButton = document.getElementById("favorite-button");
+        favButton.dataset.petId = pid;
+        console.log("favButton id: " + favButton.dataset.petId);
+        if (await isFavorite(pid)) {
+            favButton.innerHTML = `<img src="/static/icons/unfavorite.png" alt="Unfavorite" width="24" height="24">`;
+        }
+        else {
+            favButton.innerHTML = `<img src="/static/icons/favorite.png" alt="Favorite" width="24" height="24">`;
+        }
+        console.log("is favorite: " + await isFavorite(pid));
     }
-    else {
-        favButton.innerText = "Add to favorites";
-    }
-    console.log("is favorite: " + await isFavorite(pid));
 }
 async function isFavorite(petId) {
     const response = await fetch(`/api/favoritePet/check/${encodeURIComponent(petId)}`, {
@@ -72,16 +93,16 @@ async function isFavorite(petId) {
             "Accept": "application/json"
         }
     });
-    const data = await response.json();
+    const data = await validateJSON(response);
     return data.exists;
 }
 async function addToFavorites(petId) {
     const favButton = document.getElementById("favorite-button");
     if (await isFavorite(petId)) {
-        favButton.innerText = "Add to favorites";
+        favButton.innerHTML = `<img src="/static/icons/favorite.png" alt="Favorite" width="24" height="24">`;
     }
     else {
-        favButton.innerText = "Delete from favorites";
+        favButton.innerHTML = `<img src="/static/icons/unfavorite.png" alt="Unfavorite" width="24" height="24">`;
     }
     await fetch("/api/favoritePet/", {
         method: "POST",

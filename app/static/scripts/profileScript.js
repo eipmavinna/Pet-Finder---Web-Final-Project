@@ -31,7 +31,7 @@ export var modalChanging;
                 "Accept": "application/json"
             }
         });
-        const data = await response.json();
+        const data = await validateJSON(response);
         return data.exists;
     }
     modalChanging.isFavorite = isFavorite;

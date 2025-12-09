@@ -14,9 +14,31 @@ document.addEventListener("DOMContentLoaded", async () => {
         //change the favbutton data to be the pet id
         btn.addEventListener("click",() => changeData(thisID));
     }
+    
     const favButton = document.getElementById("favorite-button");
-    favButton.addEventListener("click", () => addToFavorites(favButton.dataset.petId));
+    const loginButton = document.getElementById("login_btn");
+    if(await IsLoggedIn()){
+        loginButton.innerText = "Log Out";
+        console.log("logged in");
+        favButton.addEventListener("click", () => addToFavorites(favButton.dataset.petId));
+    }else{
+        loginButton.innerText = "Log In"
+        favButton.remove()
+    }
+
+
 });
+
+async function IsLoggedIn(): Promise<boolean>{
+        const response = await fetch(`/api/isLoggedIn/`, {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        });
+        const data = await validateJSON(response);
+        return data.signedIn;
+}
 
 // get all of the buttons
 const homeLists =  document.getElementsByClassName("petButton");
@@ -53,7 +75,7 @@ async function loadHomePets(){
 
         const name = pet.data[0].attributes.name;
         const orgsID = pet.data[0].relationships.orgs.data[0].id;
-        const imageURL = pet.data[0].attributes.pictureThumbnailUrl;
+        const imageURL = pet.data[0].attributes.pictureThumbnailUrl;  // put something here to add a stub image if there isn't one in the api
 
             
         const orgsURL= `${baseURL}public/orgs/${orgsID}`;
@@ -89,16 +111,21 @@ async function validateHomeJSON(response: Response): Promise<any> {
 
     async function changeData(pid: string){
         //set fav button petID so it can add or remove the pet id from the db
-        const favButton = document.getElementById("favorite-button");
-        favButton.dataset.petId = pid;
-        console.log("favButton id: "+ favButton.dataset.petId)
-        //if isfavorite, "Delete from favs", else "Add to favs"
-        if(await isFavorite(pid)){
-            favButton.innerText = "Delete from favorites"
-        }else{
-            favButton.innerText = "Add to favorites"
+        if(await IsLoggedIn()){
+            const favButton = document.getElementById("favorite-button");
+            favButton.dataset.petId = pid;
+            console.log("favButton id: "+ favButton.dataset.petId)
+            //if isfavorite, "Delete from favs", else "Add to favs"
+            if(await isFavorite(pid)){
+                //favButton.innerText = "Delete from favorites"
+                favButton.innerHTML = `<img src="/static/icons/unfavorite.png" alt="Unfavorite" width="24" height="24">`;
+            }else{
+                //favButton.innerText = "Add to favorites"
+                favButton.innerHTML = `<img src="/static/icons/favorite.png" alt="Favorite" width="24" height="24">`;
+            }
+            console.log("is favorite: " + await isFavorite(pid))
         }
-        console.log("is favorite: " + await isFavorite(pid))
+        
 
         //TODO add the more detailed information here
     }
@@ -112,19 +139,21 @@ async function validateHomeJSON(response: Response): Promise<any> {
                 "Accept": "application/json"
             }
         });
-        const data = await response.json();
+        const data = await validateJSON(response);  // <— pass Response, NOT parsed JSON
         return data.exists;
     }
 
 
 
     async function addToFavorites(petId: string){
-        //TODO if "Delete from favorites" change to "Add to favorites", etc
+        //if "Delete from favorites" change to "Add to favorites", etc
         const favButton = document.getElementById("favorite-button");
         if(await isFavorite(petId)){
-            favButton.innerText = "Add to favorites"
+            favButton.innerHTML = `<img src="/static/icons/favorite.png" alt="Favorite" width="24" height="24">`;
+
         }else{
-            favButton.innerText = "Delete from favorites"
+            favButton.innerHTML = `<img src="/static/icons/unfavorite.png" alt="Unfavorite" width="24" height="24">`;
+
         }
         //want to access the FavPet table and add something with the user's id and the pet id
         await fetch("/api/favoritePet/", {
