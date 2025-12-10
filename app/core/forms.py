@@ -2,7 +2,9 @@ from enum import Enum
 
 from flask_wtf import FlaskForm
 from wtforms import Form, Field, ValidationError, SubmitField, IntegerField, StringField, SelectField
-from wtforms.validators import InputRequired, length, Regexp, Optional
+from wtforms.validators import InputRequired, length, Regexp, Optional, Length
+
+MIN_PASSWORD_LENGTH: int = 8
 
 
 ################################################################################
@@ -45,7 +47,6 @@ class CheckEnum():
 # Forms
 ################################################################################
 
-# TODO: create any forms needed for the core application here
 
 class SearchForm(FlaskForm):
     zipcode: StringField = StringField(
@@ -75,3 +76,11 @@ class SearchForm(FlaskForm):
     )
 
     submit: SubmitField = SubmitField("Search")
+
+class EditForm(FlaskForm):
+    zipcode: StringField = StringField(validators=[Optional(),Length(min=5,max=5)])
+    realPass: StringField = StringField('Current Password',
+        validators=[Optional(),Length(min=MIN_PASSWORD_LENGTH)])   #figure out error flashing for if they only input one of the three password fields
+    newPass: StringField = StringField('New Password',
+        validators=[Optional(),Length(min=MIN_PASSWORD_LENGTH)])
+    submit: SubmitField = SubmitField("Submit")
