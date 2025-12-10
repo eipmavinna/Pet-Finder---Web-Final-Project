@@ -17,10 +17,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         //change the favbutton data to be the pet id
         btn.addEventListener("click",() => modalChanging.changeData(thisID));
     }
-    //TODO: if logged in:
     const favButton = document.getElementById("favorite-button");
     favButton.addEventListener("click", () => modalChanging.addToFavorites(favButton.dataset.petId));
-
 });
 
 // Pivoting and hardcoding the info for now - editing will now be a separate page
