@@ -115,13 +115,14 @@ async function validateHomeJSON(response: Response): Promise<any> {
             const favButton = document.getElementById("favorite-button");
             favButton.dataset.petId = pid;
             console.log("favButton id: "+ favButton.dataset.petId)
-            //if isfavorite, "Delete from favs", else "Add to favs"
             if(await isFavorite(pid)){
                 //favButton.innerText = "Delete from favorites"
                 favButton.innerHTML = `<img src="/static/icons/unfavorite.png" alt="Unfavorite" width="24" height="24">`;
+                console.log("unfav")
             }else{
                 //favButton.innerText = "Add to favorites"
                 favButton.innerHTML = `<img src="/static/icons/favorite.png" alt="Favorite" width="24" height="24">`;
+                console.log("unfav")
             }
             console.log("is favorite: " + await isFavorite(pid))
         }
