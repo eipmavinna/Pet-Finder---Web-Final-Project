@@ -89,6 +89,8 @@ body {
     border-width: 1px;
     border-radius: 1rem;
 }
-#search-filters{
-    display: inline;
+.search-inline {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
 }
