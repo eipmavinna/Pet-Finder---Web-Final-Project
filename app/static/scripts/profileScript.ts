@@ -17,10 +17,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         //change the favbutton data to be the pet id
         btn.addEventListener("click",() => modalChanging.changeData(thisID));
     }
-    //TODO: if logged in:
     const favButton = document.getElementById("favorite-button");
-    favButton.addEventListener("click", () => modalChanging.addToFavorites(favButton.dataset.petId));
-
+    favButton.addEventListener("click", () => addToFavorites(favButton.dataset.petId));
 });
 
 // Pivoting and hardcoding the info for now - editing will now be a separate page
@@ -31,6 +29,35 @@ document.addEventListener("DOMContentLoaded", async () => {
 // }
 
 
+async function addToFavorites(petId: string){
+    const favButton = document.getElementById("favorite-button");
+    console.log("add?")
+    const isFav: boolean = await isFavorite(petId);
+    if(isFav){
+        favButton.innerHTML = `<img src="/static/icons/favorite.png" alt="Favorite" width="24" height="24">`;
+    }else{
+        favButton.innerHTML = `<img src="/static/icons/unfavorite.png" alt="Unfavorite" width="24" height="24">`;
+    }
+    //want to access the FavPet table and add something with the user's id and the pet id
+    await fetch("/api/favoritePet/", {
+        method: "POST",
+        credentials: "same-origin", // send session cookie
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({pid: petId})
+    })
+    console.log("added " + petId)
+}
+
+async function isFavorite(petId: string): Promise<boolean> {
+    const response = await fetch(`/api/favoritePet/check/${encodeURIComponent(petId)}`, {
+        method: "GET",
+        headers: {
+            "Accept": "application/json"
+        }
+    });
+    const data = await modalChanging.validateJSON(response);  // <— pass Response, NOT parsed JSON
+    return data.exists;
+}    
 export namespace modalChanging{
 
     export async function changeData(pid: string){
@@ -41,46 +68,21 @@ export namespace modalChanging{
         console.log("favButton id: "+ favButton.dataset.petId)
         //if isfavorite, "Delete from favs", else "Add to favs"
         if(await isFavorite(pid)){
-            favButton.innerText = "Delete from favorites"
+            favButton.innerHTML = `<img src="/static/icons/unfavorite.png" alt="Unfavorite" width="24" height="24">`;
         }else{
-            favButton.innerText = "Add to favorites"
+            favButton.innerHTML = `<img src="/static/icons/favorite.png" alt="Favorite" width="24" height="24">`;
         }
 
         //TODO add the more detailed information here
     }
 
 
-    export async function isFavorite(petId: string): Promise<boolean> {
-        const response = await fetch(`/api/favoritePet/check/${encodeURIComponent(petId)}`, {
-            method: "GET",
-            headers: {
-                "Accept": "application/json"
-            }
-        });
-        const data = await validateJSON(response);  // <— pass Response, NOT parsed JSON
-        return data.exists;
-    }
+    
 
     
 
 
-    export async function addToFavorites(petId: string){
-        //TODO if "Delete from favorites" change to "Add to favorites", etc
-        const favButton = document.getElementById("favorite-button");
-        if(await isFavorite(petId)){
-            favButton.innerText = "Add to favorites"
-        }else{
-            favButton.innerText = "Delete from favorites"
-        }
-        //want to access the FavPet table and add something with the user's id and the pet id
-        await fetch("/api/favoritePet/", {
-            method: "POST",
-            credentials: "same-origin", // send session cookie
-            headers: {"Content-Type":"application/json"},
-            body: JSON.stringify({pid: petId})
-        })
-        console.log("added " + petId)
-    }
+    
 
 
     export async function loadPets(){
