@@ -1,34 +1,53 @@
-import {modalChanging} from "./profileScript.js"
-
-
 document.addEventListener("DOMContentLoaded", async () => {
-    // loadHomePets();
-    //const closeButton = document.getElementById("modal_close") as HTMLButtonElement | null;
-    //if (closeButton) {
-    //    closeButton.addEventListener("click", reloadPage);
-    //}
-    // const lists =  document.getElementsByClassName("petButton");
-    // for(const button of lists){
-    //     const btn = button as HTMLButtonElement;
-    //     let thisID: string = btn.dataset.petId;
-    //     //change the favbutton data to be the pet id
-    //     btn.addEventListener("click",() => changeData(thisID));
-    // }
-    makeButtons();
     
-    const favButton = document.getElementById("favorite-button");
-    const loginButton = document.getElementById("login_btn");
-    if(await IsLoggedIn()){
-        loginButton.innerText = "Log Out";
-        console.log("logged in");
-        favButton.addEventListener("click", () => addToFavorites(favButton.dataset.petId));
-    }else{
-        loginButton.innerText = "Log In"
-        favButton.remove()
-    }
+    console.log("in typescript")
+    
+    
+    const submitBtn = <HTMLButtonElement> document.getElementById("submit-btn");
+
+    submitBtn.addEventListener("click", (event) => {
+        event.preventDefault(); // THIS prevents the form from submitting/reloading
+        getFilteredPets();
+        console.log("hit submit")
+
+        const favButton = document.getElementById("favorite-button");
+        const loginButton = document.getElementById("login_btn");
+        // if(IsLoggedIn()){
+        //     loginButton.innerText = "Log Out";
+        //     console.log("logged in");
+        //     favButton.addEventListener("click", () => addToFavorites(favButton.dataset.petId));
+        // }else{
+        //     loginButton.innerText = "Log In"
+        //     favButton.remove()
+        // }
+    });
 
 
 });
+
+async function getFilteredPets(){
+    const form = <HTMLFormElement> document.getElementById("filterForm");
+    form.addEventListener("submit", (event) => {
+        event.preventDefault();
+    });
+    const formData = new FormData(form);
+
+    const response = await fetch("/search/", {
+            method: "POST",
+            headers: {
+                "Accept": "application/json"
+            },
+            body: formData
+    });
+
+    
+
+    const data = await validateJSON(response);
+
+
+    makeButtons(data.results);
+
+}
 
 async function IsLoggedIn(): Promise<boolean>{
         const response = await fetch(`/api/isLoggedIn/`, {
@@ -41,17 +60,18 @@ async function IsLoggedIn(): Promise<boolean>{
         return data.signedIn;
 }
 
-
-
 //Buck, Nelly, Shiloh, Bella, Sam, Benz, Sparkle B, Suri, Bentley, Buffy, Maxine, Hollie, Foxy Boy, Bernie, Shyann, Herb C1371, WILLIE, Brady, Bree, Pomegranate
-let StubIDS: string[] = ["1000004", "10000156", "100001", "10000154", "10000158", "10000196", 
+const StubIDS: string[] = ["1000004", "10000156", "100001", "10000154", "10000158", "10000196", 
     "10000201", "10000202", "10000205", "10000155", "10000153", "10000152", "10000149", 
     "1000001", "100000", "10000193", "10000190", "10000178", "10000176", "10000174"]; 
 
+const StubIDS2: string[] = ["1000004"]
 
-    async function makeButtons(){
+
+async function makeButtons(list: string[]){
     const buttonDiv = <HTMLDivElement> document.getElementById("buttons-div")
-    for(const id of StubIDS){
+    buttonDiv.replaceChildren();
+    for(const id of list){
         //make a div for each new button
         const newDiv = <HTMLDivElement> document.createElement("div");
         buttonDiv.appendChild(newDiv);
@@ -63,8 +83,15 @@ let StubIDS: string[] = ["1000004", "10000156", "100001", "10000154", "10000158"
 const homeLists =  document.getElementsByClassName("petButton");
 
 
+
 async function loadHomePets(id: string, newDiv: HTMLDivElement){
-            const btn = <HTMLButtonElement> document.createElement('button');
+    //let homeCounter: number = 0;
+    //for (const item of homeLists) {
+        //let thisID: string = StubIDS[homeCounter];
+        //const btn = item as HTMLButtonElement;
+        //let thisID: string = thisButton.dataset.petId;
+
+        const btn = <HTMLButtonElement> document.createElement('button');
         btn.addEventListener("click",() => changeData(id));
         btn.classList.add("petButton");
         btn.setAttribute("data-pet-id", id);
@@ -86,7 +113,10 @@ async function loadHomePets(id: string, newDiv: HTMLDivElement){
 
         const pet = await validateHomeJSON(response);
 
-        const name = pet.data[0].attributes.name;
+        let name = pet.data[0].attributes.name;
+        if(name.toLowerCase().includes("adopted")){
+            return;
+        }
         const orgsID = pet.data[0].relationships.orgs.data[0].id;
         const imageURL = pet.data[0].attributes.pictureThumbnailUrl;  // put something here to add a stub image if there isn't one in the api
 
@@ -114,8 +144,8 @@ async function loadHomePets(id: string, newDiv: HTMLDivElement){
         
 
         newDiv.append(btn)
+    
 }
-
 
 
 async function validateHomeJSON(response: Response): Promise<any> {
@@ -128,9 +158,10 @@ async function validateHomeJSON(response: Response): Promise<any> {
 
 
     async function changeData(pid: string){
-        //set fav button petID so it can add or remove the pet id from the db
+        //fill the modal that has been clicked
         fillModal(pid);
 
+        //set fav button petID so it can add or remove the pet id from the db
         if(await IsLoggedIn()){
             const favButton = document.getElementById("favorite-button");
             favButton.dataset.petId = pid;
@@ -185,7 +216,8 @@ async function validateHomeJSON(response: Response): Promise<any> {
         console.log("added " + petId)
     }
 
-        async function fillModal(id: string){
+
+    async function fillModal(id: string){
         const modalBodyDiv = document.getElementById("bodyDiv");
         const baseURL = "https://api.rescuegroups.org/v5/";
         const animalsURL = `${baseURL}public/animals/${id}`
@@ -218,7 +250,7 @@ async function validateHomeJSON(response: Response): Promise<any> {
 
 
         const orgsID = pet.data[0].relationships.orgs.data[0].id;
-        const imageURL = pet.data[0].attributes.pictureThumbnailUrl;  // put something here to add a stub image if there isn't one in the api
+        const imageURL = pet.data[0].attributes.pictureThumbnailUrl;  
 
             
         const orgsURL= `${baseURL}public/orgs/${orgsID}`;
@@ -238,14 +270,12 @@ async function validateHomeJSON(response: Response): Promise<any> {
        const img = <HTMLImageElement> document.getElementById("petImage")
         
         if(imageURL == null){
-            //modalBodyDiv.innerHTML = `<img src="static/images/petStubImage.png" alt="No stub Available"><p>${name}</p><p>${orgLocationCity}</p>`;
             
             img.src = 'static/images/petStubImage.png';
             img.alt = 'No stub Available';
             modalBodyDiv.append(img);
 
         }else{
-            //modalBodyDiv.innerHTML = `<img src="${imageURL}" alt="No Image Available"><p>${name}</p><p>${orgLocationCity}</p>`;
             img.src = imageURL;
             img.alt = 'No Image Available';
             modalBodyDiv.append(img);

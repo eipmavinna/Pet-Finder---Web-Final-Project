@@ -89,3 +89,17 @@ body {
     border-width: 1px;
     border-radius: 1rem;
 }
+
+
+/*can be changed. Just put this in to make the page look a little bit cleaner*/
+.petButton img {
+    width: 150px;      
+    height: 150px;     
+    object-fit: cover;
+}
+
+#petImage {
+    width: 300px;      
+    height: 300px;     
+    object-fit: cover; 
+}

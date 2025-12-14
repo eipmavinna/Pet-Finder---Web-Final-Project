@@ -44,11 +44,12 @@
   <h3>For you</h3>
   <br>
  
-   {% for stub in stubs %}
+   <div id = "buttons-div"></div>
+   <!-- {% for stub in stubs %}
   <button type="button" class="petButton" data-pet-id="{{stub}}" data-bs-toggle="modal" data-bs-target="#exampleModal">
   </button>
   <br>
-  {% endfor %}
+  {% endfor %} -->
 
   <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -59,8 +60,16 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
+                <div id="bodyDiv"></div>
+                  <img id="petImage">
                   <button id="favorite-button" data-pet-id=""></button>
-                  <button type="button" class="add-to-favorites" data-bs-dismiss="modal" aria-label="Add To Favorites"></button>
+                  <!--<button type="button" class="add-to-favorites" data-bs-dismiss="modal" aria-label="Add To Favorites"></button>-->
+                  <h1 id="petName"></h1>
+                  <h2 id="petAge"></h2>
+                  <h3 id="petGender"></h3>
+                  <h3 id="petBreed"></h3>
+                  <h3 id="petLocation"></h3>
+                  <p id="petDescription"></p>
               </div>
               <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
