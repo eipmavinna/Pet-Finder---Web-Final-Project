@@ -51,14 +51,6 @@
   {% endfor %}
   </div>
   
-  <div id="error-messages">
-  {% for msg in get_flashed_messages() %}
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-      {{ msg }}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-  {% endfor %}
-  </div>
   <div id="links">
     <a href="/auth/login/">Already have an account? Login</a>
   </div>
