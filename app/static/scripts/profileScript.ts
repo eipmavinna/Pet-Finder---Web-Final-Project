@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 //     const emailField = document.createElement('input');
 //     emailField.innerText = "Email";
 // }
-
+ //
 
 async function addToFavorites(petId: string){
     const favButton = document.getElementById("favorite-button");
