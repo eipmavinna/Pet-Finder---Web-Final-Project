@@ -88,9 +88,11 @@ async function changeData(pid) {
         console.log("favButton id: " + favButton.dataset.petId);
         if (await isFavorite(pid)) {
             favButton.innerHTML = `<img src="/static/icons/unfavorite.png" alt="Unfavorite" width="24" height="24">`;
+            console.log("unfav");
         }
         else {
             favButton.innerHTML = `<img src="/static/icons/favorite.png" alt="Favorite" width="24" height="24">`;
+            console.log("unfav");
         }
         console.log("is favorite: " + await isFavorite(pid));
     }
@@ -176,4 +178,3 @@ async function validateJSON(response) {
         return Promise.reject(response);
     }
 }
-export {};

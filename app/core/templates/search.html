@@ -36,23 +36,36 @@
     </a>
     <a href="/search/">
       <img id="search" src="{{ url_for('static', filename='icons/search.png') }}" alt="search button" />
-    </a>  
+    </a>
   </div>
   <h1 class="page-heading">Search page stub</h1>
   <form method="post" id = "filterForm">
   <div id="search-wrapper">
-    {{ form.hidden_tag() }}
-    
-    <label for="{{form.zipcode.id}}" class="form-label">{{form.zipcode.label.text}}</label>
-    {{form.zipcode(class="form-control")}}
+    <div class="search-inline">
+      {{ form.hidden_tag() }}
+      
+      <div class="search-field">
+        <label for="{{form.zipcode.id}}">{{form.zipcode.label.text}}</label>
+        {{form.zipcode(class="form-control")}}
+      </div>
 
-    <label for="{{form.animal_type.id}}" class="form-label">{{form.animal_type.label.text}}</label>
-    {{form.animal_type(class="form-control")}}
+      
+      <div class="search-field">
+        <label for="{{form.animal_type.id}}">{{form.animal_type.label.text}}</label>
+        {{form.animal_type(class="form-control")}}
+      </div>
+      
+      
+      <div class="search-field">
+        <label for="{{form.age_group.id}}">{{form.age_group.label.text}}</label>
+        {{form.age_group(class="form-control")}}
+      </div>
+    </div>
 
-    <label for="{{form.age_group.id}}" class="form-label">{{form.age_group.label.text}}</label>
-    {{form.age_group(class="form-control")}}
+    <div class="search-button">
+      {{form.submit(class="btn gcc-btn-primary d-block w-25 mx-auto", id="submit-btn")}}
+    </div>
 
-    {{form.submit(class="btn gcc-btn-primary", id="submit-btn")}}
   </div>
   <br>
   <p>[Example table of pets based on search]</p>
