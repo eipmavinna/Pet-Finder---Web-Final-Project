@@ -38,6 +38,7 @@ async function addToFavorites(petId) {
         btn.addEventListener("click", () => modalChanging.changeData(petId));
     }
     else {
+        console.log(msg);
         const deleted = document.getElementById(`${petId}_div`);
         deleted.remove();
     }
