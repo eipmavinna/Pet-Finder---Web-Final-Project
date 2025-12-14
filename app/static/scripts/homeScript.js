@@ -122,4 +122,3 @@ async function validateJSON(response) {
         return Promise.reject(response);
     }
 }
-export {};

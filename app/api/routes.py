@@ -32,13 +32,15 @@ def add_favorite():
         db.session.delete(pet)
         db.session.commit()
         print("deleted from db\n")
+        return jsonify({"message":"deleted"})
     else:
         newPet: FavPet = FavPet(id = int(data["pid"]), user_email = session["user_email"])#type:ignore
         db.session.add(newPet)
         db.session.commit()
         print("added to db\n")
+        return jsonify({"message":"saved"})
     
-    return jsonify({"message":"saved"})
+    
 
 
 

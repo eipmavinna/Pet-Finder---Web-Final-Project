@@ -52,11 +52,15 @@
   <div>
     <h3>Favorited Pets</h3>
   </div>
+  <div id="favPetsDiv">
   {% for id in favPets %}
-  <button type="button" class="petButton" data-pet-id="{{ id }}" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  </button>
+  <div id="{{id}}_div">
+    <button type="button" class="petButton  image-button" data-pet-id="{{ id }}" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    </button>
+  </div>
   <br>
   {% endfor %}
+  </div>
 
 
   <!-- Modal -->
