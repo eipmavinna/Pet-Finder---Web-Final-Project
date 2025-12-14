@@ -1,5 +1,3 @@
-import {modalChanging} from "./profileScript.js"
-
 
 document.addEventListener("DOMContentLoaded", async () => {
     loadHomePets();

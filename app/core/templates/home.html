@@ -44,11 +44,15 @@
   <h3>For you</h3>
   <br>
  
-   {% for stub in stubs %}
-  <button type="button" class="petButton" data-pet-id="{{stub}}" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  </button>
-  <br>
-  {% endfor %}
+  <div>
+    {% for stub in stubs %}
+    <div>
+      <button type="button" class="petButton image-button" data-pet-id="{{stub}}" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      </button>
+      <br>
+    </div>
+    {% endfor %}
+  </div>
 
   <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

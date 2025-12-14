@@ -53,7 +53,7 @@ def search():
 @bp.get('/')
 @bp.get('/home/')
 def home():
-    StubIDS: list[str] = ["1000004", "10000156", "100001", "10000154", "10000158"]; 
+    StubIDS: list[str] = ["1000004", "10000156", "100001", "10000154", "10000158"];    #TODO: this is where the 20 featured pets will go (search based on zipcode, grab top 20)
     return render_template("home.html", stubs=StubIDS)
 
 
