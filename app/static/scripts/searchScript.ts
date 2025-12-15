@@ -16,20 +16,33 @@ document.addEventListener("DOMContentLoaded", async () => {
     //     getFilteredPets();
     //     console.log("hit submit")
 //
-    //     const favButton = document.getElementById("favorite-button");
-    //     const loginButton = document.getElementById("login_btn");
-        // if(IsLoggedIn()){
-        //     loginButton.innerText = "Log Out";
-        //     console.log("logged in");
-        //     favButton.addEventListener("click", () => addToFavorites(favButton.dataset.petId));
-        // }else{
-        //     loginButton.innerText = "Log In"
-        //     favButton.remove()
-        // }
-    //});
+        const favButton = document.getElementById("favorite-button");
+        if(await IsLoggedInSearch()){
+            console.log("logged in");
+            favButton.addEventListener("click", () => addToFavoritesSearch(favButton.dataset.petId));
+        }else{
+            favButton.remove()
+        }
+    
+    
+        const profileIcon = document.getElementById("profile");
+    profileIcon.addEventListener("click", ProfileRoutingSearch);
 
 
 });
+
+async function ProfileRoutingSearch(){
+    if(await IsLoggedInSearch()){
+        window.location.href = '/profile/';
+
+    }else{
+        //show the modal
+        console.log("not logged in");
+    }
+}
+
+
+
 
 async function getFilteredPets(){
     const form = <HTMLFormElement> document.getElementById("filterForm");
@@ -137,7 +150,7 @@ async function loadHomePetsSearch(id: string, newDiv: HTMLDivElement){
         const orgLocationCity = organizations.data[0].attributes.citystate;
 
         if(imageURL == null){
-            btn.innerHTML = `<img src="static/icons/petStubImage.png" alt="No stub Available"><p>${name}</p><p>${orgLocationCity}</p>`;
+            btn.innerHTML = `<img src="/static/icons/petStubImage.png" alt="No stub Available"><p>${name}</p><p>${orgLocationCity}</p>`;
 
         }else{
             btn.innerHTML = `<img src="${imageURL}" alt="No Image Available"><p>${name}</p><p>${orgLocationCity}</p>`;
@@ -295,7 +308,7 @@ async function validateHomeJSONSearch(response: Response): Promise<any> {
         
         if(imageURL == null){
             
-            img.src = 'static/icons/petStubImage.png';
+            img.src = '/static/icons/petStubImage.png';
             img.alt = 'No stub Available';
             if(modalBodyDiv){
                 modalBodyDiv.append(img);
@@ -320,4 +333,6 @@ async function validateHomeJSONSearch(response: Response): Promise<any> {
             return Promise.reject(response);
         }
     }
+
+    
 
