@@ -39,31 +39,59 @@
       <img id="search" src="{{ url_for('static', filename='icons/search.png') }}" alt="search button" />
     </a>  
   </div>
-  <h1 class="page-heading">User profile stub</h1>
-  <div id="user-info">
-    <h3>Email</h3>
-    <p>{{email}}</p>
+  <h1 class="page-heading"></h1>
+  
+  <div id="user-info" style="margin-top: 70px;">
+    <div class="container">
+      <div class="row g-3 justify-content-center">
+        <div class="col-12 col-sm-6">
+          <div class="p-3 rounded" style="background-color:var(--color-theme-light);border:2px solid var(--color-theme-dark);">
+            <h3>Email</h3>
+            <p class="text-center">{{email}}</p>
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6">
+          <div class="p-3 rounded" style="background-color:var(--color-theme-light);border:2px solid var(--color-theme-dark);">
+            <h3>Zip Code</h3>
+            <p class="text-center">{{zip}}</p>
+          </div>
+        </div>
+      </div>
+</div>
+    <!--<a id="edit_button" href="/edit/user/">Edit profile information</a>!-->
     <br>
-    <h3>Zip Code</h3>
-    <p>{{zip}}</p>
-    <a id="edit_button" href="/edit/user/">Edit profile information</a>
+    <a id="edit_button" class="btn gcc-btn-primary d-block w-25 mx-auto" href="{{url_for('core.edit_user')}}">
+    Edit profile information</a>
   </div>
   <br>
-  <div>
-    <h3>Favorited Pets</h3>
+  <br>
+  <br>
+  <br>
+  <br>
+  <div style="margin-bottom: 40px;">
+    <h2 style="text-align: center;">Favorited Pets</h2>
   </div>
   <div id="favPetsDiv">
-  {% for id in favPets %}
+
+
+  <div id = "buttons-div"></div>
+
+    
+  <!-- {% for id in favPets %}
   <div id="{{id}}_div">
     <button type="button" class="petButton  image-button" data-pet-id="{{ id }}" data-bs-toggle="modal" data-bs-target="#exampleModal">
     </button>
   </div>
   <br>
   {% endfor %}
-  </div>
+  </div> -->
 
 
-  <!-- Modal -->
+
+
+
+ <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog">
           <div class="modal-content">
@@ -72,7 +100,15 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
+                  <img id="petImage">
                   <button id="favorite-button" data-pet-id=""></button>
+                  <!--<button type="button" class="add-to-favorites" data-bs-dismiss="modal" aria-label="Add To Favorites"></button>-->
+                  <h1 id="petName"></h1>
+                  <h2 id="petAge"></h2>
+                  <h3 id="petGender"></h3>
+                  <h3 id="petBreed"></h3>
+                  <h3 id="petLocation"></h3>
+                  <p id="petDescription"></p>
               </div>
               <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
