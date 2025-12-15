@@ -26,6 +26,10 @@
     box-sizing: border-box;
 }
 
+html {
+    background-color: var(--color-theme-main);
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, Helvetica, sans-serif;
     color: var(--text-dark);
