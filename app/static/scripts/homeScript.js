@@ -11,7 +11,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         loginButton.innerText = "Log In";
         favButton.remove();
     }
+    const profileIcon = document.getElementById("profile");
+    profileIcon.addEventListener("click", ProfileRouting);
 });
+async function ProfileRouting() {
+    if (await IsLoggedIn()) {
+        window.location.href = '/profile/';
+    }
+    else {
+        console.log("not logged in");
+    }
+}
 async function IsLoggedIn() {
     const response = await fetch(`/api/isLoggedIn/`, {
         method: "GET",
@@ -65,7 +75,7 @@ async function loadHomePets(id, newDiv) {
     const organizations = await validateHomeJSON(response2);
     const orgLocationCity = organizations.data[0].attributes.citystate;
     if (imageURL == null) {
-        btn.innerHTML = `<img src="static/images/petStubImage.png" alt="No stub Available"><p>${name}</p><p>${orgLocationCity}</p>`;
+        btn.innerHTML = `<img src="static/icons/petStubImage.png" alt="No stub Available"><p>${name}</p><p>${orgLocationCity}</p>`;
     }
     else {
         btn.innerHTML = `<img src="${imageURL}" alt="No Image Available"><p>${name}</p><p>${orgLocationCity}</p>`;
@@ -168,7 +178,7 @@ async function fillModal(id) {
     orgLocationCity.textContent = "Location: " + (organizations.data[0].attributes.citystate ?? "N/A");
     const img = document.getElementById("petImage");
     if (imageURL == null) {
-        img.src = 'static/images/petStubImage.png';
+        img.src = 'static/icons/petStubImage.png';
         img.alt = 'No stub Available';
         modalBodyDiv.append(img);
     }

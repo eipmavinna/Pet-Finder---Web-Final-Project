@@ -40,9 +40,23 @@
       <label for="{{form.newPass.id}}" class="form-label">{{form.newPass.label.text}}</label>
       {{form.newPass(class="form-control")}}
       
-      {{form.submit(class="btn gcc-btn-primary")}}
+
+      <br>
+      <br>
+
+
+      <div class="d-flex mt-3 justify-content-between">
+        <a href="{{ url_for('core.profile') }}" class="btn gcc-btn-primary">
+          Cancel
+        </a>
+
+
+        <button type="submit" class="btn gcc-btn-primary">
+          Submit
+        </button>
+      </div>
     </form>
-    <a class="btn gcc-btn-primary" href="{{url_for('core.profile')}}">Cancel Editing</a>
+    <!--<a class="btn gcc-btn-primary" href="{{url_for('core.profile')}}">Cancel Editing</a>!-->
   </div>
   <div id="error-messages">
   {% for msg in get_flashed_messages() %}

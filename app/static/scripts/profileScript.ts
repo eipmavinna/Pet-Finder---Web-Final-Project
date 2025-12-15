@@ -102,8 +102,6 @@ export namespace modalChanging{
         }else{
             favButton.innerHTML = `<img src="/static/icons/favorite.png" alt="Favorite" width="24" height="24">`;
         }
-
-        //TODO add the more detailed information here
     }
 
     export async function makeButtonsProfile(){
@@ -162,7 +160,7 @@ export namespace modalChanging{
         const orgLocationCity = organizations.data[0].attributes.citystate;
 
         if(imageURL == null){
-            btn.innerHTML = `<img src="static/images/petStubImage.png" alt="No stub Available"><p>${name}</p><p>${orgLocationCity}</p>`;
+            btn.innerHTML = `<img src="static/icons/petStubImage.png" alt="No stub Available"><p>${name}</p><p>${orgLocationCity}</p>`;
 
         }else{
             btn.innerHTML = `<img src="${imageURL}" alt="No Image Available"><p>${name}</p><p>${orgLocationCity}</p>`;
@@ -226,9 +224,9 @@ export namespace modalChanging{
        const img = <HTMLImageElement> document.getElementById("petImage")
         
         if(imageURL == null){
-            //modalBodyDiv.innerHTML = `<img src="static/images/petStubImage.png" alt="No stub Available"><p>${name}</p><p>${orgLocationCity}</p>`;
+            //modalBodyDiv.innerHTML = `<img src="static/icons/petStubImage.png" alt="No stub Available"><p>${name}</p><p>${orgLocationCity}</p>`;
             
-            img.src = 'static/images/petStubImage.png';
+            img.src = 'static/icons/petStubImage.png';
             img.alt = 'No stub Available';
             modalBodyDiv.append(img);
 
