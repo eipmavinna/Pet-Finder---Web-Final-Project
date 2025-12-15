@@ -9,14 +9,24 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
     const submitBtn = document.getElementById("submit-btn");
     const favButton = document.getElementById("favorite-button");
-    if (IsLoggedInSearch()) {
+    if (await IsLoggedInSearch()) {
         console.log("logged in");
         favButton.addEventListener("click", () => addToFavoritesSearch(favButton.dataset.petId));
     }
     else {
         favButton.remove();
     }
+    const profileIcon = document.getElementById("profile");
+    profileIcon.addEventListener("click", ProfileRoutingSearch);
 });
+async function ProfileRoutingSearch() {
+    if (await IsLoggedInSearch()) {
+        window.location.href = '/profile/';
+    }
+    else {
+        console.log("not logged in");
+    }
+}
 async function getFilteredPets() {
     const form = document.getElementById("filterForm");
     const formData = new FormData(form);

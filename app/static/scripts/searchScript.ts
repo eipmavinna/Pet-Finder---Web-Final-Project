@@ -17,13 +17,30 @@ document.addEventListener("DOMContentLoaded", async () => {
     //     console.log("hit submit")
 //
         const favButton = document.getElementById("favorite-button");
-        if(IsLoggedInSearch()){
+        if(await IsLoggedInSearch()){
             console.log("logged in");
             favButton.addEventListener("click", () => addToFavoritesSearch(favButton.dataset.petId));
         }else{
             favButton.remove()
         }
-    });
+    
+    
+        const profileIcon = document.getElementById("profile");
+    profileIcon.addEventListener("click", ProfileRoutingSearch);
+
+
+});
+
+async function ProfileRoutingSearch(){
+    if(await IsLoggedInSearch()){
+        window.location.href = '/profile/';
+
+    }else{
+        //show the modal
+        console.log("not logged in");
+    }
+}
+
 
 
 
