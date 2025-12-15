@@ -1,6 +1,6 @@
 from typing import Sequence, Tuple
 from sqlalchemy import Row, Select
-from flask import  render_template, redirect, url_for, current_app, session, flash
+from flask import  render_template, redirect, url_for, current_app, session, flash, jsonify, request
 from flask_login import login_required, current_user
 from sqlalchemy.sql.expression import select
 
@@ -11,7 +11,7 @@ from app.auth.models import User
 # from app.core.models import Bank, Account, Customer # Trying to be careful as we slowly remove the starter project code that we started with
 from app.core.models import FavPet
 from app.core.forms import SearchForm, EditForm
-
+import requests
 
 @bp.get('/tester/')
 #@login_required
@@ -49,6 +49,71 @@ def profile():
 def search():
     form: SearchForm = SearchForm()
     return render_template("search.html", form=form)
+
+
+@bp.post('/search/')
+def searchResults():
+    form = SearchForm(request.form)
+    response = requests.get(
+        "https://api.rescuegroups.org/v5/public/animals?include=species",
+        headers={"Content-Type": "application/vnd.api+json", "Authorization": "7mZmJj1Y"}
+    )
+    responseData = response.json()
+
+    age_group = (form.age_group.data or "").lower()
+
+    firstFilter = responseData
+
+    #if an age group was added then filter by age group
+    if(age_group != ""):
+        ageMatches = [pet
+               for pet in responseData["data"]
+                if "ageGroup" in pet["attributes"] and
+                age_group in pet["attributes"]["ageGroup"].lower()]
+        
+        firstFilter = ageMatches
+    
+
+    #dog species id is 8 as a string
+    #cat species id is 3 as a string
+
+    speciesID: str = ""
+    if (form.animal_type.data == "cat"):
+         speciesID = "3"
+    elif(form.animal_type.data == "dog"):
+        speciesID = "8"
+    else:
+        speciesID = ""
+    
+
+    secondFilter = responseData
+
+    #if a pet type was added then filter by age group
+    if(speciesID != ""):
+        matching_pet_ids = [
+                    pet["id"]
+                    for pet in firstFilter
+                    if any(
+                    species["id"] == speciesID
+                    for species in pet["relationships"]["species"]["data"])]
+        secondFilter = matching_pet_ids
+
+    zip = form.zipcode.data
+
+    toReturn = secondFilter
+    
+    # if(zip != ""):
+    #     toReturn = compareDistances(secondFilter)
+    # print(f"{matching_pet_ids}")
+    
+    return jsonify({
+        'results': toReturn
+    })
+
+# #compare distances and return a string of filtered closest distances
+# def compareDistances(list) -> list:
+#     return
+
 
 @bp.get('/')
 @bp.get('/home/')

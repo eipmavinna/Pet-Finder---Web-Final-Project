@@ -22,6 +22,7 @@
     crossorigin="anonymous"></script>
   {# Link Project CSS and JS #}
   <link rel="stylesheet" href="{{url_for('static', filename='styles/core.css')}}">
+  <script type="module" src="/static/scripts/searchScript.js"></script>
 </head>
 <body>
 <!-- Title bar, logo (which doubles as a clickable link home), search button, and profile button -->
@@ -38,6 +39,8 @@
     </a>
   </div>
   <h1 class="page-heading">Search page stub</h1>
+
+    <form method="post" id = "filterForm">
   <div id="search-wrapper">
     <div class="search-inline">
       {{ form.hidden_tag() }}
@@ -67,6 +70,37 @@
   <br>
   <p>[Example table of pets based on search]</p>
 
+  <div id = "buttons-div"></div>
+  </form>
+
+
+    <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">Pet</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div id="bodyDiv"></div>
+                  <img id="petImage">
+                  <button id="favorite-button" data-pet-id=""></button>
+                  <!--<button type="button" class="add-to-favorites" data-bs-dismiss="modal" aria-label="Add To Favorites"></button>-->
+                  <h1 id="petName"></h1>
+                  <h2 id="petAge"></h2>
+                  <h3 id="petGender"></h3>
+                  <h3 id="petBreed"></h3>
+                  <h3 id="petLocation"></h3>
+                  <p id="petDescription"></p>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              </div>
+          </div>
+      </div>
+  </div>
+  
   <a class="btn gcc-btn-primary d-block w-25 mx-auto" href="{{url_for('auth.route_logout')}}">
     Log Out
   </a>
