@@ -74,21 +74,24 @@
   </div>
   <div id="favPetsDiv">
 
+
+  <div id = "buttons-div"></div>
+
     
-  {% for id in favPets %}
+  <!-- {% for id in favPets %}
   <div id="{{id}}_div">
     <button type="button" class="petButton  image-button" data-pet-id="{{ id }}" data-bs-toggle="modal" data-bs-target="#exampleModal">
     </button>
   </div>
   <br>
   {% endfor %}
-  </div>
+  </div> -->
 
 
 
-  
 
-  <!-- Modal -->
+
+ <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog">
           <div class="modal-content">
@@ -97,7 +100,15 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
+                  <img id="petImage">
                   <button id="favorite-button" data-pet-id=""></button>
+                  <!--<button type="button" class="add-to-favorites" data-bs-dismiss="modal" aria-label="Add To Favorites"></button>-->
+                  <h1 id="petName"></h1>
+                  <h2 id="petAge"></h2>
+                  <h3 id="petGender"></h3>
+                  <h3 id="petBreed"></h3>
+                  <h3 id="petLocation"></h3>
+                  <p id="petDescription"></p>
               </div>
               <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
