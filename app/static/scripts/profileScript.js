@@ -110,7 +110,7 @@ export var modalChanging;
         const organizations = await validateJSONProfile(response2);
         const orgLocationCity = organizations.data[0].attributes.citystate;
         if (imageURL == null) {
-            btn.innerHTML = `<img src="static/images/petStubImage.png" alt="No stub Available"><p>${name}</p><p>${orgLocationCity}</p>`;
+            btn.innerHTML = `<img src="static/icons/petStubImage.png" alt="No stub Available"><p>${name}</p><p>${orgLocationCity}</p>`;
         }
         else {
             btn.innerHTML = `<img src="${imageURL}" alt="No Image Available"><p>${name}</p><p>${orgLocationCity}</p>`;
@@ -155,7 +155,7 @@ export var modalChanging;
         orgLocationCity.textContent = "Location: " + (organizations.data[0].attributes.citystate ?? "N/A");
         const img = document.getElementById("petImage");
         if (imageURL == null) {
-            img.src = 'static/images/petStubImage.png';
+            img.src = 'static/icons/petStubImage.png';
             img.alt = 'No stub Available';
             modalBodyDiv.append(img);
         }

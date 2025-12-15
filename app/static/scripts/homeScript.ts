@@ -26,8 +26,22 @@ document.addEventListener("DOMContentLoaded", async () => {
         favButton.remove()
     }
 
+    const profileIcon = document.getElementById("profile");
+    profileIcon.addEventListener("click", ProfileRouting);
+
 
 });
+
+async function ProfileRouting(){
+    if(await IsLoggedIn()){
+        window.location.href = '/profile/';
+
+    }else{
+        //show the modal
+        
+        console.log("not logged in");
+    }
+}
 
 async function IsLoggedIn(): Promise<boolean>{
         const response = await fetch(`/api/isLoggedIn/`, {
@@ -109,7 +123,7 @@ async function loadHomePets(id: string, newDiv: HTMLDivElement){
         const orgLocationCity = organizations.data[0].attributes.citystate;
 
         if(imageURL == null){
-            btn.innerHTML = `<img src="static/images/petStubImage.png" alt="No stub Available"><p>${name}</p><p>${orgLocationCity}</p>`;
+            btn.innerHTML = `<img src="static/icons/petStubImage.png" alt="No stub Available"><p>${name}</p><p>${orgLocationCity}</p>`;
 
         }else{
             btn.innerHTML = `<img src="${imageURL}" alt="No Image Available"><p>${name}</p><p>${orgLocationCity}</p>`;
@@ -303,7 +317,7 @@ async function validateHomeJSON(response: Response): Promise<any> {
         if(imageURL == null){
             //modalBodyDiv.innerHTML = `<img src="static/icons/petStubImage.png" alt="No stub Available"><p>${name}</p><p>${orgLocationCity}</p>`;
             
-            img.src = 'static/images/petStubImage.png';
+            img.src = 'static/icons/petStubImage.png';
             img.alt = 'No stub Available';
             modalBodyDiv.append(img);
 

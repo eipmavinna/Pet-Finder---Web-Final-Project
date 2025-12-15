@@ -32,9 +32,12 @@
     <a href="/">
       <img id="logo" src="{{ url_for('static', filename='icons/logo.png') }}" alt="logo/menu button to return home" />
     </a>
-    <a href="/profile/">
-      <img id="profile" src="{{ url_for('static', filename='icons/profile.png') }}" alt="profile button" />
-    </a>
+    <button data-bs-toggle="modal" data-bs-target="#profileModal">
+      <img id="profile" src="{{ url_for('static', filename='icons/profile.png') }}" alt="profile button" />  
+    </button> <!-- remove the link from here, make an event listener in the TS file instead -->
+    <!--<a href="'/profile/">
+      <img id="profile" src="{{ url_for('static', filename='icons/profile.png') }}" alt="profile button" />  
+    </a>-->
     <a href="/search/">
       <img id="search" src="{{ url_for('static', filename='icons/search.png') }}" alt="search button" />
     </a>  
@@ -77,6 +80,33 @@
               </div>
               <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              </div>
+          </div>
+      </div>
+  </div>
+
+
+  <!-- profile modal -->
+     <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-body">
+                <div id="bodyDiv"></div>
+                  <div>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <img
+                    src="{{ url_for('static', filename='icons/confusedCat.jpg') }}"
+                    alt="confused cat"
+                    class="img-fluid w-100"
+                    style="display:block; border-top-left-radius: .375rem; border-top-right-radius: .375rem;margin-top: 10px;"
+                  />
+                  <p class="modal-title fs-5" id="exampleModalLabel" style="margin-top: 40px;margin-bottom: 20px;text-align: center;">Create an account to save favorited pets!</p>
+                  <br>
+                  <a class="btn gcc-btn-primary d-block w-25 mx-auto" style="margin-bottom: 15px;" href="{{url_for('auth.route_logout')}}">
+                    Log In
+                  </a>
+                  <!--<button type="button" class="add-to-favorites" data-bs-dismiss="modal" aria-label="Add To Favorites"></button>-->
               </div>
           </div>
       </div>
