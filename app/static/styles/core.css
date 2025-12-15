@@ -1,20 +1,37 @@
 :root {
-    --color-theme-main: rgb(190, 10, 10);
-    --color-theme-dark: rgb(120, 5, 5);
-    --color-theme-light: rgb(255, 235, 235);
+
+    --primary-green: #2d5f3f;
+    --secondary-green: #4a8c63;
+    --light-green: #7db88e;
+    --pale-green: #c8e6d0;
+    --very-pale-green: #e8f5eb;
+    --white: #ffffff;
+    --text-dark: #1a3a28;
+    --text-light: #5a7866;
+    --border-color: #9bc4a8;
+    --hover-green: #3d7051;
+    --shadow: rgba(45, 95, 63, 0.15);
+
+    --color-theme-main: #2d5f3f;
+    --color-theme-dark: #1a3a28;
+    --color-theme-light: #e8f5eb;
 
     --title-bar-x-padding: 2rem;
     --title-bar-height: 3rem;
 }
 
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, Helvetica, sans-serif;
-    color: var(--color-theme-dark);
-    background-color: var(--color-theme-light);
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-html {
-    background-color: var(--color-theme-main);
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, Helvetica, sans-serif;
+    color: var(--text-dark);
+    background: linear-gradient(135deg, var(--very-pale-green) 0%, var(--pale-green) 100%);
+    min-height: 100vh;
+    line-height: 1.6;
 }
 
 #title-bar {
@@ -30,68 +47,145 @@ html {
     line-height: var(--title-bar-height);
     vertical-align: middle;
 
-    background-color: var(--color-theme-main);
-    color: var(--color-theme-light);
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+    color: var(--white);
+    box-shadow: 0 4px 12px var(--shadow);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#title-bar a {
+    text-decoration: none;
 }
 
 #logo {
     width: auto; 
     height: var(--title-bar-height);
-    padding-top: 0px;
-    margin-left: 5px;
+    padding: 5px;
+    margin-left: 0px;
+    border-radius: 8px;
+    background: var(--white);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    left: var(--title-bar-x-padding);
+    transition: opacity 0.3s ease;
+}
+
+#logo:hover {
+    opacity: 0.9;
 }
 
 #profile {
     width: auto; 
-    height: var(--title-bar-height);
-    padding-top: 0px;
-    margin-right: 10px;
-    float: right;
+    height: calc(var(--title-bar-height) - 8px);
+    padding: 6px;
+    margin-right: 20px;
+    border-radius: 50%;
+    background: var(--white);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    right: calc(var(--title-bar-height) + 20px);
+    transition: opacity 0.3s ease;
+}
+
+#profile:hover {
+    opacity: 0.8;
 }
 
 #search {
     width: auto; 
-    height: var(--title-bar-height);
-    padding-top: 0px;
-    margin-right: 10px;
-    float: right;
+    height: calc(var(--title-bar-height) - 8px);
+    padding: 6px;
+    margin-right: 0px;
+    border-radius: 50%;
+    background: var(--white);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    right: var(--title-bar-x-padding);
+    transition: opacity 0.3s ease;
+}
+
+#search:hover {
+    opacity: 0.8;
 }
 
 .gcc-btn-primary {
-    color: var(--color-theme-light);
-    background-color: var(--color-theme-main);
-    border-color: var(--color-theme-dark);
+    color: var(--white);
+    background: linear-gradient(135deg, var(--secondary-green) 0%, var(--primary-green) 100%);
+    border: none;
+    padding: 0.8rem 2rem;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px var(--shadow);
+    cursor: pointer;
+    text-align: center;
+    display: inline-block;
 }
 
 .gcc-btn-primary:hover {
-    background-color: var(--color-theme-dark);
-    border-color: var(--color-theme-main);
-    color: var(--color-theme-light);
+    background: linear-gradient(135deg, var(--hover-green) 0%, var(--secondary-green) 100%);
+    color: var(--white);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px var(--shadow);
+}
+
+.gcc-btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 3px 8px var(--shadow);
 }
 
 .page-heading {
     width: 100vw;
     text-align: center;
+    color: var(--primary-green);
+    font-size: 2.5rem;
+    font-weight: 700;
     margin-top: 2rem;
     margin-bottom: 2rem;
+    text-shadow: 2px 2px 4px var(--shadow);
 }
 
 .form-label {
+    color: var(--primary-green);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    display: block;
     padding-top: 1.5rem;
+}
+
+.form-control {
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.7rem;
+    transition: all 0.3s ease;
+    width: 100%;
+    font-size: 1rem;
+}
+
+.form-control:focus {
+    border-color: var(--secondary-green);
+    box-shadow: 0 0 0 3px rgba(74, 140, 99, 0.1);
+    outline: none;
 }
 
 #search-wrapper {
     width: 95vw;
     min-width: 300px;
     max-width: 900px;
-    background-color: var(--color-theme-light);
+    background-color: var(--white);
     margin: auto;
     margin-top: 3rem;
     padding: 2rem;
-    border-color: var(--color-theme-dark);
+    border-color: var(--border-color);
     border-style: solid;
-    border-width: 1px;
-    border-radius: 1rem;
+    border-width: 2px;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px var(--shadow);
     align-items: center;
     justify-content: center;
 }
@@ -101,8 +195,8 @@ html {
     align-items: center;
     justify-content: center;
     flex-flow: row wrap;
-    /* align-items: center; */
     margin: auto;
+    gap: 1rem;
 }
 
 .search-field {
@@ -114,34 +208,118 @@ html {
     flex-direction: column;
 } 
 
+.search-field label {
+    display: block;
+    color: var(--primary-green);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.search-field .form-control {
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.6rem;
+    transition: all 0.3s ease;
+}
+
+.search-field .form-control:focus {
+    border-color: var(--secondary-green);
+    box-shadow: 0 0 0 3px rgba(74, 140, 99, 0.1);
+    outline: none;
+}
+
 .search-button {
     margin: auto;
     padding-top: 2em;
+    text-align: center;
 }
 
+#user-info {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 2rem;
+    max-width: 800px;
+    margin: 2rem auto;
+    box-shadow: 0 6px 20px var(--shadow);
+    text-align: center;
+}
 
+#user-info h3 {
+    color: var(--primary-green);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    font-size: 1.3rem;
+}
 
+#user-info p {
+    color: var(--text-light);
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+}
 
+#user-info a,
+#edit_button {
+    color: var(--secondary-green);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
 
+#user-info a:hover,
+#edit_button:hover {
+    color: var(--white);
+    background: var(--secondary-green);
+}
 
 .image-button {
-
     width: 15vw;
     aspect-ratio: 1 / 1;
     min-width: 120px;
     max-width: 240px;
-    background: #e5e5e5;
+    background: var(--pale-green);
     display: grid;
     place-items: center;
+    border: 3px solid var(--light-green);
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px var(--shadow);
+}
+
+.image-button:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px var(--shadow);
+    border-color: var(--secondary-green);
+    background: var(--light-green);
 }
 
 .image-button img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
 }
 
-/*can be changed. Just put this in to make the page look a little bit cleaner*/
+.petButton {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: var(--pale-green);
+    border: 3px solid var(--light-green);
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px var(--shadow);
+    overflow: hidden;
+}
+
+.petButton:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px var(--shadow);
+    border-color: var(--secondary-green);
+    background: var(--light-green);
+}
+
 .petButton img {
     width: 150px;      
     height: 150px;     
@@ -149,9 +327,282 @@ html {
 }
 
 #petImage {
-    width: 300px;      
-    height: 300px;     
+    width: 100%;
+    max-width: 300px;
+    height: auto;     
     object-fit: cover; 
     align-items: center;
     justify-content: center;
+    border-radius: 12px;
+    margin: 1rem auto;
+    display: block;
+    box-shadow: 0 4px 12px var(--shadow);
+}
+
+#favorite-button {
+    background: var(--light-green);
+    color: var(--white);
+    border: none;
+    padding: 0.8rem 2rem;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 1rem auto;
+    display: block;
+}
+
+#favorite-button:hover {
+    background: var(--secondary-green);
+    transform: scale(1.05);
+}
+
+.modal-content {
+    border-radius: 16px;
+    border: none;
+    box-shadow: 0 10px 40px var(--shadow);
+}
+
+.modal-header {
+    background: linear-gradient(135deg, var(--light-green) 0%, var(--secondary-green) 100%);
+    color: var(--white);
+    border-radius: 16px 16px 0 0;
+    border: none;
+}
+
+.modal-title {
+    font-weight: 700;
+}
+
+.modal-body {
+    padding: 2rem;
+}
+
+.modal-body h1 {
+    color: var(--primary-green);
+    font-size: 1.8rem;
+    margin-top: 1rem;
+}
+
+.modal-body h2 {
+    color: var(--secondary-green);
+    font-size: 1.4rem;
+    margin-top: 0.5rem;
+}
+
+.modal-body h3 {
+    color: var(--text-light);
+    font-size: 1.2rem;
+    margin-top: 0.5rem;
+}
+
+.modal-body p {
+    color: var(--text-dark);
+    margin-top: 1rem;
+    line-height: 1.8;
+}
+
+.modal-footer {
+    border: none;
+    padding: 1.5rem;
+}
+
+#error-messages {
+    max-width: 600px;
+    margin: 1rem auto;
+}
+
+.alert-warning {
+    background: var(--pale-green);
+    border: 2px solid var(--light-green);
+    color: var(--text-dark);
+    border-radius: 12px;
+    padding: 1rem;
+}
+
+.table {
+    background: var(--white);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 20px var(--shadow);
+    margin: 2rem auto;
+}
+
+.table-dark {
+    background: var(--primary-green);
+    color: var(--white);
+}
+
+.table-dark thead th {
+    background: var(--secondary-green);
+    border: none;
+    padding: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.table-dark tbody tr {
+    border-bottom: 1px solid var(--light-green);
+    transition: background-color 0.3s ease;
+}
+
+.table-dark tbody tr:hover {
+    background: var(--hover-green);
+}
+
+.table-dark tbody td {
+    padding: 0.9rem;
+    vertical-align: middle;
+}
+
+/* Grid layout for pet buttons */
+#buttons-div,
+#favPetsDiv {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 2rem auto;
+}
+
+/* Bottom Panel for Log Out Button */
+#bottom-panel {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+    padding: 1.5rem 2rem;
+    box-shadow: 0 -4px 20px var(--shadow);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    z-index: 1000;
+}
+
+#bottom-panel .gcc-btn-primary {
+    background: var(--white);
+    color: var(--primary-green);
+    margin: 0;
+    min-width: 150px;
+    padding: 0.9rem 2rem;
+}
+
+#bottom-panel .gcc-btn-primary:hover {
+    background: var(--pale-green);
+    color: var(--primary-green);
+    transform: translateY(-3px);
+}
+
+body {
+    padding-bottom: 80px;
+}
+
+.petButton {
+    position: relative;
+}
+
+.petButton::after {
+    content: 'View Details';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(45, 95, 63, 0.95), transparent);
+    color: var(--white);
+    padding: 1rem 0.5rem 0.5rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.petButton:hover::after {
+    opacity: 1;
+}
+
+.image-button {
+    position: relative;
+}
+
+.image-button::after {
+    content: 'View Details';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(45, 95, 63, 0.95), transparent);
+    color: var(--white);
+    padding: 1rem 0.5rem 0.5rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.image-button:hover::after {
+    opacity: 1;
+}
+
+@media (max-width: 768px) {
+    .page-heading {
+        font-size: 2rem;
+    }
+
+    #title-bar {
+        font-size: 1.4rem;
+        padding: 1rem;
+    }
+
+    .search-inline {
+        flex-direction: column;
+    }
+
+    .search-field {
+        max-width: 100%;
+    }
+
+    .table {
+        font-size: 0.9rem;
+    }
+
+    #buttons-div,
+    #favPetsDiv {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    #logo {
+        height: calc(var(--title-bar-height) - 10px);
+        left: 10px;
+    }
+
+    #profile {
+        right: calc(var(--title-bar-height) + 10px);
+    }
+
+    #search {
+        right: 10px;
+    }
+
+    #bottom-panel {
+        flex-direction: column;
+        gap: 0.8rem;
+        padding: 1rem;
+    }
+
+    #bottom-panel .gcc-btn-primary {
+        min-width: 200px;
+        width: 90%;
+    }
+
+    body {
+        padding-bottom: 100px;
+    }
 }
