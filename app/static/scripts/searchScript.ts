@@ -25,21 +25,20 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     
     
-        const profileIcon = document.getElementById("profile");
-    profileIcon.addEventListener("click", ProfileRoutingSearch);
-
-
+    const profileBtn = document.getElementById("profile");
+    profileBtn.addEventListener("click", async function (e){
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        if(await IsLoggedInSearch()){
+            window.location.href = '/profile/';
+            return;
+        }
+        const loginModal = document.getElementById("profileModal");
+        const modal = (window as any).bootstrap.Modal.getOrCreateInstance(loginModal);
+        modal.show();
+    });
 });
 
-async function ProfileRoutingSearch(){
-    if(await IsLoggedInSearch()){
-        window.location.href = '/profile/';
-
-    }else{
-        //show the modal
-        console.log("not logged in");
-    }
-}
 
 
 
@@ -303,6 +302,8 @@ async function validateHomeJSONSearch(response: Response): Promise<any> {
             orgLocationCity.textContent = "Location: " + (organizations.data[0].attributes.citystate ?? "N/A");
         }
         
+        const petURL = document.getElementById("petURL") as HTMLAnchorElement;       // ---------
+        petURL.href = organizations.data[0].attributes.url ?? "#";
 
        const img = <HTMLImageElement> document.getElementById("petImage")
         

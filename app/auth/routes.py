@@ -137,4 +137,5 @@ def post_edit_user():
 def route_logout():
     session.pop("user_email")
     logout_user()
-    return redirect(url_for('auth.get_login'))
+    return redirect(url_for('core.home'))
+    #return redirect(url_for('auth.get_login'))
