@@ -26,28 +26,24 @@ def get_user_info():
 @bp.post("/favoritePet/")
 @login_required
 def add_favorite():
-    
     data = request.json
-    #check if not in db yet so not add same one
-    #if in db, remove from db
-    #if not there, add
-    #query: Select[Tuple[User]] = db.select(User).filter(User.email == session.get("user_email"))
-    #rows: Sequence[Row[Tuple[User]]] = db.session.execute(query).all()
-    #users: list[User] = [row[0] for row in rows]
-    #favPets: list[int] = users[0].favorites
-    #if int(data["pid"]) in favPets: #type:ignore
     pet = FavPet.query.filter_by(id=int(data["pid"]), user_email=session["user_email"]).first() #type:ignore
     if pet:
         db.session.delete(pet)
         db.session.commit()
         print("deleted from db\n")
+        return jsonify({"message":"deleted"})
     else:
         newPet: FavPet = FavPet(id = int(data["pid"]), user_email = session["user_email"])#type:ignore
         db.session.add(newPet)
         db.session.commit()
         print("added to db\n")
+        return jsonify({"message":"saved"})
     
-    return jsonify({"message":"saved"})
+    
+
+
+
 
 @bp.get("/favoritePet/check/<int:pid>")
 @login_required

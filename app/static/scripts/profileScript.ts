@@ -5,11 +5,17 @@ let counter: number = 0;
 
 
 document.addEventListener("DOMContentLoaded", async () => {
+
     modalChanging.makeButtons();
+
+    //loadUserInfo();
+    // modalChanging.loadPets();
+
     //const closeButton = document.getElementById("modal_close") as HTMLButtonElement | null;
     //if (closeButton) {
     //    closeButton.addEventListener("click", reloadPage);
     //}
+
     // for(const button of lists){
     //     const btn = button as HTMLButtonElement;
     //     let thisID: string = btn.dataset.petId;
@@ -17,12 +23,66 @@ document.addEventListener("DOMContentLoaded", async () => {
     //     btn.addEventListener("click",() => modalChanging.changeData(thisID));
     // }
     //TODO: if logged in:
-    const favButton = document.getElementById("favorite-button");
-    favButton.addEventListener("click", () => modalChanging.addToFavorites(favButton.dataset.petId));
 
+    const favButton = document.getElementById("favorite-button");
+    favButton.addEventListener("click", () => addToFavorites(favButton.dataset.petId));
 });
 
+// Pivoting and hardcoding the info for now - editing will now be a separate page
+// async function loadUserInfo() {
+//     const container = document.getElementById("user-info");
+//     const emailField = document.createElement('input');
+//     emailField.innerText = "Email";
+// }
+ //
 
+async function addToFavorites(petId: string){
+    const favButton = document.getElementById("favorite-button");
+    console.log("add?")
+    const isFav: boolean = await isFavorite(petId);
+    if(isFav){
+        favButton.innerHTML = `<img src="/static/icons/favorite.png" alt="Favorite" width="24" height="24">`;
+    }else{
+        favButton.innerHTML = `<img src="/static/icons/unfavorite.png" alt="Unfavorite" width="24" height="24">`;
+    }
+    //want to access the FavPet table and add something with the user's id and the pet id
+    const response = await fetch("/api/favoritePet/", {
+        method: "POST",
+        credentials: "same-origin", // send session cookie
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({pid: petId})
+    })
+    const msg = await validateJSON(response);
+    const outerDiv = document.getElementById("favPetsDiv");
+    if(msg['message'] === "saved"){
+        const newDiv = document.createElement("div");
+        newDiv.id = `${petId}_div`;
+        newDiv.innerHTML = `<button type="button" class="petButton  image-button" data-pet-id="${petId}" data-bs-toggle="modal" data-bs-target="#exampleModal">`;
+        outerDiv.prepend(newDiv); //how do I make this append to the beginning of the children
+
+        const btn = <HTMLButtonElement> newDiv.querySelector('button');
+        loadOnePet(btn);
+        btn.addEventListener("click",() => modalChanging.changeData(petId));
+    }else{
+        console.log(msg);
+        const deleted = document.getElementById(`${petId}_div`);
+        deleted.remove();
+
+    }
+
+    console.log("added " + petId)
+}
+
+async function isFavorite(petId: string): Promise<boolean> {
+    const response = await fetch(`/api/favoritePet/check/${encodeURIComponent(petId)}`, {
+        method: "GET",
+        headers: {
+            "Accept": "application/json"
+        }
+    });
+    const data = await modalChanging.validateJSON(response);  // <— pass Response, NOT parsed JSON
+    return data.exists;
+}    
 export namespace modalChanging{
 
     export async function changeData(pid: string){
@@ -35,27 +95,13 @@ export namespace modalChanging{
         console.log("favButton id: "+ favButton.dataset.petId)
         //if isfavorite, "Delete from favs", else "Add to favs"
         if(await isFavorite(pid)){
-            favButton.innerText = "Delete from favorites"
+            favButton.innerHTML = `<img src="/static/icons/unfavorite.png" alt="Unfavorite" width="24" height="24">`;
         }else{
-            favButton.innerText = "Add to favorites"
+            favButton.innerHTML = `<img src="/static/icons/favorite.png" alt="Favorite" width="24" height="24">`;
         }
 
         //TODO add the more detailed information here
     }
-
-
-    export async function isFavorite(petId: string): Promise<boolean> {
-        const response = await fetch(`/api/favoritePet/check/${encodeURIComponent(petId)}`, {
-            method: "GET",
-            headers: {
-                "Accept": "application/json"
-            }
-        });
-        const data = await validateJSON(response);  // <— pass Response, NOT parsed JSON
-        return data.exists;
-    }
-
-    
 
 
     export async function addToFavorites(petId: string){
@@ -91,6 +137,55 @@ export namespace modalChanging{
             }
         }
     }
+        
+//Anna's stuff
+//     export async function loadPets(){
+
+//         for (const item of lists) {
+//             //let thisID: string = IDS[counter];
+//             const btn = item as HTMLButtonElement;
+//             let thisID: string = btn.dataset.petId;
+
+//             const baseURL = "https://api.rescuegroups.org/v5/";
+//             const animalsURL = `${baseURL}public/animals/${thisID}`
+
+//             const response = await fetch(animalsURL, {
+//                     method: "GET",
+//                     headers: {
+//                         "Content-Type": "application/vnd.api+json",
+//                         "Authorization": "7mZmJj1Y", 
+//                     },
+//             });
+
+
+//             const pet = await validateJSON(response);
+
+//             const name = pet.data[0].attributes.name;
+//             const orgsID = pet.data[0].relationships.orgs.data[0].id;
+//             const imageURL = pet.data[0].attributes.pictureThumbnailUrl;
+
+                
+//             const orgsURL= `${baseURL}public/orgs/${orgsID}`;
+//             const response2 = await fetch(orgsURL, {
+//                     method: "GET",
+//                     headers: {
+//                         "Content-Type": "application/vnd.api+json",
+//                         "Authorization": "7mZmJj1Y", 
+//                     },
+//                 });
+
+                
+//             const organizations = await validateJSON(response2);
+
+//             const orgLocationCity = organizations.data[0].attributes.citystate;
+
+        
+//             item.innerHTML = `<img src="${imageURL}" alt="ImageOfAnimal"><p>${name}</p><p>${orgLocationCity}</p>`;
+
+//             counter+= 1;
+            
+//         }
+
 
     export async function loadPets(id: string, newDiv: HTMLDivElement){
 
@@ -222,5 +317,57 @@ export namespace modalChanging{
         }
     }
 }
+
+export async function loadOnePet(btn: HTMLButtonElement){
+
+            let thisID: string = btn.dataset.petId;
+
+            const baseURL = "https://api.rescuegroups.org/v5/";
+            const animalsURL = `${baseURL}public/animals/${thisID}`
+
+            const response = await fetch(animalsURL, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/vnd.api+json",
+                        "Authorization": "7mZmJj1Y", 
+                    },
+            });
+
+
+            const pet = await validateJSON(response);
+
+            const name = pet.data[0].attributes.name;
+            const orgsID = pet.data[0].relationships.orgs.data[0].id;
+            const imageURL = pet.data[0].attributes.pictureThumbnailUrl;
+
+                
+            const orgsURL= `${baseURL}public/orgs/${orgsID}`;
+            const response2 = await fetch(orgsURL, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/vnd.api+json",
+                        "Authorization": "7mZmJj1Y", 
+                    },
+                });
+
+                
+            const organizations = await validateJSON(response2);
+
+            const orgLocationCity = organizations.data[0].attributes.citystate;
+
+        
+            btn.innerHTML = `<img src="${imageURL}" alt="ImageOfAnimal"><p>${name}</p><p>${orgLocationCity}</p>`;
+
+    }
+
+
+    export async function validateJSON(response: Response): Promise<any> {
+        if (response.ok) {
+            return response.json();
+        } else {
+            return Promise.reject(response);
+        }
+    }
+
 
 

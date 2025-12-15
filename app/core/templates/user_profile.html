@@ -40,7 +40,24 @@
     </a>  
   </div>
   <h1 class="page-heading">User profile stub</h1>
+
   <p>[User info here]</p>
+
+
+
+  <div id="user-info">
+    <h3>Email</h3>
+    <p>{{email}}</p>
+    <br>
+    <h3>Zip Code</h3>
+    <p>{{zip}}</p>
+    <a id="edit_button" href="/edit/user/">Edit profile information</a>
+  </div>
+  <br>
+  <div>
+    <h3>Favorited Pets</h3>
+  </div>
+  <div id="favPetsDiv">
 
   <div id = "buttons-div"></div>
   <!-- {% for id in favPets %}
@@ -48,6 +65,8 @@
   </button>
   <br>
   {% endfor %} -->
+
+
 
 
   <!-- Modal -->
@@ -68,6 +87,7 @@
                   <h3 id="petBreed"></h3>
                   <h3 id="petLocation"></h3>
                   <p id="petDescription"></p>
+
               </div>
               <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

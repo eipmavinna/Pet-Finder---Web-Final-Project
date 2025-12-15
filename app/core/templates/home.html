@@ -44,12 +44,14 @@
   <h3>For you</h3>
   <br>
  
-   <div id = "buttons-div"></div>
+
+  <div id = "buttons-div"></div>
    <!-- {% for stub in stubs %}
   <button type="button" class="petButton" data-pet-id="{{stub}}" data-bs-toggle="modal" data-bs-target="#exampleModal">
   </button>
   <br>
   {% endfor %} -->
+
 
   <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -70,6 +72,7 @@
                   <h3 id="petBreed"></h3>
                   <h3 id="petLocation"></h3>
                   <p id="petDescription"></p>
+
               </div>
               <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -79,7 +82,7 @@
   </div>
 
  <a id="login_btn" class="btn gcc-btn-primary d-block w-25 mx-auto" href="{{url_for('auth.route_logout')}}">
-    Log Out
+    Log In
 
   </a>
 </body>

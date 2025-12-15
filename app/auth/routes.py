@@ -6,7 +6,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 from app import db
 from app.auth import bp
 from app.auth.models import User
-from app.auth.forms import LoginForm, SignupFormUser, SignupFormShelter
+from app.auth.forms import LoginForm, SignupFormUser
 
 @bp.get('/login/')
 def get_login():
@@ -75,7 +75,14 @@ def post_signup_user():
 
         email: str = form.email.data #type:ignore
         password: str = form.password.data #type:ignore
-        zipcode: int = int(form.zipcode.data) #type:ignore
+        try:
+            zipcode: int = int(form.zipcode.data) #type:ignore
+        except ValueError:
+            flash("Invalid zipcode")
+            return render_template("sign_up.html", form=form)
+
+
+
 
         query = select(User).filter(User.email == str(email))
         user_row = db.session.execute(query).first()
@@ -104,16 +111,24 @@ def post_signup_user():
             return redirect(next)
         else:
             flash("Email already attached to an account")
-            return redirect('/auth/signup/user/')  #TODO change this to next
-        #TODO: check the email to see if it's in the database already, route to get_signup_user if already there
-        # OR: 
-        # if already exists:
-        #   return redirect(url_for('auth.get_signup_user'))   #with some sort of message that the username is already taken
+            return render_template("sign_up.html", form=form)  #TODO change this to next
     else:
         for field,error_msg in form.errors.items():
             flash(f"{field}: {error_msg}")
         return redirect(url_for('auth.get_signup_user'))
+    
 
+@bp.get('/edit/user/')
+def get_edit_user():
+    # Placeholder for now but we think the edit info is going to be pretty similar to the login/sign up process
+    print("Got to edit, redirecting")
+    return redirect(url_for('auth.get_login'))
+
+@bp.get('/edit/user/')
+def post_edit_user():
+    # Placeholder for now but we think the edit info is going to be pretty similar to the login/sign up process
+    return redirect(url_for('auth.get_login'))
+    
 
 
 
