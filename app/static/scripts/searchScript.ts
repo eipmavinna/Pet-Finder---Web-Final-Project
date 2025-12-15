@@ -2,16 +2,22 @@ document.addEventListener("DOMContentLoaded", async () => {
     
     console.log("in typescript")
     
-    
+    const form = document.getElementById("filterForm") as HTMLFormElement;
+    console.log("running");
+    form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        console.log("hit submit");
+        await getFilteredPets();
+    });
     const submitBtn = <HTMLButtonElement> document.getElementById("submit-btn");
 
-    submitBtn.addEventListener("click", (event) => {
-        event.preventDefault(); // THIS prevents the form from submitting/reloading
-        getFilteredPets();
-        console.log("hit submit")
-
-        const favButton = document.getElementById("favorite-button");
-        const loginButton = document.getElementById("login_btn");
+    // submitBtn.addEventListener("click", (event) => {
+    //     event.preventDefault(); // THIS prevents the form from submitting/reloading
+    //     getFilteredPets();
+    //     console.log("hit submit")
+//
+    //     const favButton = document.getElementById("favorite-button");
+    //     const loginButton = document.getElementById("login_btn");
         // if(IsLoggedIn()){
         //     loginButton.innerText = "Log Out";
         //     console.log("logged in");
@@ -20,16 +26,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         //     loginButton.innerText = "Log In"
         //     favButton.remove()
         // }
-    });
+    //});
 
 
 });
 
 async function getFilteredPets(){
     const form = <HTMLFormElement> document.getElementById("filterForm");
-    form.addEventListener("submit", (event) => {
-        event.preventDefault();
-    });
     const formData = new FormData(form);
 
     const response = await fetch("/search/", {

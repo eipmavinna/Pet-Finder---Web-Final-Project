@@ -40,7 +40,7 @@
   </div>
   <h1 class="page-heading">Search page stub</h1>
 
-    <form method="post" id = "filterForm">
+  <form method="post" id = "filterForm">
   <div id="search-wrapper">
     <div class="search-inline">
       {{ form.hidden_tag() }}
@@ -64,7 +64,7 @@
     </div>
 
     <div class="search-button">
-      {{form.submit(class="btn gcc-btn-primary d-block w-25 mx-auto")}}
+      <button id="submit-btn" type="submit">Search</button>
     </div>
   </div>
   <br>
