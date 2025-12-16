@@ -121,9 +121,11 @@
                   />
                   <p class="modal-title fs-5" id="exampleModalLabel" style="margin-top: 40px;margin-bottom: 20px;text-align: center;">Create an account to save favorited pets!</p>
                   <br>
-                  <a class="btn gcc-btn-primary d-block w-25 mx-auto" style="margin-bottom: 15px;" href="{{url_for('auth.route_logout')}}">
-                    Log In
-                  </a>
+                    <a id="login_btn"
+                      class="btn gcc-btn-primary d-block w-25 mx-auto text-nowrap"
+                      href="{{url_for('auth.route_logout')}}">
+                      Log In
+                    </a>
                   <!--<button type="button" class="add-to-favorites" data-bs-dismiss="modal" aria-label="Add To Favorites"></button>-->
               </div>
           </div>
