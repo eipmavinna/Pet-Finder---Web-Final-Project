@@ -11,11 +11,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
     const submitBtn = <HTMLButtonElement> document.getElementById("submit-btn");
 
-    // submitBtn.addEventListener("click", (event) => {
-    //     event.preventDefault(); // THIS prevents the form from submitting/reloading
-    //     getFilteredPets();
-    //     console.log("hit submit")
-//
         const favButton = document.getElementById("favorite-button");
         if(await IsLoggedInSearch()){
             console.log("logged in");
@@ -46,14 +41,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function getFilteredPets(){
     const form = <HTMLFormElement> document.getElementById("filterForm");
     const formData = new FormData(form);
-    //console.log("zip:")
-    //console.log(formData.get("zipcode")as string)
+
     if (isFormDataEmpty(formData)) {
         // give the user feedback and avoid the empty request
         alert("Please fill at least one filter field.");
         console.log("empty")
         return;
     }
+
+    //give the form data to the /search route
     const response = await fetch("/search/", {
             method: "POST",
             headers: {
@@ -69,6 +65,7 @@ async function getFilteredPets(){
 
 }
 
+//checks if no data was put into the form meaning it was submitted with no input data
 function isFormDataEmpty(formData: FormData) {
 
     const zip = formData.get("zipcode") as string | null;
@@ -93,13 +90,6 @@ async function IsLoggedInSearch(): Promise<boolean>{
         return data.signedIn;
 }
 
-//Buck, Nelly, Shiloh, Bella, Sam, Benz, Sparkle B, Suri, Bentley, Buffy, Maxine, Hollie, Foxy Boy, Bernie, Shyann, Herb C1371, WILLIE, Brady, Bree, Pomegranate
-// //const StubIDS: string[] = ["1000004", "10000156", "100001", "10000154", "10000158", "10000196", 
-//     "10000201", "10000202", "10000205", "10000155", "10000153", "10000152", "10000149", 
-//     "1000001", "100000", "10000193", "10000190", "10000178", "10000176", "10000174"]; 
-
-//const StubIDS2: string[] = ["1000004"]
-
 
 async function makeButtonsSearch(list: string[]){
     const buttonDiv = <HTMLDivElement> document.getElementById("buttons-div")
@@ -112,17 +102,9 @@ async function makeButtonsSearch(list: string[]){
     }
 }
 
-// get all of the buttons
-//const homeLists =  document.getElementsByClassName("petButton");
-
 
 
 async function loadHomePetsSearch(id: string, newDiv: HTMLDivElement){
-    //let homeCounter: number = 0;
-    //for (const item of homeLists) {
-        //let thisID: string = StubIDS[homeCounter];
-        //const btn = item as HTMLButtonElement;
-        //let thisID: string = thisButton.dataset.petId;
 
         const btn = <HTMLButtonElement> document.createElement('button');
         btn.addEventListener("click",() => changeDataSearch(id));
@@ -146,12 +128,15 @@ async function loadHomePetsSearch(id: string, newDiv: HTMLDivElement){
 
         const pet = await validateHomeJSONSearch(response);
 
+        //get the information we need from the API
+        //name , orgID, imageURL
+
         let name = pet.data[0].attributes.name;
         if(name.toLowerCase().includes("adopted")){
             return;
         }
         const orgsID = pet.data[0].relationships.orgs.data[0].id;
-        const imageURL = pet.data[0].attributes.pictureThumbnailUrl;  // put something here to add a stub image if there isn't one in the api
+        const imageURL = pet.data[0].attributes.pictureThumbnailUrl;
 
             
         const orgsURL= `${baseURL}public/orgs/${orgsID}`;
@@ -163,11 +148,14 @@ async function loadHomePetsSearch(id: string, newDiv: HTMLDivElement){
                 },
         });
 
+        //get the organization information we need from the api
             
         const organizations = await validateHomeJSONSearch(response2);
 
         const orgLocationCity = organizations.data[0].attributes.citystate;
 
+
+        //get the image or set it to the image stub if none is provided
         if(imageURL == null){
             btn.innerHTML = `<img src="/static/icons/petStubImage.png" alt="No stub Available"><p>${name}</p><p>${orgLocationCity}</p>`;
 
@@ -212,8 +200,6 @@ async function validateHomeJSONSearch(response: Response): Promise<any> {
             console.log("is favorite: " + await isFavoriteSearch(pid))
         }
         
-
-        //TODO add the more detailed information here
     }
 
 
@@ -270,7 +256,8 @@ async function validateHomeJSONSearch(response: Response): Promise<any> {
 
         const pet = await validateHomeJSONSearch(response);
 
-        //ageGroup, sex, breedPrimary, breedSecondary, descriptionText, 
+        //get the modal information we need from the api
+        //name, age, gender, breed, description, orgID, imageURL
         const name = document.getElementById("petName");
         if(name){
             name.textContent = "Name: " + (pet.data[0].attributes.name ?? "N/A");
@@ -314,28 +301,30 @@ async function validateHomeJSONSearch(response: Response): Promise<any> {
                     "Authorization": "7mZmJj1Y", 
                 },
         });
-            
+        
+        //get the organization information we need from the api
+
         const organizations = await validateHomeJSONSearch(response2);
 
+        //getting the organization city/state
         const orgLocationCity = document.getElementById("petLocation");
         if(orgLocationCity){
             orgLocationCity.textContent = "Location: " + (organizations.data[0].attributes.citystate ?? "N/A");
         }
         
-        const petURL = document.getElementById("petURL") as HTMLAnchorElement;       // ---------
+        const petURL = document.getElementById("petURL") as HTMLAnchorElement;
         petURL.href = organizations.data[0].attributes.url ?? "#";
 
        const img = <HTMLImageElement> document.getElementById("petImage")
         
+       //add the image or put in the stub image if none is provided
         if(imageURL == null){
-            
             img.src = '/static/icons/petStubImage.png';
             img.alt = 'No stub Available';
             if(modalBodyDiv){
                 modalBodyDiv.append(img);
             }
             
-
         }else{
             img.src = imageURL;
             img.alt = 'No Image Available';
