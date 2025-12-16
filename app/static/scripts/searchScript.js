@@ -1,21 +1,26 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    makeButtons();
+    console.log("in typescript");
+    const form = document.getElementById("filterForm");
+    console.log("running");
+    form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        console.log("hit submit");
+        await getFilteredPets();
+    });
+    const submitBtn = document.getElementById("submit-btn");
     const favButton = document.getElementById("favorite-button");
-    const loginButton = document.getElementById("login_btn");
-    if (await IsLoggedIn()) {
-        loginButton.innerText = "Log Out";
+    if (await IsLoggedInSearch()) {
         console.log("logged in");
-        favButton.addEventListener("click", () => addToFavorites(favButton.dataset.petId));
+        favButton.addEventListener("click", () => addToFavoritesSearch(favButton.dataset.petId));
     }
     else {
-        loginButton.innerText = "Log In";
         favButton.remove();
     }
     const profileBtn = document.getElementById("profile");
     profileBtn.addEventListener("click", async function (e) {
         e.preventDefault();
         e.stopImmediatePropagation();
-        if (await IsLoggedIn()) {
+        if (await IsLoggedInSearch()) {
             window.location.href = '/profile/';
             return;
         }
@@ -24,39 +29,41 @@ document.addEventListener("DOMContentLoaded", async () => {
         modal.show();
     });
 });
-async function ProfileRouting() {
-    if (await IsLoggedIn()) {
-        window.location.href = '/profile/';
-    }
-    else {
-        console.log("not logged in");
-    }
+async function getFilteredPets() {
+    const form = document.getElementById("filterForm");
+    const formData = new FormData(form);
+    const response = await fetch("/search/", {
+        method: "POST",
+        headers: {
+            "Accept": "application/json"
+        },
+        body: formData
+    });
+    const data = await validateJSONSearch(response);
+    makeButtonsSearch(data.results);
 }
-async function IsLoggedIn() {
+async function IsLoggedInSearch() {
     const response = await fetch(`/api/isLoggedIn/`, {
         method: "GET",
         headers: {
             "Accept": "application/json"
         }
     });
-    const data = await validateJSON(response);
+    const data = await validateJSONSearch(response);
     return data.signedIn;
 }
-const homeLists = document.getElementsByClassName("petButton");
-let StubIDS = ["1000004", "10000156", "100001", "10000154", "10000158", "10000196",
-    "10000201", "10000202", "10000205", "10000155", "10000153", "10000152", "10000149",
-    "1000001", "100000", "10000193", "10000190", "10000178", "10000176", "10000174"];
-async function makeButtons() {
+async function makeButtonsSearch(list) {
     const buttonDiv = document.getElementById("buttons-div");
-    for (const id of StubIDS) {
+    buttonDiv.replaceChildren();
+    for (const id of list) {
         const newDiv = document.createElement("div");
         buttonDiv.appendChild(newDiv);
-        loadHomePets(id, newDiv);
+        loadHomePetsSearch(id, newDiv);
     }
 }
-async function loadHomePets(id, newDiv) {
+async function loadHomePetsSearch(id, newDiv) {
     const btn = document.createElement('button');
-    btn.addEventListener("click", () => changeData(id));
+    btn.addEventListener("click", () => changeDataSearch(id));
     btn.classList.add("petButton");
     btn.setAttribute("data-pet-id", id);
     btn.setAttribute("data-bs-toggle", "modal");
@@ -70,8 +77,11 @@ async function loadHomePets(id, newDiv) {
             "Authorization": "7mZmJj1Y",
         },
     });
-    const pet = await validateHomeJSON(response);
-    const name = pet.data[0].attributes.name;
+    const pet = await validateHomeJSONSearch(response);
+    let name = pet.data[0].attributes.name;
+    if (name.toLowerCase().includes("adopted")) {
+        return;
+    }
     const orgsID = pet.data[0].relationships.orgs.data[0].id;
     const imageURL = pet.data[0].attributes.pictureThumbnailUrl;
     const orgsURL = `${baseURL}public/orgs/${orgsID}`;
@@ -82,7 +92,7 @@ async function loadHomePets(id, newDiv) {
             "Authorization": "7mZmJj1Y",
         },
     });
-    const organizations = await validateHomeJSON(response2);
+    const organizations = await validateHomeJSONSearch(response2);
     const orgLocationCity = organizations.data[0].attributes.citystate;
     if (imageURL == null) {
         btn.innerHTML = `<img src="/static/icons/petStubImage.png" alt="No stub Available"><p>${name}</p><p>${orgLocationCity}</p>`;
@@ -92,7 +102,7 @@ async function loadHomePets(id, newDiv) {
     }
     newDiv.append(btn);
 }
-async function validateHomeJSON(response) {
+async function validateHomeJSONSearch(response) {
     if (response.ok) {
         return response.json();
     }
@@ -100,40 +110,44 @@ async function validateHomeJSON(response) {
         return Promise.reject(response);
     }
 }
-async function changeData(pid) {
-    fillModal(pid);
-    if (await IsLoggedIn()) {
+async function changeDataSearch(pid) {
+    fillModalSearch(pid);
+    if (await IsLoggedInSearch()) {
         const favButton = document.getElementById("favorite-button");
-        favButton.dataset.petId = pid;
-        console.log("favButton id: " + favButton.dataset.petId);
-        if (await isFavorite(pid)) {
-            favButton.innerHTML = `<img src="/static/icons/unfavorite.png" alt="Unfavorite" width="24" height="24">`;
-            console.log("unfav");
+        if (favButton != null) {
+            favButton.dataset.petId = pid;
+            console.log("favButton id: " + favButton.dataset.petId);
+            if (await isFavoriteSearch(pid)) {
+                favButton.innerHTML = `<img src="/static/icons/unfavorite.png" alt="Unfavorite" width="24" height="24">`;
+            }
+            else {
+                favButton.innerHTML = `<img src="/static/icons/favorite.png" alt="Favorite" width="24" height="24">`;
+            }
         }
-        else {
-            favButton.innerHTML = `<img src="/static/icons/favorite.png" alt="Favorite" width="24" height="24">`;
-            console.log("unfav");
-        }
-        console.log("is favorite: " + await isFavorite(pid));
+        console.log("is favorite: " + await isFavoriteSearch(pid));
     }
 }
-async function isFavorite(petId) {
+async function isFavoriteSearch(petId) {
     const response = await fetch(`/api/favoritePet/check/${encodeURIComponent(petId)}`, {
         method: "GET",
         headers: {
             "Accept": "application/json"
         }
     });
-    const data = await validateJSON(response);
+    const data = await validateJSONSearch(response);
     return data.exists;
 }
-async function addToFavorites(petId) {
+async function addToFavoritesSearch(petId) {
     const favButton = document.getElementById("favorite-button");
-    if (await isFavorite(petId)) {
-        favButton.innerHTML = `<img src="/static/icons/favorite.png" alt="Favorite" width="24" height="24">`;
+    if (await isFavoriteSearch(petId)) {
+        if (favButton) {
+            favButton.innerHTML = `<img src="/static/icons/favorite.png" alt="Favorite" width="24" height="24">`;
+        }
     }
     else {
-        favButton.innerHTML = `<img src="/static/icons/unfavorite.png" alt="Unfavorite" width="24" height="24">`;
+        if (favButton) {
+            favButton.innerHTML = `<img src="/static/icons/unfavorite.png" alt="Unfavorite" width="24" height="24">`;
+        }
     }
     await fetch("/api/favoritePet/", {
         method: "POST",
@@ -143,15 +157,7 @@ async function addToFavorites(petId) {
     });
     console.log("added " + petId);
 }
-async function validateJSON(response) {
-    if (response.ok) {
-        return response.json();
-    }
-    else {
-        return Promise.reject(response);
-    }
-}
-async function fillModal(id) {
+async function fillModalSearch(id) {
     const modalBodyDiv = document.getElementById("bodyDiv");
     const baseURL = "https://api.rescuegroups.org/v5/";
     const animalsURL = `${baseURL}public/animals/${id}`;
@@ -162,17 +168,27 @@ async function fillModal(id) {
             "Authorization": "7mZmJj1Y",
         },
     });
-    const pet = await validateHomeJSON(response);
+    const pet = await validateHomeJSONSearch(response);
     const name = document.getElementById("petName");
-    name.textContent = "Name: " + (pet.data[0].attributes.name ?? "N/A");
+    if (name) {
+        name.textContent = "Name: " + (pet.data[0].attributes.name ?? "N/A");
+    }
     const ageGroup = document.getElementById("petAge");
-    ageGroup.textContent = "Age: " + (pet.data[0].attributes.ageGroup ?? "N/A");
+    if (ageGroup) {
+        ageGroup.textContent = "Age: " + (pet.data[0].attributes.ageGroup ?? "N/A");
+    }
     const gender = document.getElementById("petGender");
-    gender.textContent = "Gender: " + (pet.data[0].attributes.sex ?? "N/A");
+    if (gender) {
+        gender.textContent = "Gender: " + (pet.data[0].attributes.sex ?? "N/A");
+    }
     const breed = document.getElementById("petBreed");
-    breed.textContent = "Breed: " + (pet.data[0].attributes.breedString ?? "N/A");
+    if (breed) {
+        breed.textContent = "Breed: " + (pet.data[0].attributes.breedString ?? "N/A");
+    }
     const description = document.getElementById("petDescription");
-    description.textContent = "Description: " + (pet.data[0].attributes.descriptionText ?? "N/A");
+    if (description) {
+        description.textContent = "Description: " + (pet.data[0].attributes.descriptionText ?? "N/A");
+    }
     const orgsID = pet.data[0].relationships.orgs.data[0].id;
     const imageURL = pet.data[0].attributes.pictureThumbnailUrl;
     const orgsURL = `${baseURL}public/orgs/${orgsID}`;
@@ -183,20 +199,34 @@ async function fillModal(id) {
             "Authorization": "7mZmJj1Y",
         },
     });
-    const organizations = await validateHomeJSON(response2);
+    const organizations = await validateHomeJSONSearch(response2);
     const orgLocationCity = document.getElementById("petLocation");
-    orgLocationCity.textContent = "Location: " + (organizations.data[0].attributes.citystate ?? "N/A");
+    if (orgLocationCity) {
+        orgLocationCity.textContent = "Location: " + (organizations.data[0].attributes.citystate ?? "N/A");
+    }
     const petURL = document.getElementById("petURL");
     petURL.href = organizations.data[0].attributes.url ?? "#";
     const img = document.getElementById("petImage");
     if (imageURL == null) {
         img.src = '/static/icons/petStubImage.png';
         img.alt = 'No stub Available';
-        modalBodyDiv.append(img);
+        if (modalBodyDiv) {
+            modalBodyDiv.append(img);
+        }
     }
     else {
         img.src = imageURL;
         img.alt = 'No Image Available';
-        modalBodyDiv.append(img);
+        if (modalBodyDiv) {
+            modalBodyDiv.append(img);
+        }
+    }
+}
+async function validateJSONSearch(response) {
+    if (response.ok) {
+        return response.json();
+    }
+    else {
+        return Promise.reject(response);
     }
 }

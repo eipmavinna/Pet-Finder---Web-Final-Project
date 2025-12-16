@@ -153,6 +153,8 @@ export var modalChanging;
         const organizations = await validateJSONProfile(response2);
         const orgLocationCity = document.getElementById("petLocation");
         orgLocationCity.textContent = "Location: " + (organizations.data[0].attributes.citystate ?? "N/A");
+        const petURL = document.getElementById("petURL");
+        petURL.href = organizations.data[0].attributes.url ?? "#";
         const img = document.getElementById("petImage");
         if (imageURL == null) {
             img.src = 'static/icons/petStubImage.png';

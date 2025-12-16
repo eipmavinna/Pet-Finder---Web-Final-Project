@@ -2,34 +2,49 @@ document.addEventListener("DOMContentLoaded", async () => {
     
     console.log("in typescript")
     
-    
+    const form = document.getElementById("filterForm") as HTMLFormElement;
+    console.log("running");
+    form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        console.log("hit submit");
+        await getFilteredPets();
+    });
     const submitBtn = <HTMLButtonElement> document.getElementById("submit-btn");
 
-    submitBtn.addEventListener("click", (event) => {
-        event.preventDefault(); // THIS prevents the form from submitting/reloading
-        getFilteredPets();
-        console.log("hit submit")
-
+    // submitBtn.addEventListener("click", (event) => {
+    //     event.preventDefault(); // THIS prevents the form from submitting/reloading
+    //     getFilteredPets();
+    //     console.log("hit submit")
+//
         const favButton = document.getElementById("favorite-button");
-        const loginButton = document.getElementById("login_btn");
-        // if(IsLoggedIn()){
-        //     loginButton.innerText = "Log Out";
-        //     console.log("logged in");
-        //     favButton.addEventListener("click", () => addToFavorites(favButton.dataset.petId));
-        // }else{
-        //     loginButton.innerText = "Log In"
-        //     favButton.remove()
-        // }
+        if(await IsLoggedInSearch()){
+            console.log("logged in");
+            favButton.addEventListener("click", () => addToFavoritesSearch(favButton.dataset.petId));
+        }else{
+            favButton.remove()
+        }
+    
+    
+    const profileBtn = document.getElementById("profile");
+    profileBtn.addEventListener("click", async function (e){
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        if(await IsLoggedInSearch()){
+            window.location.href = '/profile/';
+            return;
+        }
+        const loginModal = document.getElementById("profileModal");
+        const modal = (window as any).bootstrap.Modal.getOrCreateInstance(loginModal);
+        modal.show();
     });
-
-
 });
+
+
+
+
 
 async function getFilteredPets(){
     const form = <HTMLFormElement> document.getElementById("filterForm");
-    form.addEventListener("submit", (event) => {
-        event.preventDefault();
-    });
     const formData = new FormData(form);
 
     const response = await fetch("/search/", {
@@ -134,7 +149,7 @@ async function loadHomePetsSearch(id: string, newDiv: HTMLDivElement){
         const orgLocationCity = organizations.data[0].attributes.citystate;
 
         if(imageURL == null){
-            btn.innerHTML = `<img src="static/icons/petStubImage.png" alt="No stub Available"><p>${name}</p><p>${orgLocationCity}</p>`;
+            btn.innerHTML = `<img src="/static/icons/petStubImage.png" alt="No stub Available"><p>${name}</p><p>${orgLocationCity}</p>`;
 
         }else{
             btn.innerHTML = `<img src="${imageURL}" alt="No Image Available"><p>${name}</p><p>${orgLocationCity}</p>`;
@@ -287,12 +302,14 @@ async function validateHomeJSONSearch(response: Response): Promise<any> {
             orgLocationCity.textContent = "Location: " + (organizations.data[0].attributes.citystate ?? "N/A");
         }
         
+        const petURL = document.getElementById("petURL") as HTMLAnchorElement;       // ---------
+        petURL.href = organizations.data[0].attributes.url ?? "#";
 
        const img = <HTMLImageElement> document.getElementById("petImage")
         
         if(imageURL == null){
             
-            img.src = 'static/icons/petStubImage.png';
+            img.src = '/static/icons/petStubImage.png';
             img.alt = 'No stub Available';
             if(modalBodyDiv){
                 modalBodyDiv.append(img);
@@ -317,4 +334,6 @@ async function validateHomeJSONSearch(response: Response): Promise<any> {
             return Promise.reject(response);
         }
     }
+
+    
 

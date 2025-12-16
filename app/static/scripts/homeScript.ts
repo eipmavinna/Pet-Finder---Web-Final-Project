@@ -26,9 +26,18 @@ document.addEventListener("DOMContentLoaded", async () => {
         favButton.remove()
     }
 
-    const profileIcon = document.getElementById("profile");
-    profileIcon.addEventListener("click", ProfileRouting);
-
+    const profileBtn = document.getElementById("profile");
+    profileBtn.addEventListener("click", async function (e){
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        if(await IsLoggedIn()){
+            window.location.href = '/profile/';
+            return;
+        }
+        const loginModal = document.getElementById("profileModal");
+        const modal = (window as any).bootstrap.Modal.getOrCreateInstance(loginModal);
+        modal.show();
+    });
 
 });
 
@@ -123,7 +132,7 @@ async function loadHomePets(id: string, newDiv: HTMLDivElement){
         const orgLocationCity = organizations.data[0].attributes.citystate;
 
         if(imageURL == null){
-            btn.innerHTML = `<img src="static/icons/petStubImage.png" alt="No stub Available"><p>${name}</p><p>${orgLocationCity}</p>`;
+            btn.innerHTML = `<img src="/static/icons/petStubImage.png" alt="No stub Available"><p>${name}</p><p>${orgLocationCity}</p>`;
 
         }else{
             btn.innerHTML = `<img src="${imageURL}" alt="No Image Available"><p>${name}</p><p>${orgLocationCity}</p>`;
@@ -277,7 +286,7 @@ async function validateHomeJSON(response: Response): Promise<any> {
 
         const pet = await validateHomeJSON(response);
 
-        //ageGroup, sex, breedPrimary, breedSecondary, descriptionText, 
+        //ageGroup, sex, breedPrimary, breedSecondary, descriptionText, url
         const name = document.getElementById("petName");
         name.textContent = "Name: " + (pet.data[0].attributes.name ?? "N/A");
         
@@ -293,10 +302,12 @@ async function validateHomeJSON(response: Response): Promise<any> {
         const description = document.getElementById("petDescription");
         description.textContent = "Description: " + (pet.data[0].attributes.descriptionText ?? "N/A");
 
+        
 
         const orgsID = pet.data[0].relationships.orgs.data[0].id;
         const imageURL = pet.data[0].attributes.pictureThumbnailUrl;  // put something here to add a stub image if there isn't one in the api
 
+        
             
         const orgsURL= `${baseURL}public/orgs/${orgsID}`;
         const response2 = await fetch(orgsURL, {
@@ -312,12 +323,15 @@ async function validateHomeJSON(response: Response): Promise<any> {
         const orgLocationCity = document.getElementById("petLocation");
         orgLocationCity.textContent = "Location: " + (organizations.data[0].attributes.citystate ?? "N/A");
 
+        const petURL = document.getElementById("petURL") as HTMLAnchorElement;       // ---------
+        petURL.href = organizations.data[0].attributes.url ?? "#";
+
        const img = <HTMLImageElement> document.getElementById("petImage")
         
         if(imageURL == null){
             //modalBodyDiv.innerHTML = `<img src="static/icons/petStubImage.png" alt="No stub Available"><p>${name}</p><p>${orgLocationCity}</p>`;
             
-            img.src = 'static/icons/petStubImage.png';
+            img.src = '/static/icons/petStubImage.png';
             img.alt = 'No stub Available';
             modalBodyDiv.append(img);
 
