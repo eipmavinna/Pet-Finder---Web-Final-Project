@@ -23,7 +23,7 @@ def get_favs():
     rowsAccts: Sequence[Row[Tuple[User]]] = db.session.execute(query).all()
     users: list[User] = [row[0] for row in rowsAccts]
     return render_template("test.html",users=users)
-    return f"{session.get("user_email")} {session.get("_user_id")} {session.get("_fresh")} {session.get("sdjdjs")}"
+    # return f"{session.get("user_email")} {session.get("_user_id")} {session.get("_fresh")} {session.get("sdjdjs")}"
 
 
 
@@ -288,7 +288,9 @@ def post_edit_user():
     #if all works out well, redirect to the profile
     
     
-
+@bp.get('/about_us/')
+def about_us():
+    return render_template("about_us.html")
 
 
 

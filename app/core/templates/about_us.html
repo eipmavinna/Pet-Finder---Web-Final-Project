@@ -27,18 +27,12 @@
   <script type="module" src="/static/scripts/homeScript.js"></script>
 </head>
 <body>
-<!-- Title bar, logo (which doubles as a clickable link home), search button, and profile button -->
+<!-- Title bar, logo (which doubles as a clickable link home), search button-->
 <!-- Logged in logic should be handled in the routes/HTML -->
   <div id="title-bar">
     <a href="/">
       <img id="logo" src="{{ url_for('static', filename='icons/logo.png') }}" alt="logo/menu button to return home" />
     </a>
-    <button data-bs-toggle="modal" data-bs-target="#profileModal">
-      <img id="profile" src="{{ url_for('static', filename='icons/profile.png') }}" alt="profile button" />  
-    </button> <!-- remove the link from here, make an event listener in the TS file instead -->
-    <!--<a href="'/profile/">
-      <img id="profile" src="{{ url_for('static', filename='icons/profile.png') }}" alt="profile button" />  
-    </a>-->
     <a href="/search/">
       <img id="search" src="{{ url_for('static', filename='icons/search.png') }}" alt="search button" />
     </a>  
@@ -52,12 +46,8 @@
 
 
   <br>
-  <a class="links" href="/about_us/">
-      Log in
-    </a>
-    <br>
-    <a class="links" href="/about_us/">
-      Sign up!
+  <a class="links" href="{{url_for('auth.route_logout')}}">
+      Log in/Sign up
     </a>
   <br>
   <div id="footer-bar">
