@@ -25,6 +25,45 @@
   {# Link Project CSS and JS #}
   <link rel="stylesheet" href="{{url_for('static', filename='styles/core.css')}}">
   <script type="module" src="/static/scripts/homeScript.js"></script>
+
+  <style>
+    /* reset page spacing */
+    html, body {
+      margin: 0;
+      padding: 0;
+    }
+
+    /* remove inline-image baseline gap and any margin */
+    #title-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;          /* controls spacing between icons */
+      padding: 0 12px;   /* optional */
+    }
+
+    /* keep images block-level to remove baseline gaps */
+    #title-bar img {
+      display: block;
+    }
+
+    /* full-width banner that keeps aspect ratio */
+    #banner {
+      width: 100%;
+      height: auto;          /* preserves aspect ratio */
+      object-fit: cover;     /* only applies if you force a height */
+    }
+
+    /* remove default h1 spacing if needed */
+    .page-heading {
+      margin: 0;             /* prevents extra gap above/below the heading */
+      padding: 1rem 0.75rem;
+    }
+
+    /* If title-bar is fixed, push the content down by the bar's height:
+       (uncomment and set to match #title-bar height) */
+    /* body { padding-top: 64px; } */
+  </style>
+
 </head>
 <body>
 <!-- Title bar, logo (which doubles as a clickable link home), search button-->
@@ -34,21 +73,40 @@
       <img id="logo" src="{{ url_for('static', filename='icons/logo.png') }}" alt="logo/menu button to return home" />
     </a>
     <a href="/search/">
-      <img id="search" src="{{ url_for('static', filename='icons/search.png') }}" alt="search button" />
+      <img id="search" style="margin-left: 10px;" src="{{ url_for('static', filename='icons/search.png') }}" alt="search button" />
     </a>  
+    <a href="/profile/">
+      <img id="profile" src="{{ url_for('static', filename='icons/profile.png') }}" alt="profile button" />  
+    </a>
   </div>
-  <h1 class="page-heading">About us</h1>
+  <img id="banner" src="{{ url_for('static', filename='icons/aboutImg.png') }}" alt="banner">
 
-  <h3>What is our mission?</h3>
-  <p>No pet homeless! These animals need love and care</p>
-  <h3>How do we achieve our goals?</h3>
-  <p>We help connect potential pet owners with pets seeking loving homes</p>
-
+  <h1 class="page-heading">Thanks for paws-ing to read about us!</h1>
 
   <br>
-  <a class="links" href="{{url_for('auth.route_logout')}}">
-      Log in/Sign up
-    </a>
+
+  <div class="container">
+  <div class="row g-3 justify-content-center">
+    <div class="col-12 col-sm-6">
+      <div class="p-3 rounded h-100" style="background-color:var(--color-theme-light);border:2px solid var(--color-theme-dark);">
+        <h3 style="margin-left: 20px;margin-top: 30px;margin-bottom: 30px;">About</h3>
+        <p style="margin-left: 20px;margin-right: 20px;">PetRadar helps users find pets without homes near their location, aiming to simplify the pet adoption process. Users can browse available pets by type, zipcode, or age range to find their perfect companion. PetRadar is designed for individuals and families looking to adopt pets but are unsure where to begin! We prioritize convenience and efficiency in connecting with shelters to prevent the hassle of making multiple in-person visits or phone calls. Our app is structured for ease of use for those of all ages and provides the ability to save pets users may wish to comeback to. </p>
+  
+      </div>
+    </div>
+
+    <div class="col-12 col-sm-6">
+      <div class="p-3 rounded h-100" style="background-color:var(--color-theme-light);border:2px solid var(--color-theme-dark);">
+        <h3 style="margin-left: 20px;margin-top: 30px;margin-bottom: 30px;">Our Mission</h3>
+        <p style="margin-left: 20px;margin-right: 20px;">Here at PetRadar, we believe that no animal should be without a home. Around 6.3 million pets (dogs and cats) are surrendered to U.S. shelters each year, averaging over 17,000 daily, and approximately 920,000 surrendered animals are euthanized annually in shelters, with about 2.7 million total dogs and cats killed each year due to overpopulation. Animals on the streets face starvation, disease, parasites, attacks from other animals, cruelty, extreme weather, and being hit by cars, and in shelters, overcrowding forces difficult decisions, with millions facing euthanasia because there aren't enough homes. We hope to lower these numbers and prevent as many animals as possible from becoming a statistic rather than a valued member of a loving family.</p>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+  <br>
+
   <br>
   <div id="footer-bar">
     <a class="links" href="/about_us/">
