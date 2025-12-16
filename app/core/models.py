@@ -70,16 +70,16 @@ from app.auth.models import User, UserSchema, FavPet
 def init_app_db():
     """Initialize database tables and add any default entries"""
     # completely drop all tables and re-create them from schemas
-    db.drop_all()                   #!! remove this when not under development !!  TODO
+    # db.drop_all()                   #!! remove this when not under development !!  TODO
     db.create_all()
     # create a testing account at app launch
-    admin = User(email='test@gcc.edu', password='reallygoodpassword', zipcode = 12345) # type: ignore
-    db.session.add(admin)
+    #admin = User(email='test@gcc.edu', password='reallygoodpassword', zipcode = 12345) # type: ignore
+    #db.session.add(admin)
     
     
-    pet1 = FavPet(id=1000004,user_email='test@gcc.edu') #type:ignore
-    pet2 = FavPet(id=10000154, user_email='test@gcc.edu') #type:ignore
-    db.session.add_all((pet1,pet2))
+    #pet1 = FavPet(id=1000004,user_email='test@gcc.edu') #type:ignore
+    #pet2 = FavPet(id=10000154, user_email='test@gcc.edu') #type:ignore
+    #db.session.add_all((pet1,pet2))
     
     
     # # create some initial example data
