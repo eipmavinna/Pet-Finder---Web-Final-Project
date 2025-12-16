@@ -16,20 +16,32 @@ document.addEventListener("DOMContentLoaded", async () => {
     //     getFilteredPets();
     //     console.log("hit submit")
 //
-    //     const favButton = document.getElementById("favorite-button");
-    //     const loginButton = document.getElementById("login_btn");
-        // if(IsLoggedIn()){
-        //     loginButton.innerText = "Log Out";
-        //     console.log("logged in");
-        //     favButton.addEventListener("click", () => addToFavorites(favButton.dataset.petId));
-        // }else{
-        //     loginButton.innerText = "Log In"
-        //     favButton.remove()
-        // }
-    //});
-
-
+        const favButton = document.getElementById("favorite-button");
+        if(await IsLoggedInSearch()){
+            console.log("logged in");
+            favButton.addEventListener("click", () => addToFavoritesSearch(favButton.dataset.petId));
+        }else{
+            favButton.remove()
+        }
+    
+    
+    const profileBtn = document.getElementById("profile");
+    profileBtn.addEventListener("click", async function (e){
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        if(await IsLoggedInSearch()){
+            window.location.href = '/profile/';
+            return;
+        }
+        const loginModal = document.getElementById("profileModal");
+        const modal = (window as any).bootstrap.Modal.getOrCreateInstance(loginModal);
+        modal.show();
+    });
 });
+
+
+
+
 
 async function getFilteredPets(){
     const form = <HTMLFormElement> document.getElementById("filterForm");
@@ -290,6 +302,8 @@ async function validateHomeJSONSearch(response: Response): Promise<any> {
             orgLocationCity.textContent = "Location: " + (organizations.data[0].attributes.citystate ?? "N/A");
         }
         
+        const petURL = document.getElementById("petURL") as HTMLAnchorElement;       // ---------
+        petURL.href = organizations.data[0].attributes.url ?? "#";
 
        const img = <HTMLImageElement> document.getElementById("petImage")
         
@@ -320,4 +334,6 @@ async function validateHomeJSONSearch(response: Response): Promise<any> {
             return Promise.reject(response);
         }
     }
+
+    
 

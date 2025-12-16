@@ -221,6 +221,9 @@ export namespace modalChanging{
         const orgLocationCity = document.getElementById("petLocation");
         orgLocationCity.textContent = "Location: " + (organizations.data[0].attributes.citystate ?? "N/A");
 
+        const petURL = document.getElementById("petURL") as HTMLAnchorElement;
+        petURL.href = organizations.data[0].attributes.url ?? "#";
+
        const img = <HTMLImageElement> document.getElementById("petImage")
         
         if(imageURL == null){

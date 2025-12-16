@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us</title>
+  <link rel="shortcut icon" href="{{ url_for('static', filename='icons/placeholder_favicon.png') }}" type="image/x-icon">
+  
+
+
+  {# Link Bootstrap 5.3.5 Core Resources #}
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css"
+    integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7"
+    rel="stylesheet" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
+    crossorigin="anonymous"></script>
+  {# Link Bootstrap5-Toggle Project #}
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap5-toggle@5.1.1/css/bootstrap5-toggle.min.css"
+    integrity="sha384-EdwaX1fkkk/Dw1rn9Nrzq52YHhZ4eOoLfPQJ2/2jsr7kaJeI1gnefa9O+Y/m9jZs"
+    rel="stylesheet" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap5-toggle@5.1.1/js/bootstrap5-toggle.ecmas.min.js"
+    integrity="sha384-wbZvWMbuXvzd7EVP1yMwm4qxMAc+PhnWjjEznmVvwkQswdyRmy5l2zxErTDu65mT"
+    crossorigin="anonymous"></script>
+  {# Link Project CSS and JS #}
+  <link rel="stylesheet" href="{{url_for('static', filename='styles/core.css')}}">
+  <script type="module" src="/static/scripts/homeScript.js"></script>
+</head>
+<body>
+<!-- Title bar, logo (which doubles as a clickable link home), search button, and profile button -->
+<!-- Logged in logic should be handled in the routes/HTML -->
+  <div id="title-bar">
+    <a href="/">
+      <img id="logo" src="{{ url_for('static', filename='icons/logo.png') }}" alt="logo/menu button to return home" />
+    </a>
+    <button data-bs-toggle="modal" data-bs-target="#profileModal">
+      <img id="profile" src="{{ url_for('static', filename='icons/profile.png') }}" alt="profile button" />  
+    </button> <!-- remove the link from here, make an event listener in the TS file instead -->
+    <!--<a href="'/profile/">
+      <img id="profile" src="{{ url_for('static', filename='icons/profile.png') }}" alt="profile button" />  
+    </a>-->
+    <a href="/search/">
+      <img id="search" src="{{ url_for('static', filename='icons/search.png') }}" alt="search button" />
+    </a>  
+  </div>
+  <h1 class="page-heading">About us</h1>
+
+  <h3>What is our mission?</h3>
+  <p>No pet homeless! These animals need love and care</p>
+  <h3>How do we achieve our goals?</h3>
+  <p>We help connect potential pet owners with pets seeking loving homes</p>
+
+
+  <br>
+  <a class="links" href="/about_us/">
+      Log in
+    </a>
+    <br>
+    <a class="links" href="/about_us/">
+      Sign up!
+    </a>
+  <br>
+  <div id="footer-bar">
+    <a class="links" href="/about_us/">
+      About us
+    </a>
+  </div>
+</body>
+</html>

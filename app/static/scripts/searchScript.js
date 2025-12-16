@@ -8,6 +8,26 @@ document.addEventListener("DOMContentLoaded", async () => {
         await getFilteredPets();
     });
     const submitBtn = document.getElementById("submit-btn");
+    const favButton = document.getElementById("favorite-button");
+    if (await IsLoggedInSearch()) {
+        console.log("logged in");
+        favButton.addEventListener("click", () => addToFavoritesSearch(favButton.dataset.petId));
+    }
+    else {
+        favButton.remove();
+    }
+    const profileBtn = document.getElementById("profile");
+    profileBtn.addEventListener("click", async function (e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        if (await IsLoggedInSearch()) {
+            window.location.href = '/profile/';
+            return;
+        }
+        const loginModal = document.getElementById("profileModal");
+        const modal = window.bootstrap.Modal.getOrCreateInstance(loginModal);
+        modal.show();
+    });
 });
 async function getFilteredPets() {
     const form = document.getElementById("filterForm");
@@ -184,6 +204,8 @@ async function fillModalSearch(id) {
     if (orgLocationCity) {
         orgLocationCity.textContent = "Location: " + (organizations.data[0].attributes.citystate ?? "N/A");
     }
+    const petURL = document.getElementById("petURL");
+    petURL.href = organizations.data[0].attributes.url ?? "#";
     const img = document.getElementById("petImage");
     if (imageURL == null) {
         img.src = '/static/icons/petStubImage.png';
