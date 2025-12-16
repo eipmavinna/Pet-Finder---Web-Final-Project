@@ -28,6 +28,7 @@
 
 html {
     background-color: var(--color-theme-main);
+    height: 100%;
 }
 
 body {
@@ -36,6 +37,7 @@ body {
     background: linear-gradient(135deg, var(--very-pale-green) 0%, var(--pale-green) 100%);
     min-height: 100vh;
     line-height: 1.6;
+    height: 100%;
 }
 
 #title-bar {
@@ -56,6 +58,28 @@ body {
     box-shadow: 0 4px 12px var(--shadow);
     position: relative;
     display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#footer-bar {
+    height: 6rem;
+    width: 100vw;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: var(--title-bar-x-padding);
+    padding-right: var(--title-bar-x-padding);
+
+    font-size: x-large;
+    font-weight: bolder;
+    line-height: var(--title-bar-height);
+    vertical-align: middle;
+
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+    color: var(--text-light);
+    box-shadow: 0 4px 12px var(--shadow);
+    /* position: relative; */
+    /* display: flex; */
     align-items: center;
     justify-content: center;
 }
@@ -315,6 +339,7 @@ body {
     transition: all 0.3s ease;
     box-shadow: 0 4px 12px var(--shadow);
     overflow: hidden;
+    height: auto;
 }
 
 .petButton:hover {

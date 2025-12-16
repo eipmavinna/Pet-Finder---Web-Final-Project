@@ -26,6 +26,7 @@
   <link rel="stylesheet" href="{{url_for('static', filename='styles/core.css')}}">
   <script type="module" src="/static/scripts/homeScript.js"></script>
 </head>
+<body>
 <!-- Title bar, logo (which doubles as a clickable link home), search button, and profile button -->
 <!-- Logged in logic should be handled in the routes/HTML -->
   <div id="title-bar">
@@ -42,7 +43,7 @@
       <img id="search" src="{{ url_for('static', filename='icons/search.png') }}" alt="search button" />
     </a>  
   </div>
-  <h1 class="page-heading">Home page stub</h1>
+  <h1 class="page-heading">Home Page</h1>
 
   <h3>For you</h3>
   <br>
@@ -116,5 +117,15 @@
     Log In
 
   </a>
+  <br>
+  <div id="footer-bar">
+    <a href="/about_us/">
+      About us
+    </a>
+    |
+    <a href="/log_out/">
+      Log Out
+    </a>
+  </div>
 </body>
 </html>
