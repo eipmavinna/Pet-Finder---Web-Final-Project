@@ -137,7 +137,7 @@ async function loadHomePetsSearch(id: string, newDiv: HTMLDivElement){
         const orgLocationCity = organizations.data[0].attributes.citystate;
 
         if(imageURL == null){
-            btn.innerHTML = `<img src="static/icons/petStubImage.png" alt="No stub Available"><p>${name}</p><p>${orgLocationCity}</p>`;
+            btn.innerHTML = `<img src="/static/icons/petStubImage.png" alt="No stub Available"><p>${name}</p><p>${orgLocationCity}</p>`;
 
         }else{
             btn.innerHTML = `<img src="${imageURL}" alt="No Image Available"><p>${name}</p><p>${orgLocationCity}</p>`;
@@ -295,7 +295,7 @@ async function validateHomeJSONSearch(response: Response): Promise<any> {
         
         if(imageURL == null){
             
-            img.src = 'static/icons/petStubImage.png';
+            img.src = '/static/icons/petStubImage.png';
             img.alt = 'No stub Available';
             if(modalBodyDiv){
                 modalBodyDiv.append(img);
