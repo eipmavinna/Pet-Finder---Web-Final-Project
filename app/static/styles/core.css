@@ -78,8 +78,8 @@ body {
     background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
     color: var(--text-light);
     box-shadow: 0 4px 12px var(--shadow);
-    /* position: relative; */
-    /* display: flex; */
+    position: relative;
+    display: flex;
     align-items: center;
     justify-content: center;
 }
@@ -634,4 +634,16 @@ body {
     body {
         padding-bottom: 100px;
     }
+}
+
+.links {
+    color: var(--light-green);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.links:hover {
+    color: var(--text-dark);
+    text-decoration: underline;
 }
