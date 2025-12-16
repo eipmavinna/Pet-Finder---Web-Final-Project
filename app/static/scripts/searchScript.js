@@ -32,6 +32,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function getFilteredPets() {
     const form = document.getElementById("filterForm");
     const formData = new FormData(form);
+    if (isFormDataEmpty(formData)) {
+        alert("Please fill at least one filter field.");
+        console.log("empty");
+        return;
+    }
     const response = await fetch("/search/", {
         method: "POST",
         headers: {
@@ -41,6 +46,15 @@ async function getFilteredPets() {
     });
     const data = await validateJSONSearch(response);
     makeButtonsSearch(data.results);
+}
+function isFormDataEmpty(formData) {
+    const zip = formData.get("zipcode");
+    const type = formData.get("animal_type");
+    const age = formData.get("age_group");
+    if ((zip && zip !== "") || (type && type !== "") || (age && age !== "")) {
+        return false;
+    }
+    return true;
 }
 async function IsLoggedInSearch() {
     const response = await fetch(`/api/isLoggedIn/`, {
