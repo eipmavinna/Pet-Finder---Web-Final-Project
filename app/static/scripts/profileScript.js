@@ -70,6 +70,7 @@ export var modalChanging;
     async function makeButtonsProfile() {
         const buttonDiv = document.getElementById("buttons-div");
         for (const id of StubIDSProfile) {
+            console.log("Loading pet ID: " + id);
             if (await isFavoriteProfile(id)) {
                 const newDiv = document.createElement("div");
                 newDiv.id = `${id}_div`;
