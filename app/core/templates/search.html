@@ -41,8 +41,9 @@
       <img id="search" src="{{ url_for('static', filename='icons/search.png') }}" alt="search button" />
     </a>
   </div>
-  <h1 class="page-heading">Search page stub</h1>
+  <h1 class="page-heading">Search Page</h1>
 
+  <!-- Box to search with filters. Was a pain to make it inline but also have the label above the input field -->
   <form method="post" id = "filterForm">
   <div id="search-wrapper">
     <div class="search-inline">
@@ -52,13 +53,11 @@
         <label for="{{form.zipcode.id}}">{{form.zipcode.label.text}}</label>
         {{form.zipcode(class="form-control")}}
       </div>
-
       
       <div class="search-field">
         <label for="{{form.animal_type.id}}">{{form.animal_type.label.text}}</label>
         {{form.animal_type(class="form-control")}}
       </div>
-      
       
       <div class="search-field">
         <label for="{{form.age_group.id}}">{{form.age_group.label.text}}</label>
@@ -67,15 +66,12 @@
     </div>
 
     <div class="search-button">
-      <button id="submit-btn" type="submit">Search</button>
+      <button class="btn gcc-btn-primary d-block w-25 mx-auto" id="submit-btn" type="submit">Search</button>
     </div>
   </div>
-  <br>
-  <p>[Example table of pets based on search]</p>
 
   <div id = "buttons-div"></div>
   </form>
-
 
     <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -97,7 +93,7 @@
                   <h3 id="petLocation"></h3>
                   <p id="petDescription"></p>
                   <br>
-                  <a id="petURL" href="" target="_blank">Visit Pet Adoption Website</a>
+                  <a class="links" id="petURL" href="" target="_blank">Visit Pet Adoption Website</a>
               </div>
               <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -134,10 +130,12 @@
   </div>
 <br>
 <!-- Footer and About us page link -->
-  <div id="footer-bar">
+ <footer><div id="footer-bar">
     <a class="links" href="/about_us/">
       About us
     </a>
   </div>
+</footer>
+
 </body>
 </html>
