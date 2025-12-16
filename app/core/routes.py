@@ -91,7 +91,7 @@ def searchResults():
 
     zip = form.zipcode.data
 
-    #if a pet type was added then filter by age group
+    #if a pet type was added then filter by species
     if(speciesID != "" and zip != ""):
         matching_pet_ids = [
                     pet
@@ -118,10 +118,6 @@ def searchResults():
             'results': toReturn,
         })
 
-    
-    # return jsonify({
-    #     'results': toReturn
-    # })
 
 
     #get zips of all the pets filtered so far
@@ -149,17 +145,9 @@ def searchResults():
 
 
     #checking by zipcode
-    
-    #matching_zip_ids = None
-
     if(zip != ""):
-        # #find exact matches
-        # matching_zip_ids = [
-        #      key
-        #      for key, value in dict_of_zipcodes.items()
-        #      if zip == value]
 
-        #find closest 3 matches
+        #of what is already filtered, sort it in closest order to the given zipcode
         idsPetsNearby = findNearbyDistances(zip, dict_of_zipcodes)
 
 
@@ -168,9 +156,6 @@ def searchResults():
         petIds.append(list(dict.keys())[0])
 
 
-    
-    # print(matching_zip_ids)
-    # print(idsPetsNearby)
 
     return jsonify({
         'results': petIds

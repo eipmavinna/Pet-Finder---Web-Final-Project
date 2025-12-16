@@ -6,23 +6,12 @@ let counter: number = 0;
 
 document.addEventListener("DOMContentLoaded", async () => {
     modalChanging.makeButtonsProfile();
-    //loadUserInfo();
-    //modalChanging.loadPets();
-    //const closeButton = document.getElementById("modal_close") as HTMLButtonElement | null;
-    //if (closeButton) {
-    //    closeButton.addEventListener("click", reloadPage);
-    //}
-    // for(const button of lists){
-    //     const btn = button as HTMLButtonElement;
-    //     let thisID: string = btn.dataset.petId;
-    //     //change the favbutton data to be the pet id
-    //     btn.addEventListener("click",() => modalChanging.changeData(thisID));
-    // }
+    
     const favButton = document.getElementById("favorite-button");
     favButton.addEventListener("click", () => addToFavoritesProfile(favButton.dataset.petId));
 });
 
-//Buck, Nelly, Shiloh, Bella, Sam, Benz, Sparkle B, Suri, Bentley, Buffy, Maxine, Hollie, Foxy Boy, Bernie, Shyann, Herb C1371, WILLIE, Brady, Bree, Pomegranate
+//all the pet ids from the dataabse
 const StubIDSProfile: string[] = ["1000004", "10000156", "100001", "10000154", "10000158", "10000196", 
     "10000201", "10000202", "10000205", "10000155", "10000153", "10000152", "10000149", 
     "1000001", "100000", "10000193", "10000190", "10000178", "10000176", "10000174"]; 
@@ -34,6 +23,7 @@ const StubIDSProfile: string[] = ["1000004", "10000156", "100001", "10000154", "
 //     emailField.innerText = "Email";
 // }
  //
+
 
 async function addToFavoritesProfile(petId: string){
     const favButton = document.getElementById("favorite-button");
@@ -141,10 +131,13 @@ export namespace modalChanging{
 
         const pet = await validateJSONProfile(response);
 
+        //get what we need from the API
+        //name, orgID, imageURL
         const name = pet.data[0].attributes.name;
         const orgsID = pet.data[0].relationships.orgs.data[0].id;
         const imageURL = pet.data[0].attributes.pictureThumbnailUrl;  
-            
+
+        //fetch from the organizations in the api  
         const orgsURL= `${baseURL}public/orgs/${orgsID}`;
         const response2 = await fetch(orgsURL, {
                 method: "GET",
@@ -157,8 +150,10 @@ export namespace modalChanging{
             
         const organizations = await validateJSONProfile(response2);
 
+        //get the organizationcity/state
         const orgLocationCity = organizations.data[0].attributes.citystate;
 
+        //getting the image or putting the stub image in
         if(imageURL == null){
             btn.innerHTML = `<img src="/static/icons/petStubImage.png" alt="No stub Available"><p>${name}</p><p>${orgLocationCity}</p>`;
 
@@ -186,7 +181,8 @@ export namespace modalChanging{
           
         const pet = await validateJSONProfile(response);
 
-        //ageGroup, sex, breedPrimary, breedSecondary, descriptionText, 
+        //get the information we need from the api for the modal
+        //name, age group, gender, breed, description, orgID
         const name = document.getElementById("petName");
         name.textContent = "Name: " + (pet.data[0].attributes.name ?? "N/A");
         
@@ -206,7 +202,8 @@ export namespace modalChanging{
         const orgsID = pet.data[0].relationships.orgs.data[0].id;
         const imageURL = pet.data[0].attributes.pictureThumbnailUrl;  // put something here to add a stub image if there isn't one in the api
 
-            
+        //get org information we need from the organization that the pet ID belongs to
+
         const orgsURL= `${baseURL}public/orgs/${orgsID}`;
         const response2 = await fetch(orgsURL, {
                 method: "GET",
@@ -215,6 +212,7 @@ export namespace modalChanging{
                     "Authorization": "7mZmJj1Y", 
                 },
         });
+
             
         const organizations = await validateJSONProfile(response2);
 
@@ -226,15 +224,13 @@ export namespace modalChanging{
 
        const img = <HTMLImageElement> document.getElementById("petImage")
         
+       //set the image
         if(imageURL == null){
-            //modalBodyDiv.innerHTML = `<img src="static/icons/petStubImage.png" alt="No stub Available"><p>${name}</p><p>${orgLocationCity}</p>`;
-            
             img.src = '/static/icons/petStubImage.png';
             img.alt = 'No stub Available';
             modalBodyDiv.append(img);
 
         }else{
-            //modalBodyDiv.innerHTML = `<img src="${imageURL}" alt="No Image Available"><p>${name}</p><p>${orgLocationCity}</p>`;
             img.src = imageURL;
             img.alt = 'No Image Available';
             modalBodyDiv.append(img);
@@ -243,7 +239,7 @@ export namespace modalChanging{
     }
 
 
-
+    //validate JSON
     export async function validateJSONProfile(response: Response): Promise<any> {
         if (response.ok) {
             return response.json();
@@ -260,6 +256,8 @@ export namespace modalChanging{
             const baseURL = "https://api.rescuegroups.org/v5/";
             const animalsURL = `${baseURL}public/animals/${thisID}`
 
+            //get pet data from the api
+
             const response = await fetch(animalsURL, {
                     method: "GET",
                     headers: {
@@ -271,11 +269,15 @@ export namespace modalChanging{
 
             const pet = await validateJSONProfile(response);
 
+            //get the specific data needed from the api
+            //name, orgsID, imageURL
+
             const name = pet.data[0].attributes.name;
             const orgsID = pet.data[0].relationships.orgs.data[0].id;
             const imageURL = pet.data[0].attributes.pictureThumbnailUrl;
 
-                
+            //get org information based on the pet id
+
             const orgsURL= `${baseURL}public/orgs/${orgsID}`;
             const response2 = await fetch(orgsURL, {
                     method: "GET",
@@ -285,7 +287,9 @@ export namespace modalChanging{
                     },
                 });
 
-                
+            
+            //get specific pet information for the page
+            //organization city/state
             const organizations = await validateJSONProfile(response2);
 
             const orgLocationCity = organizations.data[0].attributes.citystate;
@@ -305,26 +309,5 @@ export namespace modalChanging{
     }
 
 
-
-
-        //create eventlistenerbutton
-        //same modal, just different information
-        //so every button leads to the same modal
-        //item.addEventListener("click", )
-
-        //changing inner text of button to name, location, image
-
-
-    //start with user profile
-    //id's saved as a list in database for user
-    //then the html will make spaces for each ID with a for loop/Jinja
-    //then the TypeScript will access the id of each element and get the data from the API
-    //then event listeners for the modals need to be made for each --> need to figure out how to do this
-    //so only the name, location, image are displayed
-    //and the rest of the imformation is in the modal
-    //and modal needs to be filled in
-
-
-    //figure out bootsrap and modals
 
 
