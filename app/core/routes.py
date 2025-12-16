@@ -55,14 +55,14 @@ def search():
 def searchResults():
     form = SearchForm(request.form)
     response = requests.get(
-        "https://api.rescuegroups.org/v5/public/animals?include=species",
+        "https://api.rescuegroups.org/v5/public/animals?include=species,orgs",
         headers={"Content-Type": "application/vnd.api+json", "Authorization": "7mZmJj1Y"}
     )
     responseData = response.json()
 
     age_group = (form.age_group.data or "").lower()
 
-    firstFilter = responseData
+    firstFilter = responseData["data"]
 
     #if an age group was added then filter by age group
     if(age_group != ""):
@@ -86,10 +86,20 @@ def searchResults():
         speciesID = ""
     
 
-    secondFilter = responseData
+    secondFilter = firstFilter
+
+    zip = form.zipcode.data
 
     #if a pet type was added then filter by age group
-    if(speciesID != ""):
+    if(speciesID != "" and zip != ""):
+        matching_pet_ids = [
+                    pet
+                    for pet in firstFilter
+                    if any(
+                    species["id"] == speciesID
+                    for species in pet["relationships"]["species"]["data"])]
+        secondFilter = matching_pet_ids
+    elif(speciesID != ""):
         matching_pet_ids = [
                     pet["id"]
                     for pet in firstFilter
@@ -98,21 +108,118 @@ def searchResults():
                     for species in pet["relationships"]["species"]["data"])]
         secondFilter = matching_pet_ids
 
-    zip = form.zipcode.data
+  
 
     toReturn = secondFilter
-    
-    # if(zip != ""):
-    #     toReturn = compareDistances(secondFilter)
-    # print(f"{matching_pet_ids}")
-    
-    return jsonify({
-        'results': toReturn
-    })
 
-# #compare distances and return a string of filtered closest distances
-# def compareDistances(list) -> list:
-#     return
+    if(zip == ""):
+        return jsonify({
+            'results': toReturn,
+        })
+
+    
+    # return jsonify({
+    #     'results': toReturn
+    # })
+
+
+    #get zips of all the pets filtered so far
+    dict_of_zipcodes = {}
+    for pet in secondFilter:
+
+        
+        organizationID = pet["relationships"]["orgs"]["data"][0]["id"]
+
+
+        orgs_url = f"https://api.rescuegroups.org/v5/public/orgs/{organizationID}"
+
+        organization = requests.get(
+            orgs_url,
+            headers={
+                "Content-Type": "application/vnd.api+json",
+                "Authorization": "7mZmJj1Y"
+            }
+        )
+
+        postal_code = organization.json()["data"][0]["attributes"]["postalcode"]
+        
+        dict_of_zipcodes[pet["id"]] = postal_code
+
+
+
+    #checking by zipcode
+    
+    #matching_zip_ids = None
+
+    if(zip != ""):
+        # #find exact matches
+        # matching_zip_ids = [
+        #      key
+        #      for key, value in dict_of_zipcodes.items()
+        #      if zip == value]
+
+        #find closest 3 matches
+        idsPetsNearby = findNearbyDistances(zip, dict_of_zipcodes)
+
+
+    petIds: list[str] = [] #idsPetsNearby.keys()
+    for dict in idsPetsNearby:
+        petIds.append(list(dict.keys())[0])
+
+
+    
+    # print(matching_zip_ids)
+    # print(idsPetsNearby)
+
+    return jsonify({
+        'results': petIds
+    })
+    
+
+
+
+def findNearbyDistances(Inputzipcode: int | str, codes: dict) -> list[dict[str, int]]:
+    toRet: list[dict[str, int]] = []
+
+    for _ in range(len(codes)):
+        toRet.append({"0000": 999999})
+
+    for petId, zip in codes.items():
+        currInd = len(codes) - 1
+        stopped = False
+
+        while not stopped:
+            try:
+                nextZip = int(zip)
+            except ValueError:
+                nextZip = 111111
+
+            if nextZip < next(iter(toRet[currInd].values())):
+                currInd -= 1
+                if currInd < 0:
+                    stopped = True
+            else:
+                stopped = True
+
+        if currInd < len(codes) - 1:
+            currInd += 1
+            try:
+                nextZip = int(zip)
+            except ValueError:
+                nextZip = 111111
+            holder = (petId, nextZip)
+            
+
+            while currInd < len(codes):
+                currVals = (
+                    next(iter(toRet[currInd].keys())),
+                    next(iter(toRet[currInd].values()))
+                )
+                toRet[currInd] = {holder[0]: holder[1]}
+                holder = currVals
+                currInd += 1
+
+    return toRet
 
 
 @bp.get('/')
