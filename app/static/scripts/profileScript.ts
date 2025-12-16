@@ -97,6 +97,7 @@ export namespace modalChanging{
     export async function makeButtonsProfile(){
         const buttonDiv = <HTMLDivElement> document.getElementById("buttons-div")
         for(const id of StubIDSProfile){
+            console.log("Loading pet ID: " + id);
             //make a div for each new button
             if(await isFavoriteProfile(id)){
                 const newDiv = <HTMLDivElement> document.createElement("div");
