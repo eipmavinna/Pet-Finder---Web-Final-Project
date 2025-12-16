@@ -64,6 +64,7 @@ def searchResults():
 
     firstFilter = responseData["data"]
 
+
     #if an age group was added then filter by age group
     if(age_group != ""):
         ageMatches = [pet

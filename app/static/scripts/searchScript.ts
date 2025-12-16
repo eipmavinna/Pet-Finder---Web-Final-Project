@@ -46,7 +46,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function getFilteredPets(){
     const form = <HTMLFormElement> document.getElementById("filterForm");
     const formData = new FormData(form);
-
+    //console.log("zip:")
+    //console.log(formData.get("zipcode")as string)
+    if (isFormDataEmpty(formData)) {
+        // give the user feedback and avoid the empty request
+        alert("Please fill at least one filter field.");
+        console.log("empty")
+        return;
+    }
     const response = await fetch("/search/", {
             method: "POST",
             headers: {
@@ -60,6 +67,19 @@ async function getFilteredPets(){
 
     makeButtonsSearch(data.results);
 
+}
+
+function isFormDataEmpty(formData: FormData) {
+
+    const zip = formData.get("zipcode") as string | null;
+    const type = formData.get("animal_type") as string | null;
+    const age = formData.get("age_group") as string | null;
+
+    if ((zip && zip !== "" )|| (type && type !== "") || (age && age !== "")) {
+        return false;
+    }
+
+  return true;
 }
 
 async function IsLoggedInSearch(): Promise<boolean>{
